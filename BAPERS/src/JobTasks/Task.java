@@ -11,6 +11,11 @@ public class Task {
     private Timestamp startTime;
     private double timeTaken;
     private boolean dayShift;
+    private double price;
+
+    public double getPrice() {
+        return price;
+    }
 
     public String getStatus() {
         return status;

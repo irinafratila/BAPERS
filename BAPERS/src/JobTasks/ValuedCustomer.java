@@ -1,11 +1,14 @@
 package JobTasks;
 
+
+import Discount.*;
+
 public class ValuedCustomer extends CustomerAccount{
     private Discount discountPlan;
 
-    public ValuedCustomer(String name, String phoneNumber, String email, Boolean valuedCustomer, Discount discountPlan) {
-        super(name, phoneNumber, email, valuedCustomer);
-        this.discountPlan = discountPlan;
+    public ValuedCustomer(String name, String phoneNumber, String email) {
+        super(name, phoneNumber, email);
+
     }
 
     public void applyFixedDiscount(){
@@ -18,5 +21,5 @@ public class ValuedCustomer extends CustomerAccount{
         discountPlan = new FlexiDiscount();
     }
     public void downgradeCustomer(){}
-    public double calculateCost(){return price;}
+//    public double calculateCost(){return price;}
 }
