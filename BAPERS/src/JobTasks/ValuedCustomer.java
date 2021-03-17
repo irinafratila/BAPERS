@@ -9,6 +9,7 @@ public class ValuedCustomer extends CustomerAccount{
     public ValuedCustomer(String name, String phoneNumber, String email) {
         super(name, phoneNumber, email);
 
+
     }
 
     public void applyFixedDiscount(){

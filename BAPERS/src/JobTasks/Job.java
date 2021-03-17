@@ -28,9 +28,7 @@ public class Job {
         return JobId;
     }
 
-    public static void setCount(int count) {
-        Job.count = count;
-    }
+
 
     public void setPriority(int priority) {
         this.priority = priority;

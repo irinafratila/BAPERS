@@ -7,14 +7,14 @@ public class CustomerAccount {
     private String name;
     private String phoneNumber;
     private String email;
-    private Boolean valuedCustomer;
     private List<Job> jobs;
 
     public CustomerAccount(String name, String phoneNumber, String email) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.valuedCustomer = false;
+        this.jobs = null;
+
     }
     public void makePayment(int jobId, double amount){
         ListIterator<Job> jobList = jobs.listIterator();
@@ -53,10 +53,7 @@ public class CustomerAccount {
         return jobs;
     }
     public void upgradeCustomer(){
-        if(!valuedCustomer){
-            valuedCustomer = true;
             ValuedCustomer upgrade = new ValuedCustomer(name,phoneNumber,email);
         }
     }
 
-}
