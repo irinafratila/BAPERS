@@ -118,7 +118,21 @@ String password = "helloworld12";
 
 
 
-        } catch (SQLException e) {
+            String sql = "SELECT * FROM STAFF_ACCOUNT ";
+            Statement statement1 = conn.createStatement();
+            ResultSet result = statement1.executeQuery(sql);
+
+            while (result.next()){
+                String staffname = result.getString(2);
+                System.out.println(staffname);
+            }
+
+
+            if (conn != null) {
+                System.out.println("Connected");
+                conn.close();
+            }
+        }catch(SQLException e){
             e.printStackTrace();
         }
     }
