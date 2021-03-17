@@ -1,15 +1,16 @@
+
 package JobTasks;
 
 public class TaskDescription {
     private int TaskID;
     private String location;
-    private String descriptin;
+    private String description;
     private int duration;
 
-    public TaskDescription(int taskID, String location, String descriptin, int duration) {
+    public TaskDescription(int taskID, String location, String description, int duration) {
         TaskID = taskID;
         this.location = location;
-        this.descriptin = descriptin;
+        this.description = description;
         this.duration = duration;
     }
 
@@ -30,11 +31,11 @@ public class TaskDescription {
     }
 
     protected String getDescriptin() {
-        return descriptin;
+        return description;
     }
 
-    protected void setDescriptin(String descriptin) {
-        this.descriptin = descriptin;
+    protected void setDescriptin(String description) {
+        this.description = description;
     }
 
     protected int getDuration() {
