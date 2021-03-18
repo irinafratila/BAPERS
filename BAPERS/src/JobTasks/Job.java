@@ -3,86 +3,119 @@ package JobTasks;
 import Admin.User;
 
 import java.sql.Timestamp;
-import java.util.Date;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.ListIterator;
+
+/**
+ * @author Muhammad Masum Miah
+ */
 
 public class Job {
     private static int count;
     private int priority;
     private Timestamp deadline;
     private String status;
-    private Date startDate;
     private Timestamp startTime;
-    private int timeTaken;
+    private float timeTaken;
     private User completedBy;
     private List<Task> tasks;
     private  double price;
-    private int JobId;
+    private int jobId;
+    private boolean isJobComplete;
+    private String specialInstructions;
+    private Timestamp completeTime;
 
 
-    public Job() {
+    public Job(int priority, String specialInstructions) {
+        this.priority = priority;
+        this.specialInstructions = specialInstructions;
+        this.jobId = count++;
+        startTime = new Timestamp(System.currentTimeMillis());
+        this.deadline = setDeadline();
+        this.status = "in progress";
+        this.price = calculatePrice();
+        this.isJobComplete = false;
     }
+    // calculate the deadline based on the priority of the job. 5 as highest priority.
+    public Timestamp setDeadline() {
+        if(priority ==5){
+            deadline = Timestamp.from(startTime.toInstant().plus(1, ChronoUnit.HOURS));
+        }
+        else if(priority ==4){
+            deadline = Timestamp.from(startTime.toInstant().plus(2, ChronoUnit.HOURS));
+        }
+        else if(priority ==3){
+            deadline = Timestamp.from(startTime.toInstant().plus(3, ChronoUnit.HOURS));
+        }
+        else if(priority ==2){
+            deadline = Timestamp.from(startTime.toInstant().plus(6, ChronoUnit.HOURS));
+        }
+        else if(priority ==1){
+            deadline = Timestamp.from(startTime.toInstant().plus(24, ChronoUnit.HOURS));
+        }
+        return deadline;
+    }
+
 
     public int getJobId() {
-        return JobId;
+        return jobId;
     }
-
-
-
+    //If the priority of hte job changes.
     public void setPriority(int priority) {
         this.priority = priority;
+        deadline = setDeadline();
     }
 
-    public void setDeadline(Timestamp deadline) {
-        this.deadline = deadline;
+    public void completeJob() {
+        this.completeTime = new Timestamp(System.currentTimeMillis());
+        this.isJobComplete = true;
+        this.status = "Job Complete";
+
+       // TODO: add completed by.
+
+    }
+    // returns duration in hours.
+    public float setTimeTaken() {
+        if(isJobComplete) {
+             timeTaken = ((completeTime.getTime() - startTime.getTime())/1000)/60/60;
+
+            return timeTaken;
+        }else
+            System.out.println("Job is not complete yet");
+            return -1;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+
+
+    public void addTasks(Task t) {
+        this.tasks.add(t);
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
-    }
-
-    public void setTimeTaken(int timeTaken) {
-        this.timeTaken = timeTaken;
-    }
-
-    public void setCompletedBy(User completedBy) {
-        this.completedBy = completedBy;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public boolean addTask(Task t){
-        tasks.add(t);
-        return true;
-    }
-    public void removeTask(Task t){
+    public void removeTask(int taskId){
         ListIterator<Task> tasksList = tasks.listIterator();
         while( tasksList.hasNext()){
-            if (tasksList.next() == t){
+            if (tasksList.next().getTaskId() == taskId){
                 tasksList.remove();
             }
-
         }
+    }
 
+    public void updateTask(int taskId,boolean dayShift, int staffId) {
+        ListIterator<Task> tasksList = tasks.listIterator();
+        while (tasksList.hasNext()) {
+            if (tasksList.next().getTaskId() == taskId) {
+                if(tasksList.next().getStatus() == "In Progress")
+                tasksList.next().completeTask();
+                else if (tasksList.next().getStatus() == "Ready to process") {
+                    tasksList.next().startTask(dayShift, staffId);
+
+                }
+
+            }
+        }
     }
-    public boolean updateTask(Task t){
-        return true;
-    }
+
     public Task retrieveTask(int taskID) {
         ListIterator<Task> tasksList = tasks.listIterator();
         while (tasksList.hasNext()) {
@@ -91,17 +124,29 @@ public class Job {
             }
         } return null;
     }
-    public boolean setCurrentOperation(int taskId){
-        return true;
-    }
-    public String inspectTask(int taskId){
+
+    public Task setCurrentOperation() {
+        ListIterator<Task> tasksList = tasks.listIterator();
+        while (tasksList.hasNext()) {
+            if (!tasksList.next().checkIfComplete()) {
+                return tasksList.next();
+            }
+        }
+        System.out.println("All jobs are complete!");
         return null;
     }
 
-    public int setJobId() {
-        JobId = count++;
-        return JobId;
+    public String inspectTask(int taskId){
+        ListIterator<Task> tasksList = tasks.listIterator();
+        while (tasksList.hasNext()) {
+            if (tasksList.next().getTaskId() == taskId) {
+                return tasksList.next().getStatus();
+            }
+        }
+        System.out.println("Task not available!");
+        return null;
     }
+
 
 //    public Timestamp operationDeadline(){
 //
@@ -109,19 +154,12 @@ public class Job {
     public String retrieveJobStatus(){
         return status;
     }
-    public String updateStatus(String message){
-        status = message;
-        return status;
-    }
-    public boolean changePriority(int priority){
-        this.priority = priority;
-        return true;
-    }
+
     public double calculatePrice(){
         ListIterator<Task> tasksList = tasks.listIterator();
         while (tasksList.hasNext()) {
             price += tasksList.next().getPrice();
-
+     //TODO: Set price for valuable customers.
             }return price;
 
 
@@ -134,24 +172,15 @@ public class Job {
         return priority;
     }
 
-    public Timestamp getDeadline() {
-        return deadline;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
     public Timestamp getStartTime() {
         return startTime;
     }
 
     public double getTimeTaken() {
         return timeTaken;
+    }
+    public void setCompletedBy(User completedBy) {
+        this.completedBy = completedBy;
     }
 
     public User getCompletedBy() {
@@ -160,5 +189,27 @@ public class Job {
 
     public List<Task> getTasks() {
         return tasks;
+    }
+
+
+
+    public Timestamp getCompleteTime() {
+        return completeTime;
+    }
+
+    public boolean isJobComplete() {
+        return isJobComplete;
+    }
+
+    public void setJobComplete(boolean jobComplete) {
+        isJobComplete = jobComplete;
+    }
+
+    public String getSpecialInstructions() {
+        return specialInstructions;
+    }
+
+    public void setSpecialInstructions(String specialInstructions) {
+        this.specialInstructions = specialInstructions;
     }
 }

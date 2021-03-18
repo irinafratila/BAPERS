@@ -1,20 +1,57 @@
 
 package JobTasks;
 
+import Discount.Discount;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
 public class Task {
+    private static int count;
     private String status;
     private int taskId;
-    private String department;
-    private Date startDate;
+    private Department department;
     private Timestamp startTime;
-    private double timeTaken;
+    private Timestamp completeTime;
+    private long timeTaken;
     private boolean dayShift;
     private double price;
-    private String discountType = "none"; //TODO  this will later be changed to the right discount data type instead of String
+    private boolean isComplete;
+    private boolean isOverdue;
+    private double duration;
+    private int staffId;
 
+    private Discount discountType; //TODO  this will later be changed to the right discount data type instead of String
+
+
+    public Task(Department department, double price) {
+        this.department = department;
+
+        this.status = "Ready to process";
+        this.taskId = count++;
+        this.isComplete=false;
+        this.isOverdue = false;
+
+        //TODO: if statements for discounts and to calculate price.
+        this.price = price;
+    }
+
+    public void startTask(boolean dayShift, int id){
+        this.status = "In Progress";
+        this.startTime = new Timestamp(System.currentTimeMillis());
+        this.dayShift = dayShift;
+        this.staffId = id;
+
+    }
+
+    public void completeTask(){
+        this.isComplete = true;
+        this.status = "Complete";
+        this.timeTaken= ((completeTime.getTime() - startTime.getTime())/1000)/60/60;
+        if (timeTaken > duration){
+            this.isOverdue = true;
+        }
+    }
     public double getPrice() {
         return price;
     }
@@ -31,13 +68,10 @@ public class Task {
         return department;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public Timestamp getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
+
 
     public double getTimeTaken() {
         return timeTaken;
@@ -51,37 +85,14 @@ public class Task {
         this.status = status;
     }
 
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
-    }
 
     public void setDepartment(String department) {
         this.department = department;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public boolean checkIfComplete(){
+        return isComplete;
     }
 
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
-    }
 
-    public void setTimeTaken(double timeTaken) {
-        this.timeTaken = timeTaken;
-    }
-
-    public void setDayShift(boolean dayShift) {
-        this.dayShift = dayShift;
-    }
-    public void start(){}
-    public void complete(){}
-
-    public Task(String status, int taskId, String department, boolean dayShift) {
-        this.status = status;
-        this.taskId = taskId;
-        this.department = department;
-        this.dayShift = dayShift;
-    }
 }
-

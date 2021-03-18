@@ -4,13 +4,14 @@ package JobTasks;
 
 import Discount.*;
 
+import java.util.List;
+
 public class ValuedCustomer extends CustomerAccount{
     private Discount discountPlan;
 
-    public ValuedCustomer(String name, String phoneNumber, String email) {
-        super(name, phoneNumber, email);
-
-
+    public ValuedCustomer(String title, String firstName, String lastName, String address, String postcode, String city, String phoneNumber, String email,Discount d) {
+        super(title, firstName, lastName, address, postcode, city, phoneNumber, email);
+        discountPlan =d;
     }
 
     public void applyFixedDiscount(){

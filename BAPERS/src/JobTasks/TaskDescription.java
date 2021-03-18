@@ -2,24 +2,25 @@
 package JobTasks;
 
 public class TaskDescription {
-    private int TaskID;
+    private static int count;
+    private int taskID;
     private String location;
     private String description;
     private int duration;
 
     public TaskDescription(int taskID, String location, String description, int duration) {
-        TaskID = taskID;
+        this.taskID = taskID;
         this.location = location;
         this.description = description;
         this.duration = duration;
     }
 
     protected int getTaskID() {
-        return TaskID;
+        return taskID;
     }
 
     protected void setTaskID(int taskID) {
-        TaskID = taskID;
+        this.taskID = taskID;
     }
 
     protected String getLocation() {
@@ -30,11 +31,11 @@ public class TaskDescription {
         this.location = location;
     }
 
-    protected String getDescriptin() {
+    protected String getDescription() {
         return description;
     }
 
-    protected void setDescriptin(String description) {
+    protected void setDescription(String description) {
         this.description = description;
     }
 
