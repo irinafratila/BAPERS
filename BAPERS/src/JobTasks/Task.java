@@ -64,7 +64,7 @@ public class Task {
         return taskId;
     }
 
-    public String getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 
@@ -86,7 +86,7 @@ public class Task {
     }
 
 
-    public void setDepartment(String department) {
+    public void setDepartment(Department department) {
         this.department = department;
     }
 

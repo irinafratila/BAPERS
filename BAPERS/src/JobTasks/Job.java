@@ -4,6 +4,7 @@ import Admin.User;
 
 import java.sql.Timestamp;
 import java.time.temporal.ChronoUnit;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -34,6 +35,7 @@ public class Job {
         startTime = new Timestamp(System.currentTimeMillis());
         this.deadline = setDeadline();
         this.status = "in progress";
+        tasks = new LinkedList<>();
         this.price = calculatePrice();
         this.isJobComplete = false;
     }
