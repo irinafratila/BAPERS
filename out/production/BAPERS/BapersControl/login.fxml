@@ -10,41 +10,41 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0" style="-fx-background-color: #000000#000000;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BAPERS.BapersControl.Login">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="769.0" prefWidth="1000.0" style="-fx-background-color: #000000#000000;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BapersControl.Login">
     <left>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="769.0" prefWidth="349.0" BorderPane.alignment="CENTER">
             <children>
-                <ImageView fx:id="brandingImageView" fitHeight="150.0" fitWidth="484.0" layoutX="15.0" layoutY="116.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="brandingImageView" fitHeight="252.0" fitWidth="290.0" layoutX="34.0" layoutY="232.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../img/logo.png" />
+                        <Image url="@../img/logo.png" />
                     </image>
                 </ImageView>
             </children>
         </AnchorPane>
     </left>
     <right>
-        <AnchorPane prefHeight="400.0" prefWidth="347.0" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="769.0" prefWidth="550.0" BorderPane.alignment="CENTER">
             <children>
-                <ImageView fx:id="lockImageView" fitHeight="52.0" fitWidth="40.0" layoutX="154.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="lockImageView" fitHeight="52.0" fitWidth="40.0" layoutX="253.0" layoutY="126.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../img/lock.png" />
+                        <Image url="@../img/lock.png" />
                     </image>
                 </ImageView>
-                <Label layoutX="22.0" layoutY="127.0" text="Username" textFill="#ffc900">
+                <Label layoutX="33.0" layoutY="284.0" text="Username" textFill="#ffc900">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
                 </Label>
-                <Label layoutX="23.0" layoutY="189.0" text="Password" textFill="#ffc900">
+                <Label layoutX="36.0" layoutY="357.0" text="Password" textFill="#ffc900">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
                 </Label>
-                <TextField fx:id="username" layoutX="135.0" layoutY="126.0" promptText="username" />
-                <PasswordField fx:id="password" layoutX="134.0" layoutY="187.0" promptText="password" />
-                <Button fx:id="loginButton" layoutX="78.0" layoutY="269.0" mnemonicParsing="false" onAction="#userLogin" prefHeight="41.0" prefWidth="169.0" style="-fx-background-color: #ffc900;" text="Login" />
+                <TextField fx:id="username" layoutX="172.0" layoutY="272.0" prefHeight="41.0" prefWidth="266.0" promptText="username" />
+                <PasswordField fx:id="password" layoutX="178.0" layoutY="344.0" prefHeight="44.0" prefWidth="261.0" promptText="password" />
+                <Button fx:id="loginButton" layoutX="175.0" layoutY="499.0" mnemonicParsing="false" onAction="#userLogin" prefHeight="41.0" prefWidth="169.0" style="-fx-background-color: #ffc900;" text="Login" />
                 <Label fx:id="loginMessageLabel" layoutX="86.0" layoutY="241.0" prefHeight="17.0" prefWidth="130.0" textFill="RED" />
-                <Button fx:id="cancelButton" layoutX="76.0" layoutY="329.0" mnemonicParsing="false" onAction="#cancelLogin" prefHeight="41.0" prefWidth="174.0" style="-fx-background-color: #ffc900;" text="Cancel" />
+                <Button fx:id="cancelButton" layoutX="173.0" layoutY="563.0" mnemonicParsing="false" onAction="#cancelLogin" prefHeight="41.0" prefWidth="174.0" style="-fx-background-color: #ffc900;" text="Cancel" />
             </children>
         </AnchorPane>
     </right>
