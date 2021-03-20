@@ -20,9 +20,9 @@ public interface I_JobTasks {
     public void addListOfTasks();
     public void removeListOfTasks();
     public Task getTask(int taskId);
-    public void addTaskDescription();
-    public void removeTaskSDescription();
-    public TaskDescription getTaskDescription(int taskId);
+
+
+
 
 
 

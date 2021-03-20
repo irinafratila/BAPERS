@@ -88,18 +88,4 @@ public class JobTasks_Impl implements I_JobTasks {
         return null;
     }
 
-    @Override
-    public void addTaskDescription() {
-
-    }
-
-    @Override
-    public void removeTaskSDescription() {
-
-    }
-
-    @Override
-    public TaskDescription getTaskDescription(int taskId) {
-        return null;
-    }
 }

@@ -10,5 +10,6 @@ module BAPERS {
     //requires kotlin.stdlib;
     // opens bapers control as that is the main/ start of all use cases
     opens BapersControl;
+    opens JobTasks;
 
 }

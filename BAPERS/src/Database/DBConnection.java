@@ -8,14 +8,15 @@ import java.sql.*;
 
 // this class is to connect to the databse
 public class DBConnection {
-    public Connection conn;
-    String url = "jdbc:mysql://localhost:3306/BAPERS";
-    String user = "root";
-    String password = "helloworld12";
+    private Connection conn;
+    public static final String DB_NAME = "BAPERS";
+    private static final String url = "jdbc:mysql://localhost:3306/"+DB_NAME;
+    private static final String user = "root";
+    private static final String password = "helloworld12";
 
     public Connection getConnection(){
         try {
-            Connection conn = DriverManager.getConnection(url,user, password);
+            conn = DriverManager.getConnection(url,user, password);
 
 
         }catch (Exception e){

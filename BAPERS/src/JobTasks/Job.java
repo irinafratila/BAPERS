@@ -21,25 +21,26 @@ public class Job {
     private float timeTaken;
     private User completedBy;
     private List<Task> tasks;
-    private  double price;
+    private double price;
     private int jobId;
     private boolean isJobComplete;
     private String specialInstructions;
     private Timestamp completeTime;
 
-
-    public Job(int priority, String specialInstructions) {
+    // Constructor for the Job class.
+    public Job(int priority, String specialInstructions, List<Task> tasks) {
         this.priority = priority;
         this.specialInstructions = specialInstructions;
         this.jobId = count++;
         startTime = new Timestamp(System.currentTimeMillis());
         this.deadline = setDeadline();
-        this.status = "in progress";
-        tasks = new LinkedList<>();
+        this.status = "In progress";
+        this.tasks = tasks;
         this.price = calculatePrice();
         this.isJobComplete = false;
     }
-    // calculate the deadline based on the priority of the job. 5 as highest priority.
+
+    // Calculate the deadline based on the priority of the job. 5 as highest priority.
     public Timestamp setDeadline() {
         if(priority ==5){
             deadline = Timestamp.from(startTime.toInstant().plus(1, ChronoUnit.HOURS));
@@ -59,37 +60,65 @@ public class Job {
         return deadline;
     }
 
-
-    public int getJobId() {
-        return jobId;
-    }
-    //If the priority of hte job changes.
+    //If the priority of the job changes.
     public void setPriority(int priority) {
         this.priority = priority;
         deadline = setDeadline();
     }
 
-    public void completeJob() {
-        this.completeTime = new Timestamp(System.currentTimeMillis());
-        this.isJobComplete = true;
-        this.status = "Job Complete";
+    // Check to see if all jobs are complete.
+    public boolean completeJobCheck() {
+        ListIterator<Task> check = tasks.listIterator();
+        while (check.hasNext()) {
+            if (!check.next().isComplete()) {
+                System.out.println("Task \"" + check.next().getDescription() + "\" is not complete!");
+                return false;
+            }
+
+        }return true;
+    }
+
+    //Complete the job.
+    public void completeJob(User user){
+        if(completeJobCheck()) {
+            this.completeTime = new Timestamp(System.currentTimeMillis());
+            this.isJobComplete = true;
+            this.status = "Job Complete";
+            this.completedBy = user;
+            this.timeTaken = setTimeTaken();
+        }
+        else{
+            System.out.println("Job cannot be completed!");
+        }
 
        // TODO: add completed by.
 
     }
     // returns duration in hours.
     public float setTimeTaken() {
-        if(isJobComplete) {
-             timeTaken = ((completeTime.getTime() - startTime.getTime())/1000)/60/60;
 
-            return timeTaken;
-        }else
-            System.out.println("Job is not complete yet");
-            return -1;
+        timeTaken = ((completeTime.getTime() - startTime.getTime())/1000)/60/60;
+        return timeTaken;
+
+    }
+
+    //Sets the current task in operation.
+    public boolean setCurrentOperation(boolean dayOrNight, int id) {
+        ListIterator<Task> tasksList = tasks.listIterator();
+        while (tasksList.hasNext()) {
+            if (!tasksList.next().isComplete()) {
+                tasksList.next().startTask(dayOrNight,id);
+                return true;
+            }
+        }
+        System.out.println("All jobs are complete!");
+        return false;
+
     }
 
 
 
+    // Manage tasks
     public void addTasks(Task t) {
         this.tasks.add(t);
     }
@@ -102,22 +131,6 @@ public class Job {
             }
         }
     }
-
-    public void updateTask(int taskId,boolean dayShift, int staffId) {
-        ListIterator<Task> tasksList = tasks.listIterator();
-        while (tasksList.hasNext()) {
-            if (tasksList.next().getTaskId() == taskId) {
-                if(tasksList.next().getStatus() == "In Progress")
-                tasksList.next().completeTask();
-                else if (tasksList.next().getStatus() == "Ready to process") {
-                    tasksList.next().startTask(dayShift, staffId);
-
-                }
-
-            }
-        }
-    }
-
     public Task retrieveTask(int taskID) {
         ListIterator<Task> tasksList = tasks.listIterator();
         while (tasksList.hasNext()) {
@@ -126,18 +139,6 @@ public class Job {
             }
         } return null;
     }
-
-    public Task setCurrentOperation() {
-        ListIterator<Task> tasksList = tasks.listIterator();
-        while (tasksList.hasNext()) {
-            if (!tasksList.next().checkIfComplete()) {
-                return tasksList.next();
-            }
-        }
-        System.out.println("All jobs are complete!");
-        return null;
-    }
-
     public String inspectTask(int taskId){
         ListIterator<Task> tasksList = tasks.listIterator();
         while (tasksList.hasNext()) {
@@ -148,14 +149,29 @@ public class Job {
         System.out.println("Task not available!");
         return null;
     }
+    public void updateTask(int taskId,boolean dayShift, int staffId) {
+        ListIterator<Task> tasksList = tasks.listIterator();
+        while (tasksList.hasNext()) {
+            if (tasksList.next().getTaskId() == taskId) {
+                if(tasksList.next().getStatus().equals("In Progress") )
+                    tasksList.next().completeTask();
+                else if (tasksList.next().getStatus().equals("Ready to process")) {
+                    tasksList.next().startTask(dayShift, staffId);
+
+                }
+
+            }
+        }
+    }
+
+
+
 
 
 //    public Timestamp operationDeadline(){
 //
 //    }
-    public String retrieveJobStatus(){
-        return status;
-    }
+
 
     public double calculatePrice(){
         ListIterator<Task> tasksList = tasks.listIterator();
@@ -166,23 +182,73 @@ public class Job {
 
 
     }
-    public double getPrice(){
-        return price;
+
+
+    //Getters and Setters
+
+
+    public void setDeadline(Timestamp deadline) {
+        this.deadline = deadline;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setTimeTaken(float timeTaken) {
+        this.timeTaken = timeTaken;
+    }
+
+    public void setCompletedBy(User completedBy) {
+        this.completedBy = completedBy;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setJobId(int jobId) {
+        this.jobId = jobId;
+    }
+
+    public void setJobComplete(boolean jobComplete) {
+        isJobComplete = jobComplete;
+    }
+
+    public void setSpecialInstructions(String specialInstructions) {
+        this.specialInstructions = specialInstructions;
+    }
+
+    public void setCompleteTime(Timestamp completeTime) {
+        this.completeTime = completeTime;
     }
 
     public int getPriority() {
         return priority;
     }
 
+    public Timestamp getDeadline() {
+        return deadline;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
     public Timestamp getStartTime() {
         return startTime;
     }
 
-    public double getTimeTaken() {
+    public float getTimeTaken() {
         return timeTaken;
-    }
-    public void setCompletedBy(User completedBy) {
-        this.completedBy = completedBy;
     }
 
     public User getCompletedBy() {
@@ -193,25 +259,23 @@ public class Job {
         return tasks;
     }
 
+    public double getPrice() {
+        return price;
+    }
 
-
-    public Timestamp getCompleteTime() {
-        return completeTime;
+    public int getJobId() {
+        return jobId;
     }
 
     public boolean isJobComplete() {
         return isJobComplete;
     }
 
-    public void setJobComplete(boolean jobComplete) {
-        isJobComplete = jobComplete;
-    }
-
     public String getSpecialInstructions() {
         return specialInstructions;
     }
 
-    public void setSpecialInstructions(String specialInstructions) {
-        this.specialInstructions = specialInstructions;
+    public Timestamp getCompleteTime() {
+        return completeTime;
     }
 }
