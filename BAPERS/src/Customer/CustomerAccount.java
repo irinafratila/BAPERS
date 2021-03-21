@@ -16,6 +16,7 @@ import java.util.Scanner;
 public class CustomerAccount {
     private static int count;
     private int customerId;
+    private String customer_name;
     private String title;
     private String firstName;
     private String lastName;
@@ -39,7 +40,8 @@ public class CustomerAccount {
         this.jobs = jobs;
     }
 
-    public CustomerAccount(String title, String firstName, String lastName, String address, String postcode, String city, String phoneNumber, String email, Boolean v, Discount d) {
+    public CustomerAccount(int id,String customerName, String title, String firstName, String lastName, String address, String postcode, String city, String phoneNumber, String email, Boolean v) {
+        this.customer_name = customerName;
         this.title = title;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -49,9 +51,9 @@ public class CustomerAccount {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.jobs = null;
-        this.customerId = count++;
+        this.customerId = id;
         this.isValuable = v;
-        this.discountPlan =d;
+//        this.discountPlan =d;
         this.jobs = new LinkedList<>();
     }
 
@@ -111,7 +113,97 @@ public class CustomerAccount {
     }
     public void downgradeCustomer(){}
 
+    public int getCustomerId() {
+        return customerId;
+    }
 
+    public String getCustomer_name() {
+        return customer_name;
+    }
+
+    public void setCustomer_name(String customer_name) {
+        this.customer_name = customer_name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Boolean getValuable() {
+        return isValuable;
+    }
+
+    public void setValuable(Boolean valuable) {
+        isValuable = valuable;
+    }
+
+//    public Discount.Discount getDiscountPlan() {
+//        return discountPlan;
+//    }
+//
+//    public void setDiscountPlan(Discount.Discount discountPlan) {
+//        this.discountPlan = discountPlan;
+//    }
 }
 
 

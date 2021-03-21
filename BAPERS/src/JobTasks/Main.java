@@ -2,6 +2,7 @@ package JobTasks;
 
 import Admin.User;
 import Customer.CustomerAccount;
+import Database.DbDriver;
 import Discount.FixedDiscount;
 
 import java.util.LinkedList;
@@ -9,39 +10,15 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        User user = new User();
-        List<Task> list = new LinkedList<>();
-        list.add(new Task(Department.CopyRoom, "Print work", 19.5));
-        list.add(new Task(Department.CopyRoom, "Print work", 19.5));
-        list.add(new Task(Department.CopyRoom, "Print work", 19.5));
-        list.add(new Task(Department.CopyRoom, "Print work", 19.5));
-        list.add(new Task(Department.CopyRoom, "Print work", 19.5));
-        list.add(new Task(Department.CopyRoom, "Print work", 19.5));
-        list.add(new Task(Department.CopyRoom, "Print work", 19.5));
-        Job job = new Job(5, "nothing", list);
-        Job job1 = new Job(5, "nothing", list);
-        Job job2 = new Job(5, "nothing", list);
-
-        CustomerAccount Bill = new CustomerAccount("Mr","Bill","ALlen","224asf","e153re","London","0488458409284","bill@email.com",true,new FixedDiscount());
-        Bill.createJob(job);
-        Bill.createJob(job1);
-        Bill.createJob(job2);
-
-      for (int i = 0; i< Bill.getJobs().size();i++){
-          System.out.println(Bill.getJobs().get(i).getJobId());
-          System.out.println(Bill.getJobs().get(i).getStartTime());
-      }
-
-        System.out.println(job.getPrice());
-        for (int i =0; i<list.size();i++){
-            job.getTasks().get(i).startTask(true,5);
-            job.getTasks().get(i).completeTask();
+        DbDriver db = new DbDriver();
+        List<CustomerAccount> customers = db.queryCustomers();
+        if(customers == null){
+            System.out.println("No customers");
+            return;
         }
-//        job.completeJob(user);
-//        System.out.println(job.getStartTime());
-//        System.out.println(job.getDeadline());
-//        System.out.println(job.getTimeTaken());
-
+        for(CustomerAccount c: customers){
+            System.out.println(c.getCustomer_name());
+        }
     }
 }
 //j
