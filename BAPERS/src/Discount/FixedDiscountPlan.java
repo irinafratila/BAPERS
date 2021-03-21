@@ -11,7 +11,9 @@ public class FixedDiscountPlan extends Discount{
     }
 
     public double calculatePrice() {
-        return price * (discountRate / 100);
+        double discountAmount = price * (discountRate/100);
+        double afterDiscount = price - discountAmount;
+        return afterDiscount;
     }
 
     protected String getSetUpDate() {

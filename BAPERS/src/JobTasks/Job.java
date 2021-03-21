@@ -21,7 +21,7 @@ public class Job {
     private float timeTaken;
     private User completedBy;
     private List<Task> tasks;
-    private double price;
+    private float price;
     private int jobId;
     private boolean isJobComplete;
     private String specialInstructions;
@@ -173,7 +173,7 @@ public class Job {
 //    }
 
 
-    public double calculatePrice(){
+    public float calculatePrice(){
         ListIterator<Task> tasksList = tasks.listIterator();
         while (tasksList.hasNext()) {
             price += tasksList.next().getPrice();
@@ -211,7 +211,7 @@ public class Job {
         this.tasks = tasks;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
@@ -259,7 +259,7 @@ public class Job {
         return tasks;
     }
 
-    public double getPrice() {
+    public float getPrice() {
         return price;
     }
 

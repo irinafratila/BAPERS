@@ -16,7 +16,7 @@ public class Task {
     private int taskId;
     private String description;
     private String status;
-    private Department department;
+    private int department;
     private Timestamp startTime;
     private Timestamp completeTime;
     private long timeTaken;
@@ -29,13 +29,15 @@ public class Task {
     private Discount discountType; //TODO  this will later be changed to the right discount data type instead of String
 
 
-    public Task(Department department,String description, double price) {
-        this.department = department;
+    public Task(int id, String description,int d,float price, int duration) {
+        this.department = d;
         this.description = description;
         this.status = "Ready to process";
-        this.taskId = count++;
+        this.taskId = id;
         this.isComplete=false;
         this.isOverdue = false;
+        this.price = price;
+        this.duration = duration;
 
         //TODO: if statements for discounts and to calculate price.
         this.price = price;
@@ -85,11 +87,11 @@ public class Task {
         this.status = status;
     }
 
-    public Department getDepartment() {
+    public int getDepartment() {
         return department;
     }
 
-    public void setDepartment(Department department) {
+    public void setDepartment(int department) {
         this.department = department;
     }
 

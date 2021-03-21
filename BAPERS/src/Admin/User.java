@@ -22,6 +22,8 @@ import java.sql.*;
 import java.util.ResourceBundle;
 import java.net.URL;
 
+import Database.DbDriver;
+
 public class User {
 
     public User(){
@@ -172,8 +174,8 @@ public class User {
         String userName = username.getText();
         String password = password1.getText();
         String role = this.selection;
-        String insertField= "INSERT INTO STAFF_ACCOUNT(StaffName,UserName,Password,StaffRole) VALUES(' ";
-        String insertValue= fullname + "','" + userName + "','" + password + "','" + role + "')";
+        String insertField= "INSERT INTO" + DbDriver.TABLE_STAFF_ACCOUNT + " ( " +DbDriver.COLUMN_STAFF_NAME + ',' + DbDriver.COLUMN_USER_NAME + ',' + DbDriver.COLUMN_PASSWORD +',' + DbDriver.COLUMN_STAFF_ROLE + ") VALUES(";
+        String insertValue= fullname + "','" + userName + "','" + password + "','" + role + ")";
         String inserttoDB = insertField + insertValue;
 
         try {

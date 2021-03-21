@@ -2,9 +2,9 @@
 package Customer;
 
 import Discount.Discount;
-import Discount.FixedDiscount;
-import Discount.FlexiDiscount;
-import Discount.VariableDiscount;
+import Discount.FixedDiscountPlan;
+import Discount.FlexibleDiscountPlan;
+import Discount.VariableDiscountPlan;
 import JobTasks.Job;
 import JobTasks.Task;
 
@@ -27,7 +27,7 @@ public class CustomerAccount {
     private String email;
     private List<Job> jobs;
     private Boolean isValuable;
-    private Discount discountPlan;
+    private int discountId;
 
     //experimenting adding tasks with the help of task ids.
 //    Scanner sc = new Scanner(System.in);
@@ -40,7 +40,7 @@ public class CustomerAccount {
         this.jobs = jobs;
     }
 
-    public CustomerAccount(int id,String customerName, String title, String firstName, String lastName, String address, String postcode, String city, String phoneNumber, String email, Boolean v) {
+    public CustomerAccount(int id,String customerName, String title, String firstName, String lastName, String address, String postcode, String city, String phoneNumber, String email, Boolean v, int discountId) {
         this.customer_name = customerName;
         this.title = title;
         this.firstName = firstName;
@@ -53,7 +53,7 @@ public class CustomerAccount {
         this.jobs = null;
         this.customerId = id;
         this.isValuable = v;
-//        this.discountPlan =d;
+        this.discountId =discountId;
         this.jobs = new LinkedList<>();
     }
 
@@ -96,22 +96,22 @@ public class CustomerAccount {
         return jobs;
     }
 
-    public void upgradeCustomer( Discount d) {
+    public void upgradeCustomer( int d) {
        this.isValuable = true;
-       this.discountPlan = d;
+       this.discountId = d;
 
     }
 
-    public void applyFixedDiscount(){
-        discountPlan = new FixedDiscount();
-    }
-    public void applyVariableDiscount(){
-        discountPlan = new VariableDiscount();
-    }
-    public void applyFlexiDiscount(){
-        discountPlan = new FlexiDiscount();
-    }
-    public void downgradeCustomer(){}
+//    public void applyFixedDiscount(){
+//        discountPlan = new FixedDiscountPlan();
+//    }
+//    public void applyVariableDiscount(){
+//        discountPlan = new VariableDiscountPlan();
+//    }
+//    public void applyFlexiDiscount(){
+//        discountPlan = new FlexibleDiscountPlan();
+//    }
+//    public void downgradeCustomer(){}
 
     public int getCustomerId() {
         return customerId;
@@ -197,13 +197,13 @@ public class CustomerAccount {
         isValuable = valuable;
     }
 
-//    public Discount.Discount getDiscountPlan() {
-//        return discountPlan;
-//    }
-//
-//    public void setDiscountPlan(Discount.Discount discountPlan) {
-//        this.discountPlan = discountPlan;
-//    }
+    public int getDiscountId() {
+        return discountId;
+    }
+
+    public void setDiscountId(int discountId) {
+        this.discountId = discountId;
+    }
 }
 
 
