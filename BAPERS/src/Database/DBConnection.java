@@ -8,7 +8,7 @@ import java.sql.*;
 
 // this class is to connect to the databse
 public class DBConnection {
-    private Connection conn;
+    private static Connection conn;
     public static final String DB_NAME = "BAPERS";
     private static final String url = "jdbc:mysql://localhost:3306/"+DB_NAME;
     private static final String user = "root";

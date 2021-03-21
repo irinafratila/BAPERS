@@ -3,6 +3,7 @@ package JobTasks;
 import Customer.CustomerAccount;
 import Database.DbDriver;
 
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,21 +13,19 @@ public class Main {
 
     public static void main(String[] args) {
 
-
         Scanner sc = new Scanner(System.in);
         System.out.println("Customer id");
-        int searchedCustomer = sc.nextInt();
-        CustomerAccount searched = searchCustomer(searchedCustomer);
+        int searchedId = sc.nextInt();
+        CustomerAccount searchedCustomer = searchCustomer(searchedId);
         List<Integer> taskIds = new LinkedList<>();
         System.out.println("Please type the id of tasks you want");
         while (true) {
             int inputValue = sc.nextInt();
-            if (inputValue >-1) {
+            if (inputValue > -1) {
                 taskIds.add(inputValue);
-            }
-            else break;
-            }
-        for(int i: taskIds){
+            } else break;
+        }
+        for (int i : taskIds) {
             System.out.println(i);
         }
 
@@ -39,15 +38,24 @@ public class Main {
 
         System.out.println("What is the priority?");
         int priority = sc.nextInt();
+        sc.nextLine();
         System.out.println("Any special instructions?");
-        String instructions = sc.nextLine();
-
-        Job job = new Job(priority, instructions, newTasks);
 
 
-        searched.createJob(job);
+        String specialInstructions = sc.nextLine();
+
+        sc.close();
+
+        Job job = new Job(priority, specialInstructions, newTasks);
+
+
+        searchedCustomer.createJob(1, job);
+
+        for (int i = 0; i < searchedCustomer.getJobs().size(); i++) {
+            int time = searchedCustomer.getCustomerId();
+            System.out.println(time);
+        }
     }
-
 
 
 
@@ -76,7 +84,6 @@ public class Main {
         }return null;
     }
 }
-
 
 
 

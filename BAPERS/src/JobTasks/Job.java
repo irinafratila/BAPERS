@@ -15,9 +15,11 @@ import java.util.ListIterator;
 public class Job {
     private static int count;
     private int priority;
-    private Timestamp deadline;
+    private Timestamp deadlineTimeStamp;
+    private String deadline;
     private String status;
-    private Timestamp startTime;
+    private Timestamp startTimeStamp;
+    private String startTime;
     private float timeTaken;
     private User completedBy;
     private List<Task> tasks;
@@ -25,45 +27,48 @@ public class Job {
     private int jobId;
     private boolean isJobComplete;
     private String specialInstructions;
-    private Timestamp completeTime;
+    private Timestamp completeTimeStamp;
+    private String completeTime;
 
     // Constructor for the Job class.
     public Job(int priority, String specialInstructions, List<Task> tasks) {
         this.priority = priority;
         this.specialInstructions = specialInstructions;
         this.jobId = count++;
-        startTime = new Timestamp(System.currentTimeMillis());
-        this.deadline = setDeadline();
+        startTimeStamp = new Timestamp(System.currentTimeMillis());
+        this.deadlineTimeStamp = setDeadline();
+        this.deadline = deadlineTimeStamp.toString();
         this.status = "In progress";
         this.tasks = tasks;
         this.price = calculatePrice();
         this.isJobComplete = false;
+        this.startTime =startTimeStamp.toString();
     }
 
     // Calculate the deadline based on the priority of the job. 5 as highest priority.
     public Timestamp setDeadline() {
         if(priority ==5){
-            deadline = Timestamp.from(startTime.toInstant().plus(1, ChronoUnit.HOURS));
+            deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(1, ChronoUnit.HOURS));
         }
         else if(priority ==4){
-            deadline = Timestamp.from(startTime.toInstant().plus(2, ChronoUnit.HOURS));
+            deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(2, ChronoUnit.HOURS));
         }
         else if(priority ==3){
-            deadline = Timestamp.from(startTime.toInstant().plus(3, ChronoUnit.HOURS));
+            deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(3, ChronoUnit.HOURS));
         }
         else if(priority ==2){
-            deadline = Timestamp.from(startTime.toInstant().plus(6, ChronoUnit.HOURS));
+            deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(6, ChronoUnit.HOURS));
         }
         else if(priority ==1){
-            deadline = Timestamp.from(startTime.toInstant().plus(24, ChronoUnit.HOURS));
+            deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(24, ChronoUnit.HOURS));
         }
-        return deadline;
+        return deadlineTimeStamp;
     }
 
     //If the priority of the job changes.
     public void setPriority(int priority) {
         this.priority = priority;
-        deadline = setDeadline();
+        deadlineTimeStamp = setDeadline();
     }
 
     // Check to see if all jobs are complete.
@@ -81,7 +86,8 @@ public class Job {
     //Complete the job.
     public void completeJob(User user){
         if(completeJobCheck()) {
-            this.completeTime = new Timestamp(System.currentTimeMillis());
+            this.completeTimeStamp = new Timestamp(System.currentTimeMillis());
+            this.completeTime  =completeTimeStamp.toString();
             this.isJobComplete = true;
             this.status = "Job Complete";
             this.completedBy = user;
@@ -97,7 +103,7 @@ public class Job {
     // returns duration in hours.
     public float setTimeTaken() {
 
-        timeTaken = ((completeTime.getTime() - startTime.getTime())/1000)/60/60;
+        timeTaken = ((completeTimeStamp.getTime() - startTimeStamp.getTime())/1000)/60/60;
         return timeTaken;
 
     }
@@ -187,95 +193,119 @@ public class Job {
     //Getters and Setters
 
 
-    public void setDeadline(Timestamp deadline) {
-        this.deadline = deadline;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
-    }
-
-    public void setTimeTaken(float timeTaken) {
-        this.timeTaken = timeTaken;
-    }
-
-    public void setCompletedBy(User completedBy) {
-        this.completedBy = completedBy;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public void setJobId(int jobId) {
-        this.jobId = jobId;
-    }
-
-    public void setJobComplete(boolean jobComplete) {
-        isJobComplete = jobComplete;
-    }
-
-    public void setSpecialInstructions(String specialInstructions) {
-        this.specialInstructions = specialInstructions;
-    }
-
-    public void setCompleteTime(Timestamp completeTime) {
-        this.completeTime = completeTime;
-    }
-
     public int getPriority() {
         return priority;
     }
 
-    public Timestamp getDeadline() {
+    public Timestamp getDeadlineTimeStamp() {
+        return deadlineTimeStamp;
+    }
+
+    public void setDeadlineTimeStamp(Timestamp deadlineTimeStamp) {
+        this.deadlineTimeStamp = deadlineTimeStamp;
+    }
+
+    public String getDeadline() {
         return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public Timestamp getStartTime() {
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Timestamp getStartTimeStamp() {
+        return startTimeStamp;
+    }
+
+    public void setStartTimeStamp(Timestamp startTimeStamp) {
+        this.startTimeStamp = startTimeStamp;
+    }
+
+    public String getStartTime() {
         return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
     public float getTimeTaken() {
         return timeTaken;
     }
 
+    public void setTimeTaken(float timeTaken) {
+        this.timeTaken = timeTaken;
+    }
+
     public User getCompletedBy() {
         return completedBy;
+    }
+
+    public void setCompletedBy(User completedBy) {
+        this.completedBy = completedBy;
     }
 
     public List<Task> getTasks() {
         return tasks;
     }
 
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
     public float getPrice() {
         return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     public int getJobId() {
         return jobId;
     }
 
+    public void setJobId(int jobId) {
+        this.jobId = jobId;
+    }
+
     public boolean isJobComplete() {
         return isJobComplete;
+    }
+
+    public void setJobComplete(boolean jobComplete) {
+        isJobComplete = jobComplete;
     }
 
     public String getSpecialInstructions() {
         return specialInstructions;
     }
 
-    public Timestamp getCompleteTime() {
+    public void setSpecialInstructions(String specialInstructions) {
+        this.specialInstructions = specialInstructions;
+    }
+
+    public Timestamp getCompleteTimeStamp() {
+        return completeTimeStamp;
+    }
+
+    public void setCompleteTimeStamp(Timestamp completeTimeStamp) {
+        this.completeTimeStamp = completeTimeStamp;
+    }
+
+    public String getCompleteTime() {
         return completeTime;
+    }
+
+    public void setCompleteTime(String completeTime) {
+        this.completeTime = completeTime;
     }
 }

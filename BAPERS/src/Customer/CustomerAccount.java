@@ -1,6 +1,7 @@
 
 package Customer;
 
+import Database.DbDriver;
 import Discount.Discount;
 import Discount.FixedDiscountPlan;
 import Discount.FlexibleDiscountPlan;
@@ -70,8 +71,10 @@ public class CustomerAccount {
         }
     }
 
-        public void createJob(Job job){
-            jobs.add(job);
+        public void createJob(int staffId, Job job){
+            DbDriver.insertJob(getCustomerId(),job.getPriority(),job.getSpecialInstructions(),job.getStartTime(),job.getDeadline(),staffId, job.getPrice());
+
+        jobs.add(job);
         }
 
 
