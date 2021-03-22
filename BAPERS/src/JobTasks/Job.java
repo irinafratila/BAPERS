@@ -1,6 +1,5 @@
 package JobTasks;
 
-import Admin.User;
 
 import java.sql.Timestamp;
 import java.time.temporal.ChronoUnit;
@@ -21,7 +20,7 @@ public class Job {
     private Timestamp startTimeStamp;
     private String startTime;
     private float timeTaken;
-    private User completedBy;
+    private int startedBy;
     private List<Task> tasks;
     private float price;
     private int jobId;
@@ -29,8 +28,29 @@ public class Job {
     private String specialInstructions;
     private Timestamp completeTimeStamp;
     private String completeTime;
+    int customerId;
+    int hours;
+    int completedBy;
 
     // Constructor for the Job class.
+
+    public Job(int jobId, int account,int priority, String specialInstructions,String status,String start,String deadline,String completeTime,int hours,int startedBy, float price, int completedBy) {
+
+        this.customerId = account;
+        this.priority = priority;
+        this.deadline = deadline;
+        this.status = status;
+        this.startTime = start;
+        this.timeTaken = timeTaken;
+        this.startedBy = startedBy;
+        this.hours = hours;
+        this.price = price;
+        this.jobId = jobId;
+        this.specialInstructions = specialInstructions;
+        this.completeTime = completeTime;
+        this.completedBy = completedBy;
+    }
+
     public Job(int priority, String specialInstructions, List<Task> tasks) {
         this.priority = priority;
         this.specialInstructions = specialInstructions;
@@ -84,7 +104,7 @@ public class Job {
     }
 
     //Complete the job.
-    public void completeJob(User user){
+    public void completeJob(int user){
         if(completeJobCheck()) {
             this.completeTimeStamp = new Timestamp(System.currentTimeMillis());
             this.completeTime  =completeTimeStamp.toString();
@@ -121,8 +141,6 @@ public class Job {
         return false;
 
     }
-
-
 
     // Manage tasks
     public void addTasks(Task t) {
@@ -169,9 +187,6 @@ public class Job {
             }
         }
     }
-
-
-
 
 
 //    public Timestamp operationDeadline(){
@@ -245,12 +260,12 @@ public class Job {
         this.timeTaken = timeTaken;
     }
 
-    public User getCompletedBy() {
-        return completedBy;
+    public int getStartedBy() {
+        return startedBy;
     }
 
-    public void setCompletedBy(User completedBy) {
-        this.completedBy = completedBy;
+    public void setStartedBy(int startedBy) {
+        this.startedBy = startedBy;
     }
 
     public List<Task> getTasks() {
@@ -307,5 +322,29 @@ public class Job {
 
     public void setCompleteTime(String completeTime) {
         this.completeTime = completeTime;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public int getCompletedBy() {
+        return completedBy;
+    }
+
+    public void setCompletedBy(int completedBy) {
+        this.completedBy = completedBy;
     }
 }

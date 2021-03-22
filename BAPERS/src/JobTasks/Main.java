@@ -46,15 +46,15 @@ public class Main {
 
         sc.close();
 
-        Job job = new Job(priority, specialInstructions, newTasks);
 
 
-        searchedCustomer.createJob(1, job);
+        searchedCustomer.createJob(1, priority, specialInstructions, newTasks);
 
         for (int i = 0; i < searchedCustomer.getJobs().size(); i++) {
             int time = searchedCustomer.getCustomerId();
             System.out.println(time);
         }
+        searchedCustomer.updateCustomerType(1,"normal");
     }
 
 
@@ -83,9 +83,21 @@ public class Main {
             }
         }return null;
     }
+
+
+    public static Job searchJob(int searchedJob){
+        List<Job> jobs = db.queryJobs();
+        if(jobs == null){
+            System.out.println("No Jobs");
+            return null;
+        }
+        for(Job j: jobs){
+            if (j.getJobId() == searchedJob){
+                return j;
+            }
+        }return null;
+    }
 }
-
-
 
 
 

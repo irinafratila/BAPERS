@@ -70,11 +70,26 @@ public class CustomerAccount {
             }
         }
     }
-
-        public void createJob(int staffId, Job job){
+        //After searching a customer, they are able to create jobs. This will also be stored into the database.
+        public void createJob(int staffId, int priority, String specialInstructions,List<Task> newTasks){
+            Job job = new Job(priority, specialInstructions, newTasks);
             DbDriver.insertJob(getCustomerId(),job.getPriority(),job.getSpecialInstructions(),job.getStartTime(),job.getDeadline(),staffId, job.getPrice());
+            Job searchedJob = searchJob();
+            System.out.println(job.getJobId());
+            for(Task t:job.getTasks())
+            DbDriver.insertTasksAvailableJobs(t.getTaskId(),searchedJob.getJobId(),1);
+            jobs.add(job);
+        }
 
-        jobs.add(job);
+        //Method to insert tasks for the job, as job_id is stored in the database,
+    public static Job searchJob(){
+        List<Job> jobs = DbDriver.queryJobs();
+
+        if(jobs == null){
+            System.out.println("No Jobs");
+            return null;
+        }
+        return jobs.get(jobs.size()-1);
         }
 
 
@@ -99,9 +114,15 @@ public class CustomerAccount {
         return jobs;
     }
 
-    public void upgradeCustomer( int d) {
-       this.isValuable = true;
-       this.discountId = d;
+    public void updateCustomerType( int d, String isValuable) {
+        if (isValuable == "valuable"){
+            this.isValuable = true;
+            this.discountId = d;
+        }else {
+            this.isValuable = false;
+            this.discountId = 0;
+        }
+       DbDriver.updateCustomerType(isValuable,d,getCustomerId());
 
     }
 

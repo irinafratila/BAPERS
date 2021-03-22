@@ -17,8 +17,10 @@ public class Task {
     private String description;
     private String status;
     private int department;
-    private Timestamp startTime;
-    private Timestamp completeTime;
+    private Timestamp startTimeStamp;
+    private String startTime;
+    private Timestamp completeTimeStamp;
+    private String completeTime;
     private long timeTaken;
     private boolean dayShift;
     private double price;
@@ -45,17 +47,20 @@ public class Task {
 
     public void startTask(boolean dayShift, int id){
         this.status = "In Progress";
-        this.startTime = new Timestamp(System.currentTimeMillis());
+        this.startTimeStamp = new Timestamp(System.currentTimeMillis());
+        this.startTime = startTimeStamp.toString();
         this.dayShift = dayShift;
         this.staffId = id;
+        //TODO: Update database with new info.
 
     }
 
     public void completeTask(){
         this.isComplete = true;
         this.status = "Complete";
-        this.completeTime = new Timestamp(System.currentTimeMillis());
-        this.timeTaken= ((completeTime.getTime() - startTime.getTime())/1000)/60/60;
+        this.completeTimeStamp = new Timestamp(System.currentTimeMillis());
+        this.completeTime = completeTimeStamp.toString();
+        this.timeTaken= ((completeTimeStamp.getTime() - startTimeStamp.getTime())/1000)/60/60;
         if (timeTaken > duration){
             this.isOverdue = true;
         }
@@ -96,19 +101,19 @@ public class Task {
     }
 
     public Timestamp getStartTime() {
-        return startTime;
+        return startTimeStamp;
     }
 
     public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
+        this.startTimeStamp = startTime;
     }
 
     public Timestamp getCompleteTime() {
-        return completeTime;
+        return completeTimeStamp;
     }
 
     public void setCompleteTime(Timestamp completeTime) {
-        this.completeTime = completeTime;
+        this.completeTimeStamp = completeTime;
     }
 
     public long getTimeTaken() {
@@ -173,5 +178,13 @@ public class Task {
 
     public void setDiscountType(Discount discountType) {
         this.discountType = discountType;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setCompleteTime(String completeTime) {
+        this.completeTime = completeTime;
     }
 }
