@@ -1,6 +1,7 @@
 package Database;
 
 
+import Admin.User;
 import Customer.CustomerAccount;
 import Discount.Discount;
 import JobTasks.Job;
@@ -68,6 +69,9 @@ public class DbDriver {
     public static final String COLUMN_SPECIAL_INSTRUCTIONS = "SPECIAL_INSTRUCTIONS";
     public static final String COLUMN_JOB_DEADLINE = "DEADLINE";
     public static final String COLUMN_COMPLETE_TIME = "COMPLETE_TIME";
+    public static final String COLUMN_STAFF_ID_START = "STAFF_ID_START";
+    public static final String COLUMN_STAFF_ID_COMPLETE = "STAFF_ID_COMPLETE";
+
     //Create Department table variables.
     public static final String TABLE_DEPARTMENT = "DEPARTMENT";
     public static final String COLUMN_DEPARTMENT_ID = "DEPARTMENT_ID";
@@ -99,7 +103,8 @@ public class DbDriver {
 
         ResultSet results;
         //By putting statement  in the paranthesis, there is no need to close statement at the end.
-        try (Statement statement = conn.getConnection().createStatement();) {
+        try  {
+            Statement statement = conn.getConnection().createStatement();
             // For testing purposes, delete all tables before running code.
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_PAYMENT_HISTORY);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_TASKS_AVAILABLE_JOBS);
@@ -196,19 +201,22 @@ public class DbDriver {
                     COLUMN_JOB_DEADLINE + " varchar(50),\n" +
                     COLUMN_COMPLETE_TIME + " varchar(50),\n" +
                     COLUMN_HOURS_TO_COMPLETE + " int default 0,\n" +
-                    COLUMN_STAFF_ID + " int,\n" +
+                    COLUMN_STAFF_ID_START + " int,\n" +
+                    COLUMN_STAFF_ID_COMPLETE + " int,\n" +
                     COLUMN_TOTAL_PRICE + " float,\n" +
                     "PRIMARY KEY (" + COLUMN_JOB_ID + "),\n" +
                     "FOREIGN KEY(" + COLUMN_ACCOUNT_NUMBER + ") REFERENCES\n" +
                     TABLE_CUSTOMER_ACCOUNT + "(" + COLUMN_ACCOUNT_NUMBER + "),\n" +
-                    "FOREIGN KEY(" + COLUMN_STAFF_ID + ") REFERENCES\n" +
+                    "FOREIGN KEY(" + COLUMN_STAFF_ID_START + ") REFERENCES\n" +
+                    TABLE_STAFF_ACCOUNT + "(" + COLUMN_STAFF_ID + "),\n" +
+                    "FOREIGN KEY(" + COLUMN_STAFF_ID_COMPLETE + ") REFERENCES\n" +
                     TABLE_STAFF_ACCOUNT + "(" + COLUMN_STAFF_ID + ")\n" +
                     ")");
             statement.execute("CREATE TABLE IF NOT EXISTS " + TABLE_TASKS_AVAILABLE_JOBS + " (\n" +
                     COLUMN_JOB_TASK_ID + " int NOT NULL auto_increment,\n" +
                     COLUMN_TASK_ID + " int NOT NULL,\n" +
                     COLUMN_JOB_ID + " int NOT NULL,\n" +
-                    COLUMN_STAFF_ID + " int NOT NULL,\n" +
+                    COLUMN_STAFF_ID + " int default 1 ,\n" +
                     COLUMN_TASK_STATUS + " varchar(255) default 'Ready to process',\n" +
                     COLUMN_TASK_TIME_TAKEN + " float,\n" +
                     COLUMN_TASK_START_TIME + " TIMESTAMP,\n" +
@@ -285,7 +293,7 @@ public class DbDriver {
     }
 
     //Testing sql querys from the database.
-    public List<CustomerAccount> queryCustomers() {
+    public static List<CustomerAccount> queryCustomers() {
 
         try (Statement statement = conn.getConnection().createStatement();
              ResultSet results = statement.executeQuery("SELECT * from " + TABLE_CUSTOMER_ACCOUNT);
@@ -321,8 +329,69 @@ public class DbDriver {
 
 
     }
+    // TODO:Update once admin class is complete.
+//    public List<User> queryUser() {
+//
+//        try (Statement statement = conn.getConnection().createStatement();
+//             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_STAFF_ACCOUNT);
+//        ) {
+//            List<User> users = new LinkedList<>();
+//            while (results.next()) {
+//                int staffId = results.getString(COLUMN_STAFF_ID;
+//                String name = results.getString(COLUMN_STAFF_NAME);
+//                String userName = results.getString(COLUMN_USER_NAME);
+//                String password = results.getString(COLUMN_PASSWORD);
+//                String address = results.getString(COLUMN_STAFF_ADDRESS);
+//                String role = results.getString(COLUMN_STAFF_ROLE);
+//                String phoneNumber = results.getString(COLUMN_STAFF_PHONE_NUMBER);
+//
+//
+//                User staff = new User(staffId,name,userName,password,address,role,phoneNumber);
+//                users.add(staff);
+//            }
+//            return users;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//
+//
+//    }
 
-    public List<Task> queryTasks() {
+    public static List<Job> queryJobs() {
+
+        try (Statement statement = conn.getConnection().createStatement();
+             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_JOBS);
+        ) {
+            List<Job> jobs = new LinkedList<>();
+            while (results.next()) {
+                int jobId = results.getInt(COLUMN_JOB_ID);
+                int accountNumber = results.getInt(COLUMN_ACCOUNT_NUMBER);
+                int priority = results.getInt(COLUMN_PRIORITY);
+                String status = results.getString(COLUMN_CURRENT_STATUS);
+                String instructions = results.getString(COLUMN_SPECIAL_INSTRUCTIONS);
+                String start = results.getString(COLUMN_START_TIME);
+                String deadline = results.getString(COLUMN_JOB_DEADLINE);
+                String completeTine = results.getString(COLUMN_COMPLETE_TIME);
+                int hours = results.getInt(COLUMN_HOURS_TO_COMPLETE);
+                int staffIdStart = results.getInt(COLUMN_STAFF_ID_START);
+                int staffIdComplete = results.getInt(COLUMN_STAFF_ID_COMPLETE);
+                float price = results.getFloat(COLUMN_TOTAL_PRICE);
+
+
+
+                Job job = new Job(jobId,accountNumber,priority,instructions,status,start,deadline,completeTine,hours,staffIdStart,price,staffIdComplete);
+                jobs.add(job);
+            }
+            return jobs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
+    public static List<Task> queryTasks() {
 
         try (Statement statement = conn.getConnection().createStatement();
              ResultSet results = statement.executeQuery("SELECT * from " + TABLE_TASKS_AVAILABLE);
@@ -346,6 +415,7 @@ public class DbDriver {
 
 
     }
+    //Insert into the database.
     public static void insertDiscount(String discount) {
         try (Statement statement = conn.getConnection().createStatement();) {
             StringBuilder sb = new StringBuilder("Insert into ");
@@ -524,7 +594,7 @@ public class DbDriver {
             sb.append(',');
             sb.append(COLUMN_JOB_DEADLINE);
             sb.append(',');
-            sb.append(COLUMN_STAFF_ID);
+            sb.append(COLUMN_STAFF_ID_START);
             sb.append(',');
             sb.append(COLUMN_TOTAL_PRICE);
             sb.append(")");
@@ -579,7 +649,6 @@ public class DbDriver {
             sb.append(", '");
             sb.append(cardType);
             sb.append("', '");
-
             sb.append(expiry);
             sb.append("', ");
             sb.append(lastDigits);
@@ -594,7 +663,7 @@ public class DbDriver {
         }
     }
 
-    public static void insertTasksAvailableJobs(int taskId, int jobId, int staffId, String start, String shift) {
+    public static void insertTasksAvailableJobs(int taskId, int jobId, int staffId) {
         try (Statement statement = conn.getConnection().createStatement();) {
             StringBuilder sb = new StringBuilder("insert into ");
             sb.append(TABLE_TASKS_AVAILABLE_JOBS);
@@ -604,10 +673,6 @@ public class DbDriver {
             sb.append(COLUMN_JOB_ID);
             sb.append(',');
             sb.append(COLUMN_STAFF_ID);
-            sb.append(',');
-            sb.append(COLUMN_TASK_START_TIME);
-            sb.append(',');
-            sb.append(COLUMN_TASK_SHIFT_TIME);
             sb.append(")");
             sb.append("values (");
             sb.append(taskId);
@@ -615,12 +680,7 @@ public class DbDriver {
             sb.append(jobId);
             sb.append(", ");
             sb.append(staffId);
-            sb.append(", '");
-            sb.append(start);
-            sb.append("', '");
-
-            sb.append(shift);
-            sb.append("')");
+            sb.append(")");
             String sb1 = sb.toString();
             statement.execute(sb1);
         } catch (SQLException e) {
@@ -628,5 +688,34 @@ public class DbDriver {
 
         }
     }
+    //TODO: Create inserts for discount types.
+
+    //Update the database when changing the customer type or discount.
+
+    public static void updateCustomerType(String isValuable, int discountId, int cId) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("UPDATE ");
+            sb.append(TABLE_CUSTOMER_ACCOUNT);
+            sb.append(" SET ");
+            sb.append(COLUMN_CUSTOMER_TYPE);
+            sb.append(" = '");
+            sb.append(isValuable);
+            sb.append("', ");
+            sb.append(COLUMN_DISCOUNT_ID);
+            sb.append(" = ");
+            sb.append(discountId);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_ACCOUNT_NUMBER);
+            sb.append(" = ");
+            sb.append(cId);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+
 
 }
