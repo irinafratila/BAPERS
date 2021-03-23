@@ -2,10 +2,9 @@ package JobTasks;
 
 import Customer.CustomerAccount;
 import Database.DbDriver;
-
-import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Scanner;
 
 public class Main {
@@ -47,43 +46,80 @@ public class Main {
         sc.close();
 
         Job job = new Job(priority, specialInstructions, newTasks);
+        job.alert();
 
 
-        searchedCustomer.createJob(1, job);
+        searchedCustomer.createJob(1,priority,specialInstructions,newTasks);
+        searchedCustomer.makePayment(1,6.6f,"card","visa","12/25",1234);
+        searchedCustomer.addTask(1,6);
+        searchedCustomer.removeTask(15);
+//        List<Job> openJobs = searchJob();
+//        for (Job j : openJobs) {
+//            System.out.println(j.getHours());
+//        }
+//        printOpenJobs();
 
-        for (int i = 0; i < searchedCustomer.getJobs().size(); i++) {
-            int time = searchedCustomer.getCustomerId();
-            System.out.println(time);
-        }
     }
 
 
+        //Search and print open jobs.
+        public static List<Job> searchJob () {
+            List<Job> jobs = db.queryJobs();
+            List<Job> openJobs = new LinkedList<>();
+            if (jobs == null) {
+                System.out.println("No Jobs");
+                return null;
+            }
+            ListIterator<Job> list = jobs.listIterator();
+            while(list.hasNext()){
+                if (list.next().getHours() == 0) {
+                    openJobs.add(list.next());
+                    }
+                    return jobs;
+                }
 
-    public static CustomerAccount searchCustomer(int searchedCustomer){
-        List<CustomerAccount> customers = db.queryCustomers();
-        if(customers == null){
-            System.out.println("No customers");
+                return null;
+            }
+            public static void printOpenJobs(){
+                List<Job> open = searchJob();
+                ListIterator<Job> list = open.listIterator();
+                while(list.hasNext()){
+                    System.out.println(list.next().getJobId());
+                    }
+
+
+            }
+
+
+
+        public static CustomerAccount searchCustomer ( int searchedCustomer){
+            List<CustomerAccount> customers = db.queryCustomers();
+            if (customers == null) {
+                System.out.println("No customers");
+                return null;
+            }
+            for (CustomerAccount c : customers) {
+                if (c.getCustomerId() == searchedCustomer) {
+                    return c;
+                }
+            }
             return null;
         }
-        for(CustomerAccount c: customers){
-            if (c.getCustomerId() == searchedCustomer){
-                return c;
+        public static Task searchTask ( int taskId){
+            List<Task> tasks = db.queryTasks();
+            if (tasks == null) {
+                System.out.println("No Tasks available");
+                return null;
             }
-        }return null;
-    }
-    public static Task searchTask(int taskId){
-        List<Task> tasks = db.queryTasks();
-        if(tasks == null){
-            System.out.println("No Tasks available");
+            for (Task t : tasks) {
+                if (t.getTaskId() == taskId) {
+                    return t;
+                }
+            }
             return null;
         }
-        for(Task t: tasks){
-            if (t.getTaskId() == taskId){
-                return t;
-            }
-        }return null;
     }
-}
+
 
 
 

@@ -8,11 +8,18 @@ import Discount.FlexibleDiscountPlan;
 import Discount.VariableDiscountPlan;
 import JobTasks.Job;
 import JobTasks.Task;
+import JobTasks.TasksJobs;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Scanner;
+/**
+ * @author Muhammad Masum Miah
+ */
+
+
+import static JobTasks.Main.searchTask;
 
 public class CustomerAccount {
     private static int count;
@@ -41,7 +48,7 @@ public class CustomerAccount {
         this.jobs = jobs;
     }
 
-    public CustomerAccount(int id,String customerName, String title, String firstName, String lastName, String address, String postcode, String city, String phoneNumber, String email, Boolean v, int discountId) {
+    public CustomerAccount(int id, String customerName, String title, String firstName, String lastName, String address, String postcode, String city, String phoneNumber, String email, Boolean v, int discountId) {
         this.customer_name = customerName;
         this.title = title;
         this.firstName = firstName;
@@ -54,54 +61,109 @@ public class CustomerAccount {
         this.jobs = null;
         this.customerId = id;
         this.isValuable = v;
-        this.discountId =discountId;
+        this.discountId = discountId;
         this.jobs = new LinkedList<>();
     }
 
-    public void makePayment(int jobId, double amount) {
-        ListIterator<Job> jobList = jobs.listIterator();
-        while (jobList.hasNext()) {
-            if (jobList.next().getJobId() == jobId) {
-                if (jobList.next().getPrice() == amount) {
-                    System.out.println("Payment was succesful!");
-                } else if (jobList.next().getPrice() < amount) {
-                    System.out.println("You have overpaid, transaction unsuccessful");
-                } else System.out.println("You have underpaid, please pay the full price.");
-            }
+    //Record payment data into the database, once the right amount is paid.
+    public void makePayment(int jobId, float amount, String cashOrCard, String cardType, String expiry, int lastDigits) {
+        Job searchedJob = searchJob(jobId);
+        if (searchedJob.getPrice() == amount) {
+            System.out.println("Payment was succesful!");
+            DbDriver.insertPaymentHistory(searchedJob.getJobId(), searchedJob.getCustomerId(), cashOrCard, cardType, expiry, lastDigits, amount);
+        } else if (searchedJob.getPrice() < amount) {
+            System.out.println("You have overpaid, transaction unsuccessful");
+        } else System.out.println("You have underpaid, please pay the full price.");
+    }
+    //Method to insert tasks for the job, as job_id is stored in the database,
+    public static Job searchJobCreate() {
+        List<Job> jobs = DbDriver.queryJobs();
+
+        if (jobs == null) {
+            System.out.println("No Jobs");
+            return null;
         }
+        return jobs.get(jobs.size() - 1);
     }
 
-        public void createJob(int staffId, Job job){
-            DbDriver.insertJob(getCustomerId(),job.getPriority(),job.getSpecialInstructions(),job.getStartTime(),job.getDeadline(),staffId, job.getPrice());
+    // method to search the jobs table in the database.
+    public static Job searchJob(int jobId) {
+        List<Job> jobs = DbDriver.queryJobs();
 
+        if (jobs == null) {
+            System.out.println("No Jobs");
+            return null;
+        } else {
+            for (Job j : jobs) {
+                if (j.getJobId() == jobId) {
+                    return j;
+                }
+            }
+            return null;
+        }
+
+    }
+
+
+
+    //After searching a customer, they are able to create jobs. This will also be stored into the database.
+    public void createJob(int staffId, int priority, String specialInstructions, List<Task> newTasks) {
+        Job job = new Job(priority, specialInstructions, newTasks);
+        DbDriver.insertJob(getCustomerId(), job.getPriority(), job.getSpecialInstructions(), job.getStartTime(), job.getDeadline(), staffId, job.getPrice());
+        Job searchedJob = searchJobCreate();
+        System.out.println(job.getJobId());
+        for (Task t : job.getTasks())
+            DbDriver.insertTasksAvailableJobs(t.getTaskId(), searchedJob.getJobId());
         jobs.add(job);
-        }
+    }
+    public void deleteJob(int id) {
+        DbDriver.removeJob(id);
+        DbDriver.removeTasksByJob(id);
+    }
 
 
+    //Search through job tasks from the database.
+    public static TasksJobs searchTasksJobs(int id) {
+        List<TasksJobs> jobs = DbDriver.queryTasksJobs();
 
-        //TODO: check how to add multiple tasks.
-
-
-
-    public void addTask(int jobId, Task t) {
-        ListIterator<Job> jobList = jobs.listIterator();
-        while (jobList.hasNext()) {
-            if (jobList.next().getJobId() == jobId) {
-                jobList.next().addTasks(t);
+        if (jobs == null) {
+            System.out.println("No Tasks in this job");
+            return null;
+        } else {
+            for (TasksJobs j : jobs) {
+                if (j.getJobId() == id) {
+                    return j;
+                }
             }
+            return null;
         }
-    }
-    public List<Task> taskList() {
-        List<Task> tasks = new LinkedList<>();
-        return tasks;
-    }
-    public List<Job> getJobs() {
-        return jobs;
+
     }
 
-    public void upgradeCustomer( int d) {
-       this.isValuable = true;
-       this.discountId = d;
+
+    // Add extra tasks after completing initial order.
+    public void addTask(int jobId, int taskId) {
+        Job searchedJob = searchJob(jobId);
+        Task searchedTask = searchTask(taskId);
+        DbDriver.insertTasksAvailableJobs(searchedTask.getTaskId(), searchedJob.getJobId());
+    }
+    //Remove tasks from the job.
+    public void removeTask(int id) {
+        DbDriver.removeTasks(id);
+    }
+
+
+
+    //Update the customer type to either normal or valuable adjusting the discounts alongside.
+    public void updateCustomerType(int d, String isValuable) {
+        if (isValuable == "valuable") {
+            this.isValuable = true;
+            this.discountId = d;
+        } else {
+            this.isValuable = false;
+            this.discountId = 0;
+        }
+        DbDriver.updateCustomerType(isValuable, d, getCustomerId());
 
     }
 
@@ -114,8 +176,17 @@ public class CustomerAccount {
 //    public void applyFlexiDiscount(){
 //        discountPlan = new FlexibleDiscountPlan();
 //    }
-//    public void downgradeCustomer(){}
 
+    //Getters and Setters
+
+    public List<Task> taskList() {
+        List<Task> tasks = new LinkedList<>();
+        return tasks;
+    }
+
+    public List<Job> getJobs() {
+        return jobs;
+    }
     public int getCustomerId() {
         return customerId;
     }

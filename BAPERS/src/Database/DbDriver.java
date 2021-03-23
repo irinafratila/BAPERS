@@ -6,10 +6,15 @@ import Customer.CustomerAccount;
 import Discount.Discount;
 import JobTasks.Job;
 import JobTasks.Task;
+import JobTasks.TasksJobs;
 
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+
+/**
+ * @author Muhammad Masum Miah
+ */
 
 public class DbDriver {
 
@@ -219,8 +224,8 @@ public class DbDriver {
                     COLUMN_STAFF_ID + " int default 1 ,\n" +
                     COLUMN_TASK_STATUS + " varchar(255) default 'Ready to process',\n" +
                     COLUMN_TASK_TIME_TAKEN + " float,\n" +
-                    COLUMN_TASK_START_TIME + " TIMESTAMP,\n" +
-                    COLUMN_TASK_COMPLETE_TIME + " TIMESTAMP,\n" +
+                    COLUMN_TASK_START_TIME + " varchar(255),\n" +
+                    COLUMN_TASK_COMPLETE_TIME + " varchar(255),\n" +
                     COLUMN_TASK_SHIFT_TIME + " varchar(20),\n" +
                     COLUMN_TASK_IS_COMPLETE + " varchar(20),\n" +
                     COLUMN_TASK_IS_OVERDUE + " varchar(20), \n" +
@@ -372,15 +377,13 @@ public class DbDriver {
                 String instructions = results.getString(COLUMN_SPECIAL_INSTRUCTIONS);
                 String start = results.getString(COLUMN_START_TIME);
                 String deadline = results.getString(COLUMN_JOB_DEADLINE);
-                String completeTine = results.getString(COLUMN_COMPLETE_TIME);
+                String completeTime = results.getString(COLUMN_COMPLETE_TIME);
                 int hours = results.getInt(COLUMN_HOURS_TO_COMPLETE);
                 int staffIdStart = results.getInt(COLUMN_STAFF_ID_START);
                 int staffIdComplete = results.getInt(COLUMN_STAFF_ID_COMPLETE);
                 float price = results.getFloat(COLUMN_TOTAL_PRICE);
 
-
-
-                Job job = new Job(jobId,accountNumber,priority,instructions,status,start,deadline,completeTine,hours,staffIdStart,price,staffIdComplete);
+                Job job = new Job(jobId,accountNumber,priority,instructions,status,start,deadline,completeTime,hours,staffIdStart,price,staffIdComplete);
                 jobs.add(job);
             }
             return jobs;
@@ -405,6 +408,35 @@ public class DbDriver {
                 int duration = results.getInt(COLUMN_TASK_DURATION);
 
                 Task task = new Task(taskId, description, departmentId, taskPrice, duration);
+                tasks.add(task);
+            }
+            return tasks;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
+    public static List<TasksJobs> queryTasksJobs() {
+
+        try (Statement statement = conn.getConnection().createStatement();
+             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_TASKS_AVAILABLE);
+        ) {
+            List<TasksJobs> tasks = new LinkedList<>();
+            while (results.next()) {
+                int jobTaskId = results.getInt(COLUMN_JOB_TASK_ID);
+                int taskId = results.getInt(COLUMN_TASK_ID);
+                int jobId = results.getInt(COLUMN_JOB_ID);
+                int staffId = results.getInt(COLUMN_STAFF_ID);
+                String status = results.getString(COLUMN_TASK_STATUS);
+                int time = results.getInt(COLUMN_TASK_TIME_TAKEN);
+                String startTime = results.getString(COLUMN_TASK_START_TIME);
+                String completeTime = results.getString(COLUMN_TASK_COMPLETE_TIME);
+                String shiftTime = results.getString(COLUMN_TASK_SHIFT_TIME);
+                String isComplete = results.getString(COLUMN_TASK_IS_COMPLETE);
+                String isOverdue= results.getString(COLUMN_TASK_IS_OVERDUE);
+                TasksJobs task = new TasksJobs(jobTaskId,taskId,jobId,staffId,status,time,startTime,completeTime,shiftTime,isComplete,isOverdue);
                 tasks.add(task);
             }
             return tasks;
@@ -646,7 +678,7 @@ public class DbDriver {
             sb.append(customerId);
             sb.append(", '");
             sb.append(cashOrCard);
-            sb.append(", '");
+            sb.append("', '");
             sb.append(cardType);
             sb.append("', '");
             sb.append(expiry);
@@ -663,7 +695,7 @@ public class DbDriver {
         }
     }
 
-    public static void insertTasksAvailableJobs(int taskId, int jobId, int staffId) {
+    public static void insertTasksAvailableJobs(int taskId, int jobId ) {
         try (Statement statement = conn.getConnection().createStatement();) {
             StringBuilder sb = new StringBuilder("insert into ");
             sb.append(TABLE_TASKS_AVAILABLE_JOBS);
@@ -671,15 +703,11 @@ public class DbDriver {
             sb.append(COLUMN_TASK_ID);
             sb.append(',');
             sb.append(COLUMN_JOB_ID);
-            sb.append(',');
-            sb.append(COLUMN_STAFF_ID);
             sb.append(")");
             sb.append("values (");
             sb.append(taskId);
             sb.append(", ");
             sb.append(jobId);
-            sb.append(", ");
-            sb.append(staffId);
             sb.append(")");
             String sb1 = sb.toString();
             statement.execute(sb1);
@@ -708,6 +736,134 @@ public class DbDriver {
             sb.append(COLUMN_ACCOUNT_NUMBER);
             sb.append(" = ");
             sb.append(cId);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+    public static void updateStartTask(String status,String start,String shift, int id) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("UPDATE ");
+            sb.append(TABLE_TASKS_AVAILABLE_JOBS);
+            sb.append(" SET ");
+            sb.append(COLUMN_TASK_STATUS);
+            sb.append(" = '");
+            sb.append(status);
+            sb.append("', ");
+            sb.append(COLUMN_TASK_START_TIME);
+            sb.append(" = '");
+            sb.append(start);
+            sb.append("', ");
+            sb.append(COLUMN_TASK_SHIFT_TIME);
+            sb.append(" = '");
+            sb.append(shift);
+            sb.append("' WHERE ");
+            sb.append(COLUMN_JOB_TASK_ID);
+            sb.append(" = ");
+            sb.append(id);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+    public static void updateCompleteTask(String status,String completeTime, String taskIsComplete,String taskIsOverdue, int timeTaken,int id) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("UPDATE ");
+            sb.append(TABLE_TASKS_AVAILABLE_JOBS);
+            sb.append(" SET ");
+            sb.append(COLUMN_TASK_STATUS);
+            sb.append(" = '");
+            sb.append(status);
+            sb.append("', ");
+            sb.append(COLUMN_TASK_COMPLETE_TIME);
+            sb.append(" = '");
+            sb.append(completeTime);
+            sb.append("', ");
+            sb.append(COLUMN_TASK_IS_COMPLETE);
+            sb.append(" = '");
+            sb.append(taskIsComplete);
+            sb.append("', ");
+            sb.append(COLUMN_TASK_IS_OVERDUE);
+            sb.append(" = '");
+            sb.append(taskIsOverdue);
+            sb.append("', ");
+            sb.append(COLUMN_TASK_TIME_TAKEN);
+            sb.append(" = ");
+            sb.append(timeTaken);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_JOB_TASK_ID);
+            sb.append(" = ");
+            sb.append(id);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+    public static void removeTasks(int id) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("delete from ");
+            sb.append(TABLE_TASKS_AVAILABLE_JOBS);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_JOB_TASK_ID);
+            sb.append(" = ");
+            sb.append(id);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+    public static void removeTasksByJob(int id) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("delete from ");
+            sb.append(TABLE_TASKS_AVAILABLE_JOBS);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_JOB_ID);
+            sb.append(" = ");
+            sb.append(id);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+    public static void removeJob(int id) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("delete from ");
+            sb.append(TABLE_JOBS);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_JOB_ID);
+            sb.append(" = ");
+            sb.append(id);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    public static void searchOpenJobs() {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("select * from  ");
+            sb.append(TABLE_JOBS);
+            sb.append(" WHERE UPPER(");
+            sb.append(COLUMN_COMPLETE_TIME);
+            sb.append(") = UPPER('NULL')");
             String sb1 = sb.toString();
             System.out.println(sb1);
             statement.execute(sb1);
