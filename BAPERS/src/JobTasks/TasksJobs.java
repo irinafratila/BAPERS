@@ -55,20 +55,25 @@ public class TasksJobs {
         this.startTime = startTimeStamp.toString();
         this.dayOrNight = dayOrNight;
         this.staffId = id;
-        DbDriver.updateStartTask(status,startTime,dayOrNight,staffId);
+        DbDriver.updateStartTask(status,startTime,dayOrNight,taskJobId);
 //TODO update the database once tasks start
     }
-    public void completeTask(){
-        this.isComplete = "yes";
-        this.status = "Complete";
-        this.completeTimeStamp = new Timestamp(System.currentTimeMillis());
-        this.timeTaken= ((completeTimeStamp.getTime() - startTimeStamp.getTime())/1000)/60/60;
-        Task task = searchTask(taskId);
-        if (timeTaken > task.getDuration()){
-            this.isOverdue = "overdue";
-        }else{
-            this.isOverdue = "No";
-        }DbDriver.updateCompleteTask(status,completeTime,isComplete,isOverdue, (int) timeTaken,getTaskJobId());
+    public void completeTask() {
+
+            this.isComplete = "yes";
+            this.status = "Complete";
+            this.completeTimeStamp = new Timestamp(System.currentTimeMillis());
+            this.completeTime = completeTimeStamp.toString();
+            this.timeTaken = ((completeTimeStamp.getTime() - Timestamp.valueOf(startTime).getTime()) / 1000) / 60 / 60;
+            Task task = searchTask(taskId);
+            if ((int) timeTaken > task.getDuration()) {
+                this.isOverdue = "overdue";
+            } else {
+                this.isOverdue = "No";
+            }
+            DbDriver.updateCompleteTask(status, completeTime, isComplete, isOverdue, (int) timeTaken, getTaskJobId());
+
+
     }
     //TODO update the database once tasks start
 

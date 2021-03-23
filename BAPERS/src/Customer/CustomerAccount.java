@@ -3,17 +3,11 @@ package Customer;
 
 import Database.DbDriver;
 import Discount.Discount;
-import Discount.FixedDiscountPlan;
-import Discount.FlexibleDiscountPlan;
-import Discount.VariableDiscountPlan;
 import JobTasks.Job;
 import JobTasks.Task;
 import JobTasks.TasksJobs;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Scanner;
+import java.util.*;
 /**
  * @author Muhammad Masum Miah
  */
@@ -22,7 +16,6 @@ import java.util.Scanner;
 import static JobTasks.Main.searchTask;
 
 public class CustomerAccount {
-    private static int count;
     private int customerId;
     private String customer_name;
     private String title;
@@ -36,17 +29,9 @@ public class CustomerAccount {
     private List<Job> jobs;
     private Boolean isValuable;
     private int discountId;
+    Scanner sc = new Scanner(System.in);
+    double rate;
 
-    //experimenting adding tasks with the help of task ids.
-//    Scanner sc = new Scanner(System.in);
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
-
-    public void setJobs(List<Job> jobs) {
-        this.jobs = jobs;
-    }
 
     public CustomerAccount(int id, String customerName, String title, String firstName, String lastName, String address, String postcode, String city, String phoneNumber, String email, Boolean v, int discountId) {
         this.customer_name = customerName;
@@ -65,6 +50,18 @@ public class CustomerAccount {
         this.jobs = new LinkedList<>();
     }
 
+    //experimenting adding tasks with the help of task ids.
+//    Scanner sc = new Scanner(System.in);
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public void setJobs(List<Job> jobs) {
+        this.jobs = jobs;
+    }
+
+
     //Record payment data into the database, once the right amount is paid.
     public void makePayment(int jobId, float amount, String cashOrCard, String cardType, String expiry, int lastDigits) {
         Job searchedJob = searchJob(jobId);
@@ -75,6 +72,7 @@ public class CustomerAccount {
             System.out.println("You have overpaid, transaction unsuccessful");
         } else System.out.println("You have underpaid, please pay the full price.");
     }
+
     //Method to insert tasks for the job, as job_id is stored in the database,
     public static Job searchJobCreate() {
         List<Job> jobs = DbDriver.queryJobs();
@@ -105,7 +103,6 @@ public class CustomerAccount {
     }
 
 
-
     //After searching a customer, they are able to create jobs. This will also be stored into the database.
     public void createJob(int staffId, int priority, String specialInstructions, List<Task> newTasks) {
         Job job = new Job(priority, specialInstructions, newTasks);
@@ -116,6 +113,7 @@ public class CustomerAccount {
             DbDriver.insertTasksAvailableJobs(t.getTaskId(), searchedJob.getJobId());
         jobs.add(job);
     }
+
     public void deleteJob(int id) {
         DbDriver.removeJob(id);
         DbDriver.removeTasksByJob(id);
@@ -147,35 +145,85 @@ public class CustomerAccount {
         Task searchedTask = searchTask(taskId);
         DbDriver.insertTasksAvailableJobs(searchedTask.getTaskId(), searchedJob.getJobId());
     }
+
     //Remove tasks from the job.
     public void removeTask(int id) {
         DbDriver.removeTasks(id);
     }
 
 
-
     //Update the customer type to either normal or valuable adjusting the discounts alongside.
-    public void updateCustomerType(int d, String isValuable) {
-        if (isValuable == "valuable") {
-            this.isValuable = true;
-            this.discountId = d;
-        } else {
-            this.isValuable = false;
-            this.discountId = 0;
-        }
-        DbDriver.updateCustomerType(isValuable, d, getCustomerId());
+    public void updateCustomerType(String isValuable, String type) {
 
+        Discount d = searchDiscount();
+        int discountId = d.getDiscountId()+1;
+        double rate;
+        if (isValuable.toLowerCase().equals("valuable")) {
+            this.isValuable = true;
+            if (type.toLowerCase().equals("flexi")) {
+                applyFlexiDiscount();
+            } else if (type.toLowerCase().equals("fixed")) {
+                applyFixedDiscount();
+            } else if (type.toLowerCase().equals("variable")) {
+                applyVariableDiscount();
+            } else {
+                this.isValuable = false;
+                this.discountId = 0;
+            }
+        }
+        DbDriver.insertDiscount("type");
+        DbDriver.updateCustomerType(isValuable, discountId, getCustomerId());
     }
 
-//    public void applyFixedDiscount(){
-//        discountPlan = new FixedDiscountPlan();
-//    }
-//    public void applyVariableDiscount(){
-//        discountPlan = new VariableDiscountPlan();
-//    }
-//    public void applyFlexiDiscount(){
-//        discountPlan = new FlexibleDiscountPlan();
-//    }
+    public static Discount searchDiscount() {
+        List<Discount> discounts = DbDriver.queryDiscounts();
+
+        if (discounts == null) {
+            System.out.println("No Jobs");
+            return null;
+        }
+        return discounts.get(discounts.size()-1);
+    }
+
+    public void applyFixedDiscount() {
+        System.out.println("Please type in the rate");
+        rate = sc.nextDouble();
+        DbDriver.insertDiscount("Fixed");
+        //TODO search discount for the last dId.
+        DbDriver.insertFixedDiscount(rate, discountId);
+    }
+
+    public void applyVariableDiscount() {
+        int taskId;
+        DbDriver.insertDiscount("Variable");
+        //TODO search discount for the last dId.
+        while (true) {
+            System.out.println("Please type in the task id");
+            taskId = sc.nextInt();
+            System.out.println("Please type in the rate");
+            rate = sc.nextDouble();
+            DbDriver.insertVariableDiscount(rate, discountId, taskId);
+        }
+    }
+    public void applyFlexiDiscount() {
+        Map<Integer, Double> ranges = new HashMap<>();
+        int range;
+        DbDriver.insertDiscount("Flexi");
+        while (true) {
+
+            System.out.println("Please type in end of range");
+            range = sc.nextInt();
+            if(range == 0){
+                break;
+            }
+            System.out.println("Please type in the rate");
+            rate = sc.nextDouble();
+            ranges.put(range, rate);
+
+            //TODO search discount for the last dId.
+            DbDriver.insertFlexibleDiscount(rate, discountId, range);
+        }
+    }
 
     //Getters and Setters
 
@@ -187,6 +235,7 @@ public class CustomerAccount {
     public List<Job> getJobs() {
         return jobs;
     }
+
     public int getCustomerId() {
         return customerId;
     }

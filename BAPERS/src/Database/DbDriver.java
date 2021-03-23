@@ -1,8 +1,9 @@
 package Database;
 
 
-import Admin.User;
+
 import Customer.CustomerAccount;
+
 import Discount.Discount;
 import JobTasks.Job;
 import JobTasks.Task;
@@ -101,24 +102,24 @@ public class DbDriver {
     public static final String COLUMN_AMOUNT = "AMOUNT";
 
     //Establish DB Connection.
-    private static DBConnection conn = new DBConnection();
+    private static final DBConnection conn = new DBConnection();
 
 
     public static void main(String[] args) {
 
-        ResultSet results;
-        //By putting statement  in the paranthesis, there is no need to close statement at the end.
+        //By putting statement  in the parenthesis, there is no need to close statement at the end.
         try  {
             Statement statement = conn.getConnection().createStatement();
             // For testing purposes, delete all tables before running code.
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_PAYMENT_HISTORY);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_TASKS_AVAILABLE_JOBS);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_JOBS);
+            statement.execute("DROP TABLE IF EXISTS  " + TABLE_VARIABLE);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_TASKS_AVAILABLE);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_DEPARTMENT);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_STAFF_ACCOUNT);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_CUSTOMER_ACCOUNT);
-            statement.execute("DROP TABLE IF EXISTS  " + TABLE_VARIABLE);
+
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_FLEXIBLE);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_FIXED);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_DISCOUNT);
@@ -133,28 +134,21 @@ public class DbDriver {
             statement.execute("CREATE TABLE IF NOT EXISTS " + TABLE_FIXED + " \n" +
                     "(\n" +
                     COLUMN_FIXED_ID + " integer NOT NULL auto_increment,\n" +
-                    COLUMN_DISCOUNT_ID + " integer NOT NULL UNIQUE,\n" +
-                    COLUMN_FIXED_RATE + " decimal(4,2),\n" +
+                    COLUMN_DISCOUNT_ID + " integer NOT NULL ,\n" +
+                    COLUMN_FIXED_RATE + " float,\n" +
                     "PRIMARY KEY (" + COLUMN_FIXED_ID + "),\n" +
                     "FOREIGN KEY (" + COLUMN_DISCOUNT_ID + ") REFERENCES " + TABLE_DISCOUNT + "(" + COLUMN_DISCOUNT_ID + ")\n" +
                     ")");
             statement.execute("CREATE TABLE IF NOT EXISTS " + TABLE_FLEXIBLE + "\n" +
                     "(\n" +
                     COLUMN_FLEXI_ID + " integer NOT NULL auto_increment,\n" +
-                    COLUMN_FLEXI_RATE + " integer NOT NULL,\n" +
-                    COLUMN_DISCOUNT_ID + " integer NOT NULL UNIQUE,\n" +
+                    COLUMN_FLEXI_RATE + " float NOT NULL,\n" +
+                    COLUMN_RANGE + " float NOT NULL ,\n" +
+                    COLUMN_DISCOUNT_ID + " integer NOT NULL ,\n" +
                     "PRIMARY KEY (" + COLUMN_FLEXI_ID + "),\n" +
                     "FOREIGN KEY (" + COLUMN_DISCOUNT_ID + ") REFERENCES " + TABLE_DISCOUNT + "(" + COLUMN_DISCOUNT_ID + ")\n" +
                     ")");
-            statement.execute("CREATE TABLE IF NOT EXISTS " + TABLE_VARIABLE + " \n" +
-                    "(\n" +
-                    COLUMN_VAR_ID + " integer NOT NULL auto_increment,\n" +
-                    COLUMN_DISCOUNT_ID + " integer NOT NULL UNIQUE,\n" +
-                    COLUMN_RANGE + " varchar(50) NOT NULL UNIQUE,\n" +
-                    COLUMN_VARIABLE_RATE + " integer NOT NULL ,\n" +
-                    "PRIMARY KEY (" + COLUMN_VAR_ID + "),\n" +
-                    "FOREIGN KEY (" + COLUMN_DISCOUNT_ID + ") REFERENCES " + TABLE_DISCOUNT + "(" + COLUMN_DISCOUNT_ID + ") \n" +
-                    ")");
+
             statement.execute("CREATE TABLE IF NOT EXISTS " + TABLE_CUSTOMER_ACCOUNT + "(\n" +
                     COLUMN_ACCOUNT_NUMBER + "  int  AUTO_INCREMENT NOT NULL,\n" +
                     COLUMN_CUSTOMER_NAME + " varchar(255),\n" +
@@ -249,6 +243,17 @@ public class DbDriver {
                     TABLE_CUSTOMER_ACCOUNT + "(" + COLUMN_ACCOUNT_NUMBER + ")\n" +
                     ")");
 
+            statement.execute("CREATE TABLE IF NOT EXISTS " + TABLE_VARIABLE + " \n" +
+                    "(\n" +
+                    COLUMN_VAR_ID + " integer NOT NULL auto_increment,\n" +
+                    COLUMN_DISCOUNT_ID + " integer NOT NULL ,\n" +
+                    COLUMN_TASK_ID + " integer NOT NULL ,\n" +
+                    COLUMN_VARIABLE_RATE + " integer NOT NULL ,\n" +
+                    "PRIMARY KEY (" + COLUMN_VAR_ID + "),\n" +
+                    "FOREIGN KEY (" + COLUMN_TASK_ID + ") REFERENCES " + TABLE_TASKS_AVAILABLE + "(" + COLUMN_TASK_ID + "), \n" +
+                    "FOREIGN KEY (" + COLUMN_DISCOUNT_ID + ") REFERENCES " + TABLE_DISCOUNT + "(" + COLUMN_DISCOUNT_ID + ") \n" +
+                    ")");
+
             insertStaffAccount("hfhf", "dd", "ds", "dd", "ddd", "242323");
             insertDiscount("FLEXI");
             insertDiscount("FIXED");
@@ -283,6 +288,10 @@ public class DbDriver {
             insertTasks("Use of small copy camera",1, 8.50F,75);
             insertTasks("Mount transparencies",3,55.50F,45);
 
+            insertFixedDiscount(3,2);
+            insertVariableDiscount(2,1,1);
+            insertFlexibleDiscount(2,3,1000);
+
 
 
 
@@ -301,7 +310,7 @@ public class DbDriver {
     public static List<CustomerAccount> queryCustomers() {
 
         try (Statement statement = conn.getConnection().createStatement();
-             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_CUSTOMER_ACCOUNT);
+             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_CUSTOMER_ACCOUNT)
         ) {
             List<CustomerAccount> customers = new LinkedList<>();
             while (results.next()) {
@@ -315,12 +324,8 @@ public class DbDriver {
                 String city = results.getString(COLUMN_CITY);
                 String phoneNumber = results.getString(COLUMN_PHONE_NUMBER);
                 String email = results.getString(COLUMN_EMAIL_ADDRESS);
-                Boolean isValuable;
-                if (results.getString(COLUMN_CUSTOMER_TYPE).equals("valuable")) {
-                    isValuable = true;
-                } else {
-                    isValuable = false;
-                }
+                boolean isValuable;
+                isValuable = results.getString(COLUMN_CUSTOMER_TYPE).equals("valuable");
                 int discountId = results.getInt(COLUMN_DISCOUNT_ID);
 
                 CustomerAccount customer = new CustomerAccount(customerId, customer_name, title, firstName, lastName, address, postcode, city, phoneNumber, email, isValuable, discountId);
@@ -366,7 +371,7 @@ public class DbDriver {
     public static List<Job> queryJobs() {
 
         try (Statement statement = conn.getConnection().createStatement();
-             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_JOBS);
+             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_JOBS)
         ) {
             List<Job> jobs = new LinkedList<>();
             while (results.next()) {
@@ -397,7 +402,7 @@ public class DbDriver {
     public static List<Task> queryTasks() {
 
         try (Statement statement = conn.getConnection().createStatement();
-             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_TASKS_AVAILABLE);
+             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_TASKS_AVAILABLE)
         ) {
             List<Task> tasks = new LinkedList<>();
             while (results.next()) {
@@ -418,10 +423,32 @@ public class DbDriver {
 
 
     }
+    public static List<Discount> queryDiscounts() {
+
+        try (Statement statement = conn.getConnection().createStatement();
+             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_DISCOUNT)
+        ) {
+            List<Discount> discounts = new LinkedList<>();
+            while (results.next()) {
+                int discountId = results.getInt(COLUMN_DISCOUNT_ID);
+                String description = results.getString(COLUMN_DISCOUNT_TYPE);
+
+
+                Discount discount = new Discount(discountId,description);
+                discounts.add(discount);
+            }
+            return discounts;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
     public static List<TasksJobs> queryTasksJobs() {
 
         try (Statement statement = conn.getConnection().createStatement();
-             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_TASKS_AVAILABLE);
+             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_TASKS_AVAILABLE_JOBS)
         ) {
             List<TasksJobs> tasks = new LinkedList<>();
             while (results.next()) {
@@ -449,16 +476,79 @@ public class DbDriver {
     }
     //Insert into the database.
     public static void insertDiscount(String discount) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("Insert into ");
-            sb.append(TABLE_DISCOUNT);
-            sb.append("(");
-            sb.append(COLUMN_DISCOUNT_TYPE);
-            sb.append(")");
-            sb.append("values ('");
-            sb.append(discount);
-            sb.append("')");
-            String sb1 = sb.toString();
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "Insert into " + TABLE_DISCOUNT +
+                    "(" +
+                    COLUMN_DISCOUNT_TYPE +
+                    ")" +
+                    "values ('" +
+                    discount +
+                    "')";
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+    public static void insertVariableDiscount(double rate, int dId, int tId) {
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "Insert into " + TABLE_VARIABLE +
+                    "(" +
+                    COLUMN_VARIABLE_RATE +
+                    "," +
+                    COLUMN_DISCOUNT_ID +
+                    "," +
+                    COLUMN_TASK_ID +
+                    ")" +
+                    "values (" +
+                    rate +
+                    "," +
+                    dId +
+                    "," +
+                    tId +
+                    ")";
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+    public static void insertFixedDiscount(double rate, int Did) {
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "Insert into " + TABLE_FIXED +
+                    "(" +
+                    COLUMN_FIXED_RATE +
+                    "," +
+                    COLUMN_DISCOUNT_ID +
+                    ")" +
+                    "values (" +
+                    rate +
+                    "," +
+                    Did +
+                    ")";
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+    public static void insertFlexibleDiscount(double rate, int Did, float range) {
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "Insert into " + TABLE_FLEXIBLE +
+                    "(" +
+                    COLUMN_FLEXI_RATE +
+                    "," +
+                    COLUMN_DISCOUNT_ID +
+                    "," +
+                    COLUMN_RANGE +
+                    ")" +
+                    "values (" +
+                    rate +
+                    "," +
+                    Did +
+                    ",'" +
+                    range +
+                    "')";
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -467,16 +557,14 @@ public class DbDriver {
     }
 
     public static void insertDepartment(String location) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("Insert into ");
-            sb.append(TABLE_DEPARTMENT);
-            sb.append("(");
-            sb.append(COLUMN_LOCATION);
-            sb.append(")");
-            sb.append("values ('");
-            sb.append(location);
-            sb.append("')");
-            String sb1 = sb.toString();
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "Insert into " + TABLE_DEPARTMENT +
+                    "(" +
+                    COLUMN_LOCATION +
+                    ")" +
+                    "values ('" +
+                    location +
+                    "')";
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -484,30 +572,27 @@ public class DbDriver {
         }
     }
     public static void insertTasks(String desc, int did, float price, int duration) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("insert into ");
-            sb.append(TABLE_TASKS_AVAILABLE);
-            sb.append("(");
-            sb.append(COLUMN_TASK_DESCRIPTION);
-            sb.append(',');
-            sb.append(COLUMN_DEPARTMENT_ID);
-            sb.append(',');
-            sb.append(COLUMN_TASK_PRICE);
-            sb.append(',');
-            sb.append(COLUMN_TASK_DURATION);
+        try (Statement statement = conn.getConnection().createStatement()) {
 
-            sb.append(")");
-            sb.append("values ('");
-            sb.append(desc);
-            sb.append("', ");
-            sb.append(did);
-            sb.append(", ");
-            sb.append(price);
-            sb.append(", ");
-            sb.append(duration);
-
-            sb.append(")");
-            String sb1 = sb.toString();
+            String sb1 = "insert into " + TABLE_TASKS_AVAILABLE +
+                    "(" +
+                    COLUMN_TASK_DESCRIPTION +
+                    ',' +
+                    COLUMN_DEPARTMENT_ID +
+                    ',' +
+                    COLUMN_TASK_PRICE +
+                    ',' +
+                    COLUMN_TASK_DURATION +
+                    ")" +
+                    "values ('" +
+                    desc +
+                    "', " +
+                    did +
+                    ", " +
+                    price +
+                    ", " +
+                    duration +
+                    ")";
             statement.execute(sb1);
 
         } catch (SQLException e) {
@@ -516,56 +601,54 @@ public class DbDriver {
         }
     }
     public static void insertCustomer(String cName, String title, String firstName, String lastName, String address, String City, String postcode, String email, String phone, String type, int discountId) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("insert into ");
-            sb.append(TABLE_CUSTOMER_ACCOUNT);
-            sb.append("(");
-            sb.append(COLUMN_CUSTOMER_NAME);
-            sb.append(',');
-            sb.append(COLUMN_CONTACT_TITLE);
-            sb.append(',');
-            sb.append(COLUMN_CONTACT_FIRST_NAME);
-            sb.append(',');
-            sb.append(COLUMN_CONTACT_LAST_NAME);
-            sb.append(',');
-            sb.append(COLUMN_ADDRESS);
-            sb.append(',');
-            sb.append(COLUMN_CITY);
-            sb.append(',');
-            sb.append((COLUMN_POSTCODE));
-            sb.append(',');
-            sb.append(COLUMN_EMAIL_ADDRESS);
-            sb.append(',');
-            sb.append(COLUMN_PHONE_NUMBER);
-            sb.append(',');
-            sb.append(COLUMN_CUSTOMER_TYPE);
-            sb.append(',');
-            sb.append((COLUMN_DISCOUNT_ID));
-            sb.append(")");
-            sb.append("values ('");
-            sb.append(cName);
-            sb.append("', '");
-            sb.append(title);
-            sb.append("', '");
-            sb.append(firstName);
-            sb.append("', '");
-            sb.append(lastName);
-            sb.append("', '");
-            sb.append(address);
-            sb.append("', '");
-            sb.append(City);
-            sb.append("', '");
-            sb.append(postcode);
-            sb.append("', '");
-            sb.append(email);
-            sb.append("', '");
-            sb.append(phone);
-            sb.append("', '");
-            sb.append(type);
-            sb.append("', ");
-            sb.append(discountId);
-            sb.append(")");
-            String sb1 = sb.toString();
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "insert into " + TABLE_CUSTOMER_ACCOUNT +
+                    "(" +
+                    COLUMN_CUSTOMER_NAME +
+                    ',' +
+                    COLUMN_CONTACT_TITLE +
+                    ',' +
+                    COLUMN_CONTACT_FIRST_NAME +
+                    ',' +
+                    COLUMN_CONTACT_LAST_NAME +
+                    ',' +
+                    COLUMN_ADDRESS +
+                    ',' +
+                    COLUMN_CITY +
+                    ',' +
+                    (COLUMN_POSTCODE) +
+                    ',' +
+                    COLUMN_EMAIL_ADDRESS +
+                    ',' +
+                    COLUMN_PHONE_NUMBER +
+                    ',' +
+                    COLUMN_CUSTOMER_TYPE +
+                    ',' +
+                    (COLUMN_DISCOUNT_ID) +
+                    ")" +
+                    "values ('" +
+                    cName +
+                    "', '" +
+                    title +
+                    "', '" +
+                    firstName +
+                    "', '" +
+                    lastName +
+                    "', '" +
+                    address +
+                    "', '" +
+                    City +
+                    "', '" +
+                    postcode +
+                    "', '" +
+                    email +
+                    "', '" +
+                    phone +
+                    "', '" +
+                    type +
+                    "', " +
+                    discountId +
+                    ")";
             statement.execute(sb1);
 
         } catch (SQLException e) {
@@ -574,36 +657,34 @@ public class DbDriver {
         }
     }
     public static void insertStaffAccount(String name,String userName,String password,String address,String role,String phone) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("insert into ");
-            sb.append(TABLE_STAFF_ACCOUNT);
-            sb.append("(");
-            sb.append(COLUMN_STAFF_NAME);
-            sb.append(',');
-            sb.append(COLUMN_USER_NAME);
-            sb.append(',');
-            sb.append(COLUMN_PASSWORD);
-            sb.append(',');
-            sb.append(COLUMN_STAFF_ADDRESS);
-            sb.append(',');
-            sb.append(COLUMN_STAFF_ROLE);
-            sb.append(',');
-            sb.append(COLUMN_STAFF_PHONE_NUMBER);
-            sb.append(")");
-            sb.append("values ('");
-            sb.append(name);
-            sb.append("', '");
-            sb.append(userName);
-            sb.append("', '");
-            sb.append(password);
-            sb.append("', '");
-            sb.append(address);
-            sb.append("', '");
-            sb.append(role);
-            sb.append("', '");
-            sb.append(phone);
-            sb.append("')");
-            String sb1 = sb.toString();
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "insert into " + TABLE_STAFF_ACCOUNT +
+                    "(" +
+                    COLUMN_STAFF_NAME +
+                    ',' +
+                    COLUMN_USER_NAME +
+                    ',' +
+                    COLUMN_PASSWORD +
+                    ',' +
+                    COLUMN_STAFF_ADDRESS +
+                    ',' +
+                    COLUMN_STAFF_ROLE +
+                    ',' +
+                    COLUMN_STAFF_PHONE_NUMBER +
+                    ")" +
+                    "values ('" +
+                    name +
+                    "', '" +
+                    userName +
+                    "', '" +
+                    password +
+                    "', '" +
+                    address +
+                    "', '" +
+                    role +
+                    "', '" +
+                    phone +
+                    "')";
             statement.execute(sb1);
 
         } catch (SQLException e) {
@@ -612,40 +693,38 @@ public class DbDriver {
         }
     }
     public static void insertJob(int accountNumber, int priority, String instructions, String start, String deadline, int staffId, float price) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("insert into ");
-            sb.append(TABLE_JOBS);
-            sb.append("(");
-            sb.append(COLUMN_ACCOUNT_NUMBER);
-            sb.append(',');
-            sb.append(COLUMN_PRIORITY);
-            sb.append(',');
-            sb.append(COLUMN_SPECIAL_INSTRUCTIONS);
-            sb.append(',');
-            sb.append(COLUMN_START_TIME);
-            sb.append(',');
-            sb.append(COLUMN_JOB_DEADLINE);
-            sb.append(',');
-            sb.append(COLUMN_STAFF_ID_START);
-            sb.append(',');
-            sb.append(COLUMN_TOTAL_PRICE);
-            sb.append(")");
-            sb.append("values (");
-            sb.append(accountNumber);
-            sb.append(", ");
-            sb.append(priority);
-            sb.append(", '");
-            sb.append(instructions);
-            sb.append("', '");
-            sb.append(start);
-            sb.append("', '");
-            sb.append(deadline);
-            sb.append("', ");
-            sb.append(staffId);
-            sb.append(", ");
-            sb.append(price);
-            sb.append(")");
-            String sb1 = sb.toString();
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "insert into " + TABLE_JOBS +
+                    "(" +
+                    COLUMN_ACCOUNT_NUMBER +
+                    ',' +
+                    COLUMN_PRIORITY +
+                    ',' +
+                    COLUMN_SPECIAL_INSTRUCTIONS +
+                    ',' +
+                    COLUMN_START_TIME +
+                    ',' +
+                    COLUMN_JOB_DEADLINE +
+                    ',' +
+                    COLUMN_STAFF_ID_START +
+                    ',' +
+                    COLUMN_TOTAL_PRICE +
+                    ")" +
+                    "values (" +
+                    accountNumber +
+                    ", " +
+                    priority +
+                    ", '" +
+                    instructions +
+                    "', '" +
+                    start +
+                    "', '" +
+                    deadline +
+                    "', " +
+                    staffId +
+                    ", " +
+                    price +
+                    ")";
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -654,40 +733,38 @@ public class DbDriver {
     }
 
     public static void insertPaymentHistory( int jobId, int customerId, String cashOrCard, String cardType,String expiry, int lastDigits,float amount) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("insert into ");
-            sb.append(TABLE_PAYMENT_HISTORY);
-            sb.append("(");
-            sb.append(COLUMN_JOB_ID);
-            sb.append(',');
-            sb.append(COLUMN_ACCOUNT_NUMBER);
-            sb.append(',');
-            sb.append(COLUMN_CASH_OR_CARD);
-            sb.append(',');
-            sb.append(COLUMN_CARD_TYPE);
-            sb.append(',');
-            sb.append(COLUMN_EXPIRY_DATE);
-            sb.append(',');
-            sb.append(COLUMN_LAST_4_DIGITS);
-            sb.append(',');
-            sb.append(COLUMN_AMOUNT);
-            sb.append(")");
-            sb.append("values (");
-            sb.append(jobId);
-            sb.append(", ");
-            sb.append(customerId);
-            sb.append(", '");
-            sb.append(cashOrCard);
-            sb.append("', '");
-            sb.append(cardType);
-            sb.append("', '");
-            sb.append(expiry);
-            sb.append("', ");
-            sb.append(lastDigits);
-            sb.append(", ");
-            sb.append(amount);
-            sb.append(")");
-            String sb1 = sb.toString();
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "insert into " + TABLE_PAYMENT_HISTORY +
+                    "(" +
+                    COLUMN_JOB_ID +
+                    ',' +
+                    COLUMN_ACCOUNT_NUMBER +
+                    ',' +
+                    COLUMN_CASH_OR_CARD +
+                    ',' +
+                    COLUMN_CARD_TYPE +
+                    ',' +
+                    COLUMN_EXPIRY_DATE +
+                    ',' +
+                    COLUMN_LAST_4_DIGITS +
+                    ',' +
+                    COLUMN_AMOUNT +
+                    ")" +
+                    "values (" +
+                    jobId +
+                    ", " +
+                    customerId +
+                    ", '" +
+                    cashOrCard +
+                    "', '" +
+                    cardType +
+                    "', '" +
+                    expiry +
+                    "', " +
+                    lastDigits +
+                    ", " +
+                    amount +
+                    ")";
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -696,20 +773,18 @@ public class DbDriver {
     }
 
     public static void insertTasksAvailableJobs(int taskId, int jobId ) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("insert into ");
-            sb.append(TABLE_TASKS_AVAILABLE_JOBS);
-            sb.append("(");
-            sb.append(COLUMN_TASK_ID);
-            sb.append(',');
-            sb.append(COLUMN_JOB_ID);
-            sb.append(")");
-            sb.append("values (");
-            sb.append(taskId);
-            sb.append(", ");
-            sb.append(jobId);
-            sb.append(")");
-            String sb1 = sb.toString();
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "insert into " + TABLE_TASKS_AVAILABLE_JOBS +
+                    "(" +
+                    COLUMN_TASK_ID +
+                    ',' +
+                    COLUMN_JOB_ID +
+                    ")" +
+                    "values (" +
+                    taskId +
+                    ", " +
+                    jobId +
+                    ")";
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -721,22 +796,20 @@ public class DbDriver {
     //Update the database when changing the customer type or discount.
 
     public static void updateCustomerType(String isValuable, int discountId, int cId) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("UPDATE ");
-            sb.append(TABLE_CUSTOMER_ACCOUNT);
-            sb.append(" SET ");
-            sb.append(COLUMN_CUSTOMER_TYPE);
-            sb.append(" = '");
-            sb.append(isValuable);
-            sb.append("', ");
-            sb.append(COLUMN_DISCOUNT_ID);
-            sb.append(" = ");
-            sb.append(discountId);
-            sb.append(" WHERE ");
-            sb.append(COLUMN_ACCOUNT_NUMBER);
-            sb.append(" = ");
-            sb.append(cId);
-            String sb1 = sb.toString();
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "UPDATE " + TABLE_CUSTOMER_ACCOUNT +
+                    " SET " +
+                    COLUMN_CUSTOMER_TYPE +
+                    " = '" +
+                    isValuable +
+                    "', " +
+                    COLUMN_DISCOUNT_ID +
+                    " = " +
+                    discountId +
+                    " WHERE " +
+                    COLUMN_ACCOUNT_NUMBER +
+                    " = " +
+                    cId;
             System.out.println(sb1);
             statement.execute(sb1);
         } catch (SQLException e) {
@@ -745,26 +818,24 @@ public class DbDriver {
         }
     }
     public static void updateStartTask(String status,String start,String shift, int id) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("UPDATE ");
-            sb.append(TABLE_TASKS_AVAILABLE_JOBS);
-            sb.append(" SET ");
-            sb.append(COLUMN_TASK_STATUS);
-            sb.append(" = '");
-            sb.append(status);
-            sb.append("', ");
-            sb.append(COLUMN_TASK_START_TIME);
-            sb.append(" = '");
-            sb.append(start);
-            sb.append("', ");
-            sb.append(COLUMN_TASK_SHIFT_TIME);
-            sb.append(" = '");
-            sb.append(shift);
-            sb.append("' WHERE ");
-            sb.append(COLUMN_JOB_TASK_ID);
-            sb.append(" = ");
-            sb.append(id);
-            String sb1 = sb.toString();
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "UPDATE " + TABLE_TASKS_AVAILABLE_JOBS +
+                    " SET " +
+                    COLUMN_TASK_STATUS +
+                    " = '" +
+                    status +
+                    "', " +
+                    COLUMN_TASK_START_TIME +
+                    " = '" +
+                    start +
+                    "', " +
+                    COLUMN_TASK_SHIFT_TIME +
+                    " = '" +
+                    shift +
+                    "' WHERE " +
+                    COLUMN_JOB_TASK_ID +
+                    " = " +
+                    id;
             System.out.println(sb1);
             statement.execute(sb1);
         } catch (SQLException e) {
@@ -773,34 +844,32 @@ public class DbDriver {
         }
     }
     public static void updateCompleteTask(String status,String completeTime, String taskIsComplete,String taskIsOverdue, int timeTaken,int id) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("UPDATE ");
-            sb.append(TABLE_TASKS_AVAILABLE_JOBS);
-            sb.append(" SET ");
-            sb.append(COLUMN_TASK_STATUS);
-            sb.append(" = '");
-            sb.append(status);
-            sb.append("', ");
-            sb.append(COLUMN_TASK_COMPLETE_TIME);
-            sb.append(" = '");
-            sb.append(completeTime);
-            sb.append("', ");
-            sb.append(COLUMN_TASK_IS_COMPLETE);
-            sb.append(" = '");
-            sb.append(taskIsComplete);
-            sb.append("', ");
-            sb.append(COLUMN_TASK_IS_OVERDUE);
-            sb.append(" = '");
-            sb.append(taskIsOverdue);
-            sb.append("', ");
-            sb.append(COLUMN_TASK_TIME_TAKEN);
-            sb.append(" = ");
-            sb.append(timeTaken);
-            sb.append(" WHERE ");
-            sb.append(COLUMN_JOB_TASK_ID);
-            sb.append(" = ");
-            sb.append(id);
-            String sb1 = sb.toString();
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "UPDATE " + TABLE_TASKS_AVAILABLE_JOBS +
+                    " SET " +
+                    COLUMN_TASK_STATUS +
+                    " = '" +
+                    status +
+                    "', " +
+                    COLUMN_TASK_COMPLETE_TIME +
+                    " = '" +
+                    completeTime +
+                    "', " +
+                    COLUMN_TASK_IS_COMPLETE +
+                    " = '" +
+                    taskIsComplete +
+                    "', " +
+                    COLUMN_TASK_IS_OVERDUE +
+                    " = '" +
+                    taskIsOverdue +
+                    "', " +
+                    COLUMN_TASK_TIME_TAKEN +
+                    " = " +
+                    timeTaken +
+                    " WHERE " +
+                    COLUMN_JOB_TASK_ID +
+                    " = " +
+                    id;
             System.out.println(sb1);
             statement.execute(sb1);
         } catch (SQLException e) {
@@ -809,14 +878,12 @@ public class DbDriver {
         }
     }
     public static void removeTasks(int id) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("delete from ");
-            sb.append(TABLE_TASKS_AVAILABLE_JOBS);
-            sb.append(" WHERE ");
-            sb.append(COLUMN_JOB_TASK_ID);
-            sb.append(" = ");
-            sb.append(id);
-            String sb1 = sb.toString();
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "delete from " + TABLE_TASKS_AVAILABLE_JOBS +
+                    " WHERE " +
+                    COLUMN_JOB_TASK_ID +
+                    " = " +
+                    id;
             System.out.println(sb1);
             statement.execute(sb1);
         } catch (SQLException e) {
@@ -825,14 +892,12 @@ public class DbDriver {
         }
     }
     public static void removeTasksByJob(int id) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("delete from ");
-            sb.append(TABLE_TASKS_AVAILABLE_JOBS);
-            sb.append(" WHERE ");
-            sb.append(COLUMN_JOB_ID);
-            sb.append(" = ");
-            sb.append(id);
-            String sb1 = sb.toString();
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "delete from " + TABLE_TASKS_AVAILABLE_JOBS +
+                    " WHERE " +
+                    COLUMN_JOB_ID +
+                    " = " +
+                    id;
             System.out.println(sb1);
             statement.execute(sb1);
         } catch (SQLException e) {
@@ -841,14 +906,12 @@ public class DbDriver {
         }
     }
     public static void removeJob(int id) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("delete from ");
-            sb.append(TABLE_JOBS);
-            sb.append(" WHERE ");
-            sb.append(COLUMN_JOB_ID);
-            sb.append(" = ");
-            sb.append(id);
-            String sb1 = sb.toString();
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "delete from " + TABLE_JOBS +
+                    " WHERE " +
+                    COLUMN_JOB_ID +
+                    " = " +
+                    id;
             System.out.println(sb1);
             statement.execute(sb1);
         } catch (SQLException e) {
@@ -858,13 +921,11 @@ public class DbDriver {
     }
 
     public static void searchOpenJobs() {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("select * from  ");
-            sb.append(TABLE_JOBS);
-            sb.append(" WHERE UPPER(");
-            sb.append(COLUMN_COMPLETE_TIME);
-            sb.append(") = UPPER('NULL')");
-            String sb1 = sb.toString();
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "select * from  " + TABLE_JOBS +
+                    " WHERE UPPER(" +
+                    COLUMN_COMPLETE_TIME +
+                    ") = UPPER('NULL')";
             System.out.println(sb1);
             statement.execute(sb1);
         } catch (SQLException e) {

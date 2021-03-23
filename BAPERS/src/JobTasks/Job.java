@@ -104,17 +104,17 @@ public class Job {
 
     //Complete the job.
     public void completeJob(int user){
-        if(completeJobCheck()) {
+//        if(completeJobCheck()) {
             this.completeTimeStamp = new Timestamp(System.currentTimeMillis());
             this.completeTime  =completeTimeStamp.toString();
             this.isJobComplete = true;
             this.status = "Job Complete";
             this.completedBy = user;
             this.timeTaken = setTimeTaken();
-        }
-        else{
-            System.out.println("Job cannot be completed!");
-        }
+//        }
+//        else{
+//            System.out.println("Job cannot be completed!");
+//        }
 
        // TODO: add completed by.
 
