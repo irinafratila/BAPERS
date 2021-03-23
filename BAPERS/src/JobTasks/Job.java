@@ -3,7 +3,6 @@ package JobTasks;
 
 import java.sql.Timestamp;
 import java.time.temporal.ChronoUnit;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -32,6 +31,9 @@ public class Job {
     int hours;
     int completedBy;
 
+    private List<TasksJobs> tasksJobs;
+
+
     // Constructor for the Job class.
 
     public Job(int jobId, int account,int priority, String specialInstructions,String status,String start,String deadline,String completeTime,int hours,int startedBy, float price, int completedBy) {
@@ -54,7 +56,6 @@ public class Job {
     public Job(int priority, String specialInstructions, List<Task> tasks) {
         this.priority = priority;
         this.specialInstructions = specialInstructions;
-        this.jobId = count++;
         startTimeStamp = new Timestamp(System.currentTimeMillis());
         this.deadlineTimeStamp = setDeadline();
         this.deadline = deadlineTimeStamp.toString();
@@ -93,10 +94,10 @@ public class Job {
 
     // Check to see if all jobs are complete.
     public boolean completeJobCheck() {
-        ListIterator<Task> check = tasks.listIterator();
+        ListIterator<TasksJobs> check = tasksJobs.listIterator();
         while (check.hasNext()) {
-            if (!check.next().isComplete()) {
-                System.out.println("Task \"" + check.next().getDescription() + "\" is not complete!");
+            if (!check.next().getIsComplete().equals("yes")) {
+                System.out.println("Task \"" + check.next().getTaskJobId() + "\" is not complete!");
                 return false;
             }
 
@@ -105,17 +106,17 @@ public class Job {
 
     //Complete the job.
     public void completeJob(int user){
-        if(completeJobCheck()) {
+
             this.completeTimeStamp = new Timestamp(System.currentTimeMillis());
             this.completeTime  =completeTimeStamp.toString();
             this.isJobComplete = true;
             this.status = "Job Complete";
             this.completedBy = user;
             this.timeTaken = setTimeTaken();
-        }
-        else{
-            System.out.println("Job cannot be completed!");
-        }
+//        }
+//        else{
+//            System.out.println("Job cannot be completed!");
+//        }
 
        // TODO: add completed by.
 
@@ -129,10 +130,10 @@ public class Job {
     }
 
     //Sets the current task in operation.
-    public boolean setCurrentOperation(boolean dayOrNight, int id) {
-        ListIterator<Task> tasksList = tasks.listIterator();
+    public boolean setCurrentOperation(String dayOrNight, int id) {
+        ListIterator<TasksJobs> tasksList = tasksJobs.listIterator();
         while (tasksList.hasNext()) {
-            if (!tasksList.next().isComplete()) {
+            if (!tasksList.next().getIsComplete().equals(("yes"))) {
                 tasksList.next().startTask(dayOrNight,id);
                 return true;
             }
@@ -164,7 +165,7 @@ public class Job {
         } return null;
     }
     public String inspectTask(int taskId){
-        ListIterator<Task> tasksList = tasks.listIterator();
+        ListIterator<TasksJobs> tasksList = tasksJobs.listIterator();
         while (tasksList.hasNext()) {
             if (tasksList.next().getTaskId() == taskId) {
                 return tasksList.next().getStatus();
@@ -173,8 +174,8 @@ public class Job {
         System.out.println("Task not available!");
         return null;
     }
-    public void updateTask(int taskId,boolean dayShift, int staffId) {
-        ListIterator<Task> tasksList = tasks.listIterator();
+    public void updateTask(int taskId, String dayShift, int staffId) {
+        ListIterator<TasksJobs> tasksList = tasksJobs.listIterator();
         while (tasksList.hasNext()) {
             if (tasksList.next().getTaskId() == taskId) {
                 if(tasksList.next().getStatus().equals("In Progress") )
@@ -202,6 +203,14 @@ public class Job {
             }return price;
 
 
+    }
+    public void alert(){
+        Timestamp current = new Timestamp(System.currentTimeMillis());
+        long leftToDeadline = ((deadlineTimeStamp.getTime() - current.getTime())/1000)/60/60;
+        if (leftToDeadline < 50){
+            //TODO create an alert
+            System.out.println("deadline approaching" );
+        }
     }
 
 
@@ -347,4 +356,14 @@ public class Job {
     public void setCompletedBy(int completedBy) {
         this.completedBy = completedBy;
     }
+
+
+    public List<TasksJobs> getTasksJobs() {
+        return tasksJobs;
+    }
+
+    public void setTasksJobs(List<TasksJobs> tasksJobs) {
+        this.tasksJobs = tasksJobs;
+    }
+
 }

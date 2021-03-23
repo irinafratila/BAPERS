@@ -5,6 +5,9 @@ package Database;
 
 import java.sql.DriverManager;
 import java.sql.*;
+/**
+ * @author Muhammad Masum Miah
+ */
 
 // this class is to connect to the databse
 public class DBConnection {

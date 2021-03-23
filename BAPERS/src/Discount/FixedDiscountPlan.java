@@ -5,9 +5,10 @@ public class FixedDiscountPlan extends Discount{
     private double discountRate; //the rate will be stored as a percentage (ie 20.0 for a 20% discount)
     private double price; //the price of a job
 
-    public FixedDiscountPlan(double rate, String setUpDate){
-        discountRate = rate;
+    public FixedDiscountPlan(int discountId, String description, String setUpDate, double discountRate) {
+        super(discountId, description);
         this.setUpDate = setUpDate;
+        this.discountRate = discountRate;
     }
 
     public double calculatePrice() {
