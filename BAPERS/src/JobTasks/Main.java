@@ -5,7 +5,6 @@ import Database.DbDriver;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Scanner;
 
 public class Main {
@@ -18,52 +17,52 @@ public class Main {
         int searchedId = sc.nextInt();
         CustomerAccount searchedCustomer = searchCustomer(searchedId);
         searchedCustomer.updateCustomerType("valuable","flexi");
-//        List<Integer> taskIds = new LinkedList<>();
-//        System.out.println("Please type the id of tasks you want");
-//        while (true) {
-//            int inputValue = sc.nextInt();
-//            if (inputValue > -1) {
-//                taskIds.add(inputValue);
-//            } else break;
-//        }
-//        for (int i : taskIds) {
-//            System.out.println(i);
-//        }
-//
-//        List<Task> newTasks = new LinkedList<>();
-//        for (int i : taskIds) {
-//            Task searchedTask = searchTask(i);
-//            newTasks.add(searchedTask);
-//            System.out.println(searchedTask.getDescription());
-//        }
-//
-//        System.out.println("What is the priority?");
-//        int priority = sc.nextInt();
-//        sc.nextLine();
-//        System.out.println("Any special instructions?");
-//
-//
-//        String specialInstructions = sc.nextLine();
-//
-//        sc.close();
-//
-//
-//
-//
-//        searchedCustomer.createJob(1,priority,specialInstructions,newTasks);
-//
-//        searchedCustomer.makePayment(1,6.6f,"card","visa","12/25",1234);
-//        searchedCustomer.addTask(1,6);
-//        searchedCustomer.removeTask(15);
-//
-//        printOpenJobs();
-//        printOpenTasks(1);
-    List<TasksJobs> hello = searchTasksJobs1(4);
-    for(TasksJobs h: hello){
-        h.startTask("day",1);
+        List<Integer> taskIds = new LinkedList<>();
+        System.out.println("Please type the id of tasks you want");
+        while (true) {
+            int inputValue = sc.nextInt();
+            if (inputValue > -1) {
+                taskIds.add(inputValue);
+            } else break;
+        }
+        for (int i : taskIds) {
+            System.out.println(i);
+        }
+
+        List<Task> newTasks = new LinkedList<>();
+        for (int i : taskIds) {
+            Task searchedTask = searchTask(i);
+            newTasks.add(searchedTask);
+            System.out.println(searchedTask.getDescription());
+        }
+
+        System.out.println("What is the priority?");
+        int priority = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Any special instructions?");
+
+
+        String specialInstructions = sc.nextLine();
+
+        sc.close();
+
+
+
+
+        searchedCustomer.createJob(1,priority,specialInstructions,newTasks);
+
+        searchedCustomer.makePayment(1,6.6f,"card","visa","12/25",1234);
+        searchedCustomer.addTask(1,6);
+        searchedCustomer.removeTask(15);
+
+        printOpenJobs();
+        printOpenTasks(1);
+        List<TasksJobs> hello = searchTasksJobs1(4);
+        for(TasksJobs h: hello){
+            h.startTask("day",1);
 //        h.completeTask();
-        System.out.println(h.getTimeTaken());
-    }
+            System.out.println(h.getTimeTaken());
+        }
     }
 
 
@@ -122,8 +121,8 @@ public class Main {
             if (t.getJobId() == jobId) {
 
 
-                        remaining.add(t);
-                    }
+                remaining.add(t);
+            }
 
 
         return remaining;
