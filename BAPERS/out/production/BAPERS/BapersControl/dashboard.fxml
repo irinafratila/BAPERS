@@ -30,7 +30,7 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Customer">
+            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changeSceneCustomer" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Customer">
                <graphic>
                   <ImageView fitHeight="36.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -90,7 +90,7 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Generate Report" textAlignment="CENTER">
+            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changeSceneReport" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Generate Report" textAlignment="CENTER">
                <graphic>
                   <ImageView fitHeight="36.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -105,7 +105,7 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Backup Database" textAlignment="CENTER">
+            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changeSceneBackup" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Backup Database" textAlignment="CENTER">
                <graphic>
                   <ImageView fitHeight="36.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -137,22 +137,13 @@
             </Button>
          </children>
       </VBox>
-      <Label layoutX="306.0" layoutY="17.0" prefHeight="44.0" prefWidth="221.0" text="Hello name,">
+      <Label fx:id="welcomeLabel" layoutX="306.0" layoutY="17.0" prefHeight="44.0" prefWidth="506.0">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <HBox alignment="CENTER_LEFT" layoutX="298.0" layoutY="16.0" prefHeight="45.0" prefWidth="660.0">
-         <children>
-            <Label alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="651.0" text="Alert" textFill="RED">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
       <VBox layoutX="332.0" layoutY="241.0" prefHeight="505.0" prefWidth="623.0" />
-      <HBox alignment="CENTER_LEFT" layoutX="318.0" layoutY="175.0" prefHeight="45.0" prefWidth="660.0" spacing="30.0">
+      <HBox alignment="CENTER_LEFT" layoutX="318.0" layoutY="201.0" prefHeight="45.0" prefWidth="660.0" spacing="30.0">
          <children>
             <Label prefHeight="28.0" prefWidth="134.0" text="Bapers">
                <font>
@@ -196,7 +187,7 @@
             </Label>
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="315.0" layoutY="78.0" prefHeight="85.0" prefWidth="660.0" spacing="50.0">
+      <HBox alignment="CENTER" layoutX="307.0" layoutY="98.0" prefHeight="85.0" prefWidth="660.0" spacing="50.0">
          <children>
             <VBox alignment="CENTER" prefHeight="63.0" prefWidth="100.0">
                <children>
@@ -254,6 +245,29 @@
                   </Label>
                </children>
             </VBox>
+         </children>
+      </HBox>
+      <HBox layoutX="294.0" layoutY="-3.0" prefHeight="100.0" prefWidth="708.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="392.0">
+               <children>
+                  <Label fx:id="welcomeLabel" prefHeight="48.0" prefWidth="213.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="242.0">
+               <children>
+                  <Label fx:id="roleLabel" prefHeight="41.0" prefWidth="218.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="111.0">
+               <children>
+                  <ImageView fitHeight="54.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/home.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
          </children>
       </HBox>
    </children>

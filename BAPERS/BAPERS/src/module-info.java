@@ -11,8 +11,9 @@ module BAPERS {
     opens Admin;
     opens BapersControl;
     opens Database;
-   // opens Customer;
+    opens Customer;
    // opens Discount;
     opens JobTasks;
+   // opens Report;
    // opens Payment;
 }

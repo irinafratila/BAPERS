@@ -2,17 +2,15 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="825.0" prefWidth="1001.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Admin.User">
+<AnchorPane prefHeight="825.0" prefWidth="1001.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Admin.createUser">
    <children>
       <AnchorPane prefHeight="111.0" prefWidth="1001.0" style="-fx-background-color: #7F38EC#7F38EC;">
          <children>
@@ -28,48 +26,42 @@
             </Label>
          </children>
       </AnchorPane>
-      <Label layoutX="229.0" layoutY="149.0" prefHeight="23.0" prefWidth="122.0" text="Full Name">
+      <Label layoutX="229.0" layoutY="180.0" prefHeight="23.0" prefWidth="122.0" text="Full Name">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="fullName" layoutX="229.0" layoutY="179.0" prefHeight="47.0" prefWidth="581.0" promptText="Full Name" />
-      <Label layoutX="229.0" layoutY="159.0" prefHeight="23.0" prefWidth="122.0" text="Username" translateY="100.0">
+      <TextField fx:id="fullName" layoutX="229.0" layoutY="210.0" prefHeight="47.0" prefWidth="581.0" promptText="Full Name" />
+      <Label layoutX="229.0" layoutY="190.0" prefHeight="23.0" prefWidth="122.0" text="Username" translateY="100.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="username" layoutX="229.0" layoutY="186.0" prefHeight="47.0" prefWidth="581.0" promptText="Username" translateY="100.0" />
-      <Label layoutX="229.0" layoutY="169.0" prefHeight="23.0" prefWidth="122.0" text="Password" translateY="200.0">
+      <TextField fx:id="username" layoutX="229.0" layoutY="217.0" prefHeight="47.0" prefWidth="581.0" promptText="Username" translateY="100.0" />
+      <Label layoutX="229.0" layoutY="177.0" prefHeight="23.0" prefWidth="122.0" text="Password" translateY="200.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="223.0" layoutY="259.0" prefHeight="23.0" prefWidth="122.0" text="Role:" translateY="300.0">
+      <Label layoutX="140.0" layoutY="282.0" prefHeight="23.0" prefWidth="122.0" text="Role:" translateY="300.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <PasswordField fx:id="password1" layoutX="229.0" layoutY="395.0" prefHeight="47.0" prefWidth="581.0" promptText="Password" />
-      <Button fx:id="createAccountButton" layoutX="351.0" layoutY="636.0" mnemonicParsing="false" onAction="#registerButtonAction" prefHeight="41.0" prefWidth="322.0" text="Create Account" />
-      <Button fx:id="closeButton" layoutX="351.0" layoutY="699.0" mnemonicParsing="false" onAction="#cancelRegister" prefHeight="41.0" prefWidth="322.0" text="Close" />
-      <RadioButton fx:id="officeManager" layoutX="347.0" layoutY="565.0" mnemonicParsing="false" onAction="#radioButtonHandler" text="Office Manager" />
-      <RadioButton fx:id="shiftManager" layoutX="538.0" layoutY="566.0" mnemonicParsing="false" onAction="#radioButtonHandler" text="Shift Manager" />
-      <RadioButton fx:id="technician" layoutX="716.0" layoutY="566.0" mnemonicParsing="false" onAction="#radioButtonHandler" text="Technician" />
-      <RadioButton fx:id="receptionist" layoutX="857.0" layoutY="568.0" mnemonicParsing="false" onAction="#radioButtonHandler" text="Receptionist" />
-      <SplitMenuButton layoutX="67.0" layoutY="340.0" mnemonicParsing="false" text="Role">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Action 1" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
-        </items>
-      </SplitMenuButton>
+      <PasswordField fx:id="password1" layoutX="229.0" layoutY="403.0" prefHeight="47.0" prefWidth="581.0" promptText="Password" />
+      <Button fx:id="createAccountButton" layoutX="351.0" layoutY="655.0" mnemonicParsing="false" onAction="#registerButtonAction" prefHeight="41.0" prefWidth="322.0" text="Create Account" />
+      <Button fx:id="closeButton" layoutX="351.0" layoutY="710.0" mnemonicParsing="false" onAction="#cancelRegister" prefHeight="41.0" prefWidth="322.0" text="Close" />
+      <RadioButton fx:id="officeManager" layoutX="264.0" layoutY="575.0" mnemonicParsing="false" onAction="#radioButtonHandler" text="Office Manager" />
+      <RadioButton fx:id="shiftManager" layoutX="455.0" layoutY="576.0" mnemonicParsing="false" onAction="#radioButtonHandler" text="Shift Manager" />
+      <RadioButton fx:id="technician" layoutX="633.0" layoutY="576.0" mnemonicParsing="false" onAction="#radioButtonHandler" text="Technician" />
+      <RadioButton fx:id="receptionist" layoutX="774.0" layoutY="578.0" mnemonicParsing="false" onAction="#radioButtonHandler" text="Receptionist" />
       <Label fx:id="createUserMessageLabel" layoutX="426.0" layoutY="129.0" prefHeight="31.0" prefWidth="301.0" />
-      <Label layoutX="236.0" layoutY="455.0" prefHeight="23.0" prefWidth="166.0" text="Confirm Password">
+      <Label layoutX="236.0" layoutY="463.0" prefHeight="23.0" prefWidth="166.0" text="Confirm Password">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <PasswordField fx:id="password2" layoutX="227.0" layoutY="481.0" prefHeight="47.0" prefWidth="581.0" promptText="Confirm Password" />
+      <PasswordField fx:id="password2" layoutX="227.0" layoutY="489.0" prefHeight="47.0" prefWidth="581.0" promptText="Confirm Password" />
       <Label fx:id="confirmPasswordLabel" layoutX="577.0" layoutY="359.0" prefHeight="29.0" prefWidth="190.0" textFill="RED" />
    </children>
 </AnchorPane>

@@ -1,98 +1,76 @@
-//
-//package JobTasks;
-//
-//import Discount.Discount;
-//
-//import java.sql.Timestamp;
-//import java.util.Date;
-//
-//public class Task {
-//    private static int count;
-//    private String status;
-//    private int taskId;
-//    private Department department;
-//    private Timestamp startTime;
-//    private Timestamp completeTime;
-//    private long timeTaken;
-//    private boolean dayShift;
-//    private double price;
-//    private boolean isComplete;
-//    private boolean isOverdue;
-//    private double duration;
-//    private int staffId;
-//
-//    private Discount discountType; //TODO  this will later be changed to the right discount data type instead of String
-//
-//
-//    public Task(Department department, double price) {
-//        this.department = department;
-//
-//        this.status = "Ready to process";
-//        this.taskId = count++;
-//        this.isComplete=false;
-//        this.isOverdue = false;
-//
-//        //TODO: if statements for discounts and to calculate price.
-//        this.price = price;
-//    }
-//
-//    public void startTask(boolean dayShift, int id){
-//        this.status = "In Progress";
-//        this.startTime = new Timestamp(System.currentTimeMillis());
-//        this.dayShift = dayShift;
-//        this.staffId = id;
-//
-//    }
-//
-//    public void completeTask(){
-//        this.isComplete = true;
-//        this.status = "Complete";
-//        this.timeTaken= ((completeTime.getTime() - startTime.getTime())/1000)/60/60;
-//        if (timeTaken > duration){
-//            this.isOverdue = true;
-//        }
-//    }
-//    public double getPrice() {
-//        return price;
-//    }
-//
-//    public String getStatus() {
-//        return status;
-//    }
-//
-//    public int getTaskId() {
-//        return taskId;
-//    }
-//
-//    public String getDepartment() {
-//        return department;
-//    }
-//
-//    public Date getStartTime() {
-//        return startTime;
-//    }
-//
-//
-//    public double getTimeTaken() {
-//        return timeTaken;
-//    }
-//
-//    public boolean isDayShift() {
-//        return dayShift;
-//    }
-//
-//    public void setStatus(String status) {
-//        this.status = status;
-//    }
-//
-//
-//    public void setDepartment(String department) {
-//        this.department = department;
-//    }
-//
-//    public boolean checkIfComplete(){
-//        return isComplete;
-//    }
-//
-//
-//}
+
+package JobTasks;
+
+import Database.DbDriver;
+import Discount.Discount;
+
+import java.sql.Timestamp;
+
+/**
+ * @author Muhammad Masum Miah
+ */
+
+
+public class Task {
+    private static int count;
+    private int taskId;
+    private String description;
+
+    private double price;
+    private int department;
+    private double duration;
+
+    public Task(int id, String description, int d, float price, int duration) {
+        this.department = d;
+        this.description = description;
+        this.taskId = id;
+        this.price = price;
+        this.duration = duration;
+        //TODO: if statements for discounts and to calculate price.
+        this.price = price;
+    }
+
+
+    //getters and setters
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(int department) {
+        this.department = department;
+    }
+
+    public double getDuration() {
+        return duration;
+    }
+
+    public void setDuration(double duration) {
+        this.duration = duration;
+    }
+}

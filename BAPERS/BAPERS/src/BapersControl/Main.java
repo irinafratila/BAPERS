@@ -1,5 +1,6 @@
 package BapersControl;
 
+import Database.DbDriver;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import Admin.User;
+
 
 import java.io.IOException;
 
@@ -18,9 +20,12 @@ public class Main extends Application {
         stg = primaryStage;
         primaryStage.setResizable(false);
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+//        Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(new Scene(root, 1000, 769));
         primaryStage.show();
+        DbDriver.printCust();
+//        DbDriver.printStaff();
     }
 
     public void changeScene(String fxml) throws IOException {
