@@ -256,9 +256,8 @@ public class DbDriver {
 
             //Demo insert data.
             insertStaffAccount("hfhf", "dd", "ds", "dd", "ddd", "242323");
-            insertDiscount("FLEXI");
-            insertDiscount("FIXED");
-            insertDiscount("VARIABLE");
+            insertDiscount("No discount");
+
             //Insert into customer account.
             insertCustomer("City, University of London", "Prof", "David", "Rhind", "Northampton Square", "London", "EC1V0HB", "David.Rhind@city.ac.uk", "02070408000", "valuable");
             insertCustomer("AirVia Ltd", "Mr", "Boris", "Berezovsky", "12 Bond Street", "London", "WC1V8HU", "Boris.B@yahoo.com", "02073218523", "valuable");
@@ -301,7 +300,7 @@ public class DbDriver {
         }
     }
 
-    //Testing sql querys from the database.
+    //Below are a set of query methods to access data from the database.
     public static List<CustomerAccount> queryCustomers() {
         try (Statement statement = conn.getConnection().createStatement();
              ResultSet results = statement.executeQuery("SELECT * from " + TABLE_CUSTOMER_ACCOUNT)
@@ -506,7 +505,7 @@ public class DbDriver {
             return null;
         }
     }
-    //Insert into the database.
+    //Insert statement to enter data into individual tables  into the database.
     public static void insertDiscount(String discount) {
         try (Statement statement = conn.getConnection().createStatement()) {
             String sb1 = "Insert into " + TABLE_DISCOUNT +
@@ -807,7 +806,7 @@ public class DbDriver {
             e.printStackTrace();
         }
     }
-
+    //TODO: Put all customer related CRUD here.
     //Update the database when changing the customer type or discount.
     public static void updateCustomerType(String isValuable, int discountId, int cId) {
         try (Statement statement = conn.getConnection().createStatement()) {
@@ -830,6 +829,12 @@ public class DbDriver {
             e.printStackTrace();
         }
     }
+
+
+
+
+    //TODO: Put all tasks related CRUD here.
+    //Update the database after starting a task
     public static void updateStartTask(String status,String start,String shift, int id) {
         try (Statement statement = conn.getConnection().createStatement()) {
             String sb1 = "UPDATE " + TABLE_TASKS_AVAILABLE_JOBS +
@@ -889,19 +894,8 @@ public class DbDriver {
             e.printStackTrace();
         }
     }
-    public static void removeTasks(int id) {
-        try (Statement statement = conn.getConnection().createStatement()) {
-            String sb1 = "delete from " + TABLE_TASKS_AVAILABLE_JOBS +
-                    " WHERE " +
-                    COLUMN_JOB_TASK_ID +
-                    " = " +
-                    id;
-            System.out.println(sb1);
-            statement.execute(sb1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
+    //Amend a job by removing a certain task.
     public static void removeTasksByJob(int id) {
         try (Statement statement = conn.getConnection().createStatement()) {
             String sb1 = "delete from " + TABLE_TASKS_AVAILABLE_JOBS +
@@ -915,6 +909,7 @@ public class DbDriver {
             e.printStackTrace();
         }
     }
+    //delete a job from the database.
     public static void removeJob(int id) {
         try (Statement statement = conn.getConnection().createStatement()) {
             String sb1 = "delete from " + TABLE_JOBS +
@@ -922,19 +917,6 @@ public class DbDriver {
                     COLUMN_JOB_ID +
                     " = " +
                     id;
-            System.out.println(sb1);
-            statement.execute(sb1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void searchOpenJobs() {
-        try (Statement statement = conn.getConnection().createStatement()) {
-            String sb1 = "select * from  " + TABLE_JOBS +
-                    " WHERE UPPER(" +
-                    COLUMN_COMPLETE_TIME +
-                    ") = UPPER('NULL')";
             System.out.println(sb1);
             statement.execute(sb1);
         } catch (SQLException e) {
@@ -950,6 +932,33 @@ public class DbDriver {
                     price +
                     " WHERE " +
                     COLUMN_JOB_ID +
+                    " = " +
+                    id;
+            System.out.println(sb1);
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    //Returns all the jobs which are currently incomplete
+    public static void searchOpenJobs() {
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "select * from  " + TABLE_JOBS +
+                    " WHERE UPPER(" +
+                    COLUMN_COMPLETE_TIME +
+                    ") = UPPER('NULL')";
+            System.out.println(sb1);
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    //Delete a task which the company no longer provide.
+    public static void removeTasks(int id) {
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "delete from " + TABLE_TASKS_AVAILABLE +
+                    " WHERE " +
+                    COLUMN_TASK_ID +
                     " = " +
                     id;
             System.out.println(sb1);

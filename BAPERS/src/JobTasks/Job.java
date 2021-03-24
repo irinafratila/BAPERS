@@ -31,6 +31,7 @@ public class Job {
     int completedBy;
     private List<TasksJobs> tasksJobs;
     double vat = 20;
+    double priorityRate;
 
 
     // Constructor for the Job class.
@@ -64,22 +65,35 @@ public class Job {
         this.startTime =startTimeStamp.toString();
     }
 
+    public double getPriorityRate() {
+        return priorityRate;
+    }
+
+    public void setPriorityRate(double priorityRate) {
+        this.priorityRate = priorityRate;
+    }
+
     // Calculate the deadline based on the priority of the job. 5 as highest priority.
     public Timestamp setDeadline() {
         if(priority ==5){
             deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(1, ChronoUnit.HOURS));
+            priorityRate =100;
         }
         else if(priority ==4){
             deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(2, ChronoUnit.HOURS));
+            priorityRate = 75;
         }
         else if(priority ==3){
             deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(3, ChronoUnit.HOURS));
+            priorityRate = 50;
         }
         else if(priority ==2){
             deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(6, ChronoUnit.HOURS));
+            priorityRate = 25;
         }
         else if(priority ==1){
             deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(24, ChronoUnit.HOURS));
+            priorityRate = 0;
         }
         return deadlineTimeStamp;
     }

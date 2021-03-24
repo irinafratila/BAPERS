@@ -2,22 +2,20 @@ package JobTasks;
 
 import Customer.CustomerAccount;
 import Database.DbDriver;
-import Discount.FixedDiscountPlan;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    private static final DbDriver db = new DbDriver();
+
 
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter Customer id");
         int searchedId = sc.nextInt();
-        CustomerAccount searchedCustomer = db.searchCustomer(searchedId);
-//        searchedCustomer.updateCustomerType("valuable","variable");
+        CustomerAccount searchedCustomer = DbDriver.searchCustomer(searchedId);
+        searchedCustomer.updateCustomerType("valuable","variable");
 
         List<Integer> taskIds = new LinkedList<>();
         System.out.println("Please type the id of tasks you want");
@@ -31,7 +29,7 @@ public class Main {
 
         List<Task> newTasks = new LinkedList<>();
         for (int i : taskIds) {
-            Task searchedTask = db.searchTask(i);
+            Task searchedTask = DbDriver.searchTask(i);
             newTasks.add(searchedTask);
             System.out.println(searchedTask.getDescription());
         }

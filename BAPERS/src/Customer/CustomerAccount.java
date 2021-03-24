@@ -59,40 +59,6 @@ public class CustomerAccount {
             System.out.println("You have overpaid, transaction unsuccessful");
         } else System.out.println("You have underpaid, please pay the full price.");
     }
-    //Method to insert tasks for the job, as job_id is stored in the database, this will return the newly created job.
-    //This method is need as the database creates the job id.
-//    public static Job searchJobJustCreated() {
-//        List<Job> jobs = DbDriver.queryJobs();
-//        if (jobs == null) {
-//            System.out.println("No Jobs");
-//            return null;
-//        }
-//        return jobs.get(jobs.size() - 1);
-//    }
-    // method to search the jobs table in the database.
-//    public static Job searchJob(int jobId) {
-//        List<Job> jobs = DbDriver.queryJobs();
-//        if (jobs == null) {
-//            System.out.println("No Jobs");
-//            return null;
-//        } else {
-//            for (Job j : jobs) {
-//                if (j.getJobId() == jobId) {
-//                    return j;
-//                }
-//            }
-//            return null;
-//        }
-//
-//    }
-//    public Discount getDiscount() {
-//        List<Discount> discount = DbDriver.queryDiscounts();
-//        for (Discount d : discount) {
-//            if (d.getDiscountId() == getDiscountId()) {
-//                return d;
-//            }
-//        }return null;
-//    }
 
     //After searching a customer, they are able to create jobs. This will also be stored into the database.
     public void createJob(int staffId, int priority, String specialInstructions, List<Task> newTasks) {
@@ -120,6 +86,7 @@ public class CustomerAccount {
                     rate = rates.get(rates.size() - 1);
                     newPrice = job.getPrice() - (job.getPrice() * rate / 100);
                     newPrice *=  (1+(job.getVat()/100));//apply VAT on the new price.
+                    newPrice *= (1+(job.getPriorityRate()/100)); //Adjust the price according to the priority.
                     job.setPrice(newPrice);
                     DbDriver.updateJobPrice(newPrice, searchedJob.getJobId());
                 }
@@ -139,6 +106,7 @@ public class CustomerAccount {
                     rate = rates.get(rates.size() - 1);
                     newPrice = job.getPrice() - (job.getPrice() * rate / 100);
                     newPrice *=  (1+(job.getVat()/100));
+                    newPrice *= (1+(job.getPriorityRate()/100)); //Adjust the price according to the priority.
                     job.setPrice(newPrice);
                     DbDriver.updateJobPrice(newPrice, searchedJob.getJobId());
                 }
@@ -164,11 +132,13 @@ public class CustomerAccount {
                             newPrice = newPrice + (taskPrice - discount);
                         }
                     newPrice *=  (1+(job.getVat()/100));
+                    newPrice *= (1+(job.getPriorityRate()/100)); //Adjust the price according to the priority.
                     DbDriver.updateJobPrice(newPrice, searchedJob.getJobId());
                 }
             }
             else {
                 newPrice = job.getPrice()*(1+(job.getVat()/100));
+                newPrice *= (1+(job.getPriorityRate()/100)); //Adjust the price according to the priority.
                 DbDriver.updateJobPrice(newPrice, searchedJob.getJobId());
             }
 
@@ -178,29 +148,11 @@ public class CustomerAccount {
                 jobs.add(job);
             }
 
+
     public void deleteJob(int id) {
         DbDriver.removeJob(id);
         DbDriver.removeTasksByJob(id);
     }
-
-
-//    //Search through job tasks from the database.
-//    public static TasksJobs searchTasksJobs(int id) {
-//        List<TasksJobs> jobs = DbDriver.queryTasksJobs();
-//
-//        if (jobs == null) {
-//            System.out.println("No Tasks in this job");
-//            return null;
-//        } else {
-//            for (TasksJobs j : jobs) {
-//                if (j.getJobId() == id) {
-//                    return j;
-//                }
-//            }
-//            return null;
-//        }
-//
-//    }
 
 
     // Add extra tasks after completing initial order.
@@ -222,7 +174,6 @@ public class CustomerAccount {
         Discount d = DbDriver.getLastDiscountFromDB();
         int discountId = d.getDiscountId()+1;
         if (isValuable.equalsIgnoreCase("valuable")) {
-
             this.isValuable = true;
             if (type.equalsIgnoreCase("flexi")) {
                 DbDriver.insertDiscount(type);
@@ -235,21 +186,12 @@ public class CustomerAccount {
                 applyVariableDiscount();
             } else {
                 this.isValuable = false;
-                this.discountId = 0;
+                this.discountId = 1;
             }
         }
-
         DbDriver.updateCustomerType(isValuable, discountId, getCustomerId());
     }
 
-//    public  Discount searchDiscount() {
-//        List<Discount> discounts = DbDriver.queryDiscounts();
-//        if (discounts == null) {
-//            System.out.println("No Discounts");
-//            return null;
-//        }
-//        return discounts.get(discounts.size()-1);
-//    }
 
     public void applyFixedDiscount() {
         System.out.println("Please type in the rate");
