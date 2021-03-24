@@ -1,9 +1,6 @@
 package Database;
 
-
-
 import Customer.CustomerAccount;
-
 import Discount.*;
 import JobTasks.Job;
 import JobTasks.Task;
@@ -12,6 +9,7 @@ import Discount.FlexibleDiscountPlan;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+
 
 /**
  * @author Muhammad Masum Miah
@@ -282,7 +280,7 @@ public class DbDriver {
             insertTasks("Black and white film processing" ,2, 49.50F,60);
             insertTasks("Bag up" ,3,6.00F,30);
             insertTasks("Colour film processing" ,2,80.00F,90);
-            insertTasks("Colour Transparecy Processing",2,110.30F,180);
+            insertTasks("Colour Transparency Processing",2,110.30F,180);
             insertTasks("Use of small copy camera",1, 8.50F,75);
             insertTasks("Mount transparencies",3,55.50F,45);
 
@@ -372,7 +370,7 @@ public class DbDriver {
                 int hours = results.getInt(COLUMN_HOURS_TO_COMPLETE);
                 int staffIdStart = results.getInt(COLUMN_STAFF_ID_START);
                 int staffIdComplete = results.getInt(COLUMN_STAFF_ID_COMPLETE);
-                float price = results.getFloat(COLUMN_TOTAL_PRICE);
+                double price = results.getDouble(COLUMN_TOTAL_PRICE);
 
                 Job job = new Job(jobId,accountNumber,priority,instructions,status,start,deadline,completeTime,hours,staffIdStart,price,staffIdComplete);
                 jobs.add(job);
@@ -392,7 +390,7 @@ public class DbDriver {
                 int taskId = results.getInt(COLUMN_TASK_ID);
                 String description = results.getString(COLUMN_TASK_DESCRIPTION);
                 int departmentId = results.getInt(COLUMN_DEPARTMENT_ID);
-                float taskPrice = results.getFloat(COLUMN_TASK_PRICE);
+                double taskPrice = results.getDouble(COLUMN_TASK_PRICE);
                 int duration = results.getInt(COLUMN_TASK_DURATION);
 
                 Task task = new Task(taskId, description, departmentId, taskPrice, duration);
@@ -560,7 +558,7 @@ public class DbDriver {
             e.printStackTrace();
         }
     }
-    public static void insertFlexibleDiscount(double rate, int Did, float range) {
+    public static void insertFlexibleDiscount(double rate, int Did, double range) {
         try (Statement statement = conn.getConnection().createStatement()) {
             String sb1 = "Insert into " + TABLE_FLEXIBLE +
                     "(" +
@@ -597,7 +595,7 @@ public class DbDriver {
             e.printStackTrace();
         }
     }
-    public static void insertTasks(String desc, int did, float price, int duration) {
+    public static void insertTasks(String desc, int did, double price, int duration) {
         try (Statement statement = conn.getConnection().createStatement()) {
             String sb1 = "insert into " + TABLE_TASKS_AVAILABLE +
                     "(" +
@@ -625,9 +623,6 @@ public class DbDriver {
     }
     public static void insertCustomer(String cName, String title, String firstName, String lastName, String address, String City, String postcode, String email, String phone, String type) {
         try (Statement statement = conn.getConnection().createStatement()) {
-//            Discount discount = searchDiscount();
-//            int discountId= discount.getDiscountId()+1;
-//            insertDiscount("no discount");
             String sb1 = "insert into " + TABLE_CUSTOMER_ACCOUNT +
                     "(" +
                     COLUMN_CUSTOMER_NAME +
@@ -749,7 +744,7 @@ public class DbDriver {
         }
     }
 
-    public static void insertPaymentHistory( int jobId, int customerId, String cashOrCard, String cardType,String expiry, int lastDigits,float amount) {
+    public static void insertPaymentHistory( int jobId, int customerId, String cashOrCard, String cardType,String expiry, int lastDigits,double amount) {
         try (Statement statement = conn.getConnection().createStatement()) {
             String sb1 = "insert into " + TABLE_PAYMENT_HISTORY +
                     "(" +
@@ -967,14 +962,7 @@ public class DbDriver {
             e.printStackTrace();
         }
     }
-        public static Discount searchLastDiscountId() {
-            List<Discount> discounts = queryDiscounts();
-            if (discounts == null) {
-                System.out.println("No Discounts");
-                return null;
-            }
-            return discounts.get(discounts.size()-1);
-        }
+
     public static void updateDiscount(String desc, int id) {
         try (Statement statement = conn.getConnection().createStatement()) {
             String sb1 = "UPDATE " + TABLE_DISCOUNT +
@@ -1020,8 +1008,7 @@ public class DbDriver {
     }
     //Search and print open jobs.
     public static List<Job> searchAllJobs() {
-        List<Job> jobs = DbDriver.queryJobs();
-
+        List<Job> jobs = queryJobs();
         if (jobs == null) {
             System.out.println("No Jobs");
             return null;
@@ -1029,12 +1016,24 @@ public class DbDriver {
         return jobs;
     }
 
-    public static void printOpenJobs() {
-        List<Job> open = searchAllJobs();
-        for (Job j : open) {
-            if (j.getHours() == 0) {
-                System.out.println(j.getJobId());
+    //    helper method to check all open jobs
+    public static List<Job> getOpenJobs(){
+        List<Job> jobs = searchAllJobs();
+        List<Job> openJobs = new LinkedList<>();
+        if(jobs != null) {
+            for (Job j : jobs) {
+                if (j.getCompleteTime() == null){
+                    openJobs.add(j);
+                }
             }
+        }
+        if(openJobs.size()>0){
+            return openJobs;
+        }return null;
+    }
+    public static void printJobs(List<Job> jobs){
+        for(Job j: jobs){
+            System.out.println(j.getJobId());
         }
     }
 
@@ -1084,29 +1083,30 @@ public class DbDriver {
         }
         for (TasksJobs t : jobs)
             if (t.getJobId() == jobId) {
-                for (Task task : tasks)
-                    if (task.getTaskId() == t.getTaskId()) {
-                        remaining.add(task);
-                    }
+                if(tasks != null) {
+                    for (Task task : tasks)
+                        if (task.getTaskId() == t.getTaskId()) {
+                            remaining.add(task);
+                        }
+                }
             }
         return remaining;
 
     }
 
-    //Search through job tasks from the database.  with specific jobtasks id.
+    //Search through job tasks from the database.  with specific job-tasks id.
     public static TasksJobs searchTasksJobs(int id) {
         List<TasksJobs> jobs = queryTasksJobs();
         if (jobs == null) {
             System.out.println("No Tasks in this job");
-            return null;
         } else {
             for (TasksJobs j : jobs) {
                 if (j.getJobId() == id) {
                     return j;
                 }
             }
-            return null;
         }
+        return null;
     }
     public static List<TasksJobs> getAllTaskInfoOnAJob(int jobId) {
         List<TasksJobs> jobs = queryTasksJobs();
@@ -1123,8 +1123,12 @@ public class DbDriver {
     }
     public static void printOpenTasks(int jobId) {
         List<Task> open = searchTasksJobsToPrint(jobId);
-        for (Task j : open) {
-            System.out.println(j.getTaskId() + " " + j.getDescription());
+        if (open == null) {
+            System.out.println("No Tasks");
+        }else {
+            for (Task j : open) {
+                System.out.println(j.getTaskId() + " " + j.getDescription());
+            }
         }
     }
 
@@ -1135,14 +1139,20 @@ public class DbDriver {
   //Search for a discount
     public static Discount getDiscount(int discountId) {
         List<Discount> discount = queryDiscounts();
-        for (Discount d : discount) {
-            if (d.getDiscountId() == discountId) {
-                return d;
+        if (discount == null) {
+            System.out.println("No Tasks");
+        } else {
+            for (Discount d : discount) {
+                if (d.getDiscountId() == discountId) {
+                    return d;
+                }
             }
+
         }return null;
     }
     //helper method to get the last discount id which was used
-    public static Discount getLastDiscountFromDB() {
+
+    public static Discount searchLastDiscountId() {
         List<Discount> discounts = queryDiscounts();
         if (discounts == null) {
             System.out.println("No Discounts");
@@ -1150,6 +1160,7 @@ public class DbDriver {
         }
         return discounts.get(discounts.size()-1);
     }
+
 
 
 

@@ -1,7 +1,7 @@
 package Discount;
 
 public class FlexibleDiscountPlan {
-    private double price; //the price of a job or a task
+
     private int range;
     private double rate;
     private int flexiId;
@@ -14,9 +14,7 @@ public class FlexibleDiscountPlan {
         this.discountId=discountId;
     }
 
-    public double calculatePrice(double rate) {
-        return price * (rate / 100);
-    }
+
 
     public int getRange() {
         return range;

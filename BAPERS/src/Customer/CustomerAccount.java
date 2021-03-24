@@ -171,7 +171,7 @@ public class CustomerAccount {
     //Update the customer type to either normal or valuable adjusting the discounts alongside.
     public void updateCustomerType(String isValuable, String type) {
 
-        Discount d = DbDriver.getLastDiscountFromDB();
+        Discount d = DbDriver.searchLastDiscountId();
         int discountId = d.getDiscountId()+1;
         if (isValuable.equalsIgnoreCase("valuable")) {
             this.isValuable = true;
@@ -196,14 +196,14 @@ public class CustomerAccount {
     public void applyFixedDiscount() {
         System.out.println("Please type in the rate");
         rate = sc.nextDouble();
-        Discount d = DbDriver.getLastDiscountFromDB();
+        Discount d = DbDriver.searchLastDiscountId();
         int discountId = d.getDiscountId();
         DbDriver.insertFixedDiscount(rate, discountId);
     }
 
     public void applyVariableDiscount() {
         int taskId;
-        Discount d = DbDriver.getLastDiscountFromDB();
+        Discount d = DbDriver.searchLastDiscountId();
         int discountId = d.getDiscountId();
         while (true) {
             System.out.println("Please type in the task id");
@@ -219,7 +219,7 @@ public class CustomerAccount {
     public void applyFlexiDiscount() {
         Map<Integer, Double> ranges = new HashMap<>();
         int range;
-        Discount d = DbDriver.getLastDiscountFromDB();
+        Discount d = DbDriver.searchLastDiscountId();
         int discountId = d.getDiscountId();
         while (true) {
             System.out.println("Please type in end of range");

@@ -1,7 +1,7 @@
 package Discount;
 
 public class VariableDiscountPlan {
-    private double price; //the price of each task
+
     private int varId;
     private int discountId;
     private int taskId;
@@ -47,11 +47,6 @@ public class VariableDiscountPlan {
         this.rate = rate;
     }
 
-    public VariableDiscountPlan(double price) {
-        this.price = price;
-    }
 
-    public double calculatePrice(double rate){
-        return price*rate;
-    }
+
 }

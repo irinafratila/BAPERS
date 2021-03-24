@@ -17,10 +17,10 @@ public class Job {
     private String status;
     private Timestamp startTimeStamp;
     private String startTime;
-    private float timeTaken;
+    private double timeTaken;
     private int startedBy;
     private List<Task> tasks;
-    private double price;
+    private double price ;
     private int jobId;
     private boolean isJobComplete;
     private String specialInstructions;
@@ -36,7 +36,7 @@ public class Job {
 
     // Constructor for the Job class.
 
-    public Job(int jobId, int account,int priority, String specialInstructions,String status,String start,String deadline,String completeTime,int hours,int startedBy, float price, int completedBy) {
+    public Job(int jobId, int account,int priority, String specialInstructions,String status,String start,String deadline,String completeTime,int hours,int startedBy, double price, int completedBy) {
 
         this.customerId = account;
         this.priority = priority;
@@ -104,8 +104,8 @@ public class Job {
         deadlineTimeStamp = setDeadline();
     }
 
-    // Check to see if all jobs are complete.
-    public boolean completeJobCheck() {
+    // Helper method Check to see if all tasks are complete.
+    public boolean completeJobTasksCheck() {
         ListIterator<TasksJobs> check = tasksJobs.listIterator();
         while (check.hasNext()) {
             if (!check.next().getIsComplete().equals("yes")) {
@@ -115,26 +115,37 @@ public class Job {
 
         }return true;
     }
+    // Helper method Check to see if all tasks are complete.
+    public boolean completeJobCheck(List<Job> jobs) {
+        ListIterator<Job> check = jobs.listIterator();
+        while (check.hasNext()) {
+            if (check.next().getCompleteTime().equalsIgnoreCase("null")) {
+                System.out.println("Task \"" + check.next().getJobId() + "\" is not complete!");
+                return false;
+            }
+
+        }return true;
+    }
 
     //Complete the job.
     public void completeJob(int user){
-
+        if(completeJobTasksCheck()){
             this.completeTimeStamp = new Timestamp(System.currentTimeMillis());
             this.completeTime  =completeTimeStamp.toString();
             this.isJobComplete = true;
             this.status = "Job Complete";
             this.completedBy = user;
             this.timeTaken = setTimeTaken();
-//        }
-//        else{
-//            System.out.println("Job cannot be completed!");
-//        }
+        }
+        else{
+            System.out.println("Job cannot be completed!");
+        }
 
        // TODO: add completed by.
 
     }
     // returns duration in hours.
-    public float setTimeTaken() {
+    public double setTimeTaken() {
 
         timeTaken = ((completeTimeStamp.getTime() - startTimeStamp.getTime())/1000)/60/60;
         return timeTaken;
@@ -274,11 +285,11 @@ public class Job {
         this.startTime = startTime;
     }
 
-    public float getTimeTaken() {
+    public double getTimeTaken() {
         return timeTaken;
     }
 
-    public void setTimeTaken(float timeTaken) {
+    public void setTimeTaken(double timeTaken) {
         this.timeTaken = timeTaken;
     }
 

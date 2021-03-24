@@ -15,12 +15,11 @@ public class Task {
     private static int count;
     private int taskId;
     private String description;
-
     private double price;
     private int department;
     private double duration;
 
-    public Task(int id, String description, int d, float price, int duration) {
+    public Task(int id, String description, int d, double price, int duration) {
         this.department = d;
         this.description = description;
         this.taskId = id;
@@ -29,7 +28,6 @@ public class Task {
         //TODO: if statements for discounts and to calculate price.
         this.price = price;
     }
-
 
     //getters and setters
 
