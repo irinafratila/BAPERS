@@ -4,11 +4,11 @@ package Database;
 
 import Customer.CustomerAccount;
 
-import Discount.Discount;
+import Discount.*;
 import JobTasks.Job;
 import JobTasks.Task;
 import JobTasks.TasksJobs;
-
+import Discount.FlexibleDiscountPlan;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class DbDriver {
     public static final String COLUMN_DISCOUNT_TYPE = "DISCOUNT_TYPE";
 
     public static final String TABLE_FIXED = "FIXED";
-    public static final String COLUMN_FIXED_ID = " FIXED_ID";
+    public static final String COLUMN_FIXED_ID = "FIXED_ID";
     public static final String COLUMN_FIXED_RATE = "FIXED_RATE";
 
     public static final String TABLE_FLEXIBLE = "FLEXIBLE";
@@ -119,7 +119,6 @@ public class DbDriver {
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_DEPARTMENT);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_STAFF_ACCOUNT);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_CUSTOMER_ACCOUNT);
-
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_FLEXIBLE);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_FIXED);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_DISCOUNT);
@@ -161,7 +160,7 @@ public class DbDriver {
                     COLUMN_PHONE_NUMBER + "  varchar(15),\n" +
                     COLUMN_EMAIL_ADDRESS + " varchar(255),\n" +
                     COLUMN_CUSTOMER_TYPE + " varchar(20) default 'normal',\n" +
-                    COLUMN_DISCOUNT_ID + " integer default 0,\n" +
+                    COLUMN_DISCOUNT_ID + " integer ,\n" +
                     "PRIMARY KEY (" + COLUMN_ACCOUNT_NUMBER + "),\n" +
                     "FOREIGN KEY (" + COLUMN_DISCOUNT_ID + ") REFERENCES " + TABLE_DISCOUNT + "(" + COLUMN_DISCOUNT_ID + ")\n" +
                     ")");
@@ -254,16 +253,18 @@ public class DbDriver {
                     "FOREIGN KEY (" + COLUMN_DISCOUNT_ID + ") REFERENCES " + TABLE_DISCOUNT + "(" + COLUMN_DISCOUNT_ID + ") \n" +
                     ")");
 
+
+            //Demo insert data.
             insertStaffAccount("hfhf", "dd", "ds", "dd", "ddd", "242323");
             insertDiscount("FLEXI");
             insertDiscount("FIXED");
             insertDiscount("VARIABLE");
             //Insert into customer account.
-            insertCustomer("City, University of London", "Prof", "David", "Rhind", "Northampton Square", "London", "EC1V0HB", "David.Rhind@city.ac.uk", "02070408000", "valuable", 1);
-            insertCustomer("AirVia Ltd", "Mr", "Boris", "Berezovsky", "12 Bond Street", "London", "WC1V8HU", "Boris.B@yahoo.com", "02073218523", "valuable", 2);
-            insertCustomer("InfoPharma Ltd", "Mr", "ALex", "White", "25 Bond Street", "London", "WC1V 8LS", "Alex.Wright@infopharma.com", "02073218001", "valuable", 3);
-            insertCustomer("Hello Magazine", "Ms", "Sarah", "Brocklehurst", "12 Charter Street", "London", "W1 8NS", "Sarah.Brocklehurst@hello.com", "02034567809", "valuable", 3);
-            insertCustomer("Ms Eva Bauyer", "Ms", "Eva", "Bauyer", "1, Liverpool Street", "London", "EC2V 8NS", "eva.bauyer@gmail.com", "02085558989", "valuable", 1);
+            insertCustomer("City, University of London", "Prof", "David", "Rhind", "Northampton Square", "London", "EC1V0HB", "David.Rhind@city.ac.uk", "02070408000", "valuable");
+            insertCustomer("AirVia Ltd", "Mr", "Boris", "Berezovsky", "12 Bond Street", "London", "WC1V8HU", "Boris.B@yahoo.com", "02073218523", "valuable");
+            insertCustomer("InfoPharma Ltd", "Mr", "ALex", "White", "25 Bond Street", "London", "WC1V 8LS", "Alex.Wright@infopharma.com", "02073218001", "valuable");
+            insertCustomer("Hello Magazine", "Ms", "Sarah", "Brocklehurst", "12 Charter Street", "London", "W1 8NS", "Sarah.Brocklehurst@hello.com", "02034567809", "valuable");
+            insertCustomer("Ms Eva Bauyer", "Ms", "Eva", "Bauyer", "1, Liverpool Street", "London", "EC2V 8NS", "eva.bauyer@gmail.com", "02085558989", "valuable");
             /*
             //Testing joins
             statement.execute(" insert into DISCOUNT(DISCOUNT_ID,DISCOUNT_TYPE) values(1,'FLEXI')");
@@ -276,8 +277,6 @@ public class DbDriver {
             insertDepartment("COPY ROOM");
             insertDepartment("DEVELOPMENT ROOM");
             insertDepartment("FINISHING ROOM");
-
-
 
             //Insert into TASKS_AVAILABLE.
             insertTasks("Use of large copy camera",1, 19.00F,120);
@@ -293,10 +292,6 @@ public class DbDriver {
             insertFlexibleDiscount(2,3,1000);
 
 
-
-
-
-
             insertJob(1, 2, "yes", "2021-03-21 19:03:48.539", "2021-03-21 19:03:48.539", 1, 6.6F);
             System.out.println("Connected to Database!");
 
@@ -308,7 +303,6 @@ public class DbDriver {
 
     //Testing sql querys from the database.
     public static List<CustomerAccount> queryCustomers() {
-
         try (Statement statement = conn.getConnection().createStatement();
              ResultSet results = statement.executeQuery("SELECT * from " + TABLE_CUSTOMER_ACCOUNT)
         ) {
@@ -336,12 +330,9 @@ public class DbDriver {
             e.printStackTrace();
             return null;
         }
-
-
     }
     // TODO:Update once admin class is complete.
 //    public List<User> queryUser() {
-//
 //        try (Statement statement = conn.getConnection().createStatement();
 //             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_STAFF_ACCOUNT);
 //        ) {
@@ -355,7 +346,6 @@ public class DbDriver {
 //                String role = results.getString(COLUMN_STAFF_ROLE);
 //                String phoneNumber = results.getString(COLUMN_STAFF_PHONE_NUMBER);
 //
-//
 //                User staff = new User(staffId,name,userName,password,address,role,phoneNumber);
 //                users.add(staff);
 //            }
@@ -364,12 +354,9 @@ public class DbDriver {
 //            e.printStackTrace();
 //            return null;
 //        }
-//
-//
 //    }
 
     public static List<Job> queryJobs() {
-
         try (Statement statement = conn.getConnection().createStatement();
              ResultSet results = statement.executeQuery("SELECT * from " + TABLE_JOBS)
         ) {
@@ -396,11 +383,8 @@ public class DbDriver {
             e.printStackTrace();
             return null;
         }
-
-
     }
     public static List<Task> queryTasks() {
-
         try (Statement statement = conn.getConnection().createStatement();
              ResultSet results = statement.executeQuery("SELECT * from " + TABLE_TASKS_AVAILABLE)
         ) {
@@ -420,11 +404,8 @@ public class DbDriver {
             e.printStackTrace();
             return null;
         }
-
-
     }
     public static List<Discount> queryDiscounts() {
-
         try (Statement statement = conn.getConnection().createStatement();
              ResultSet results = statement.executeQuery("SELECT * from " + TABLE_DISCOUNT)
         ) {
@@ -432,8 +413,6 @@ public class DbDriver {
             while (results.next()) {
                 int discountId = results.getInt(COLUMN_DISCOUNT_ID);
                 String description = results.getString(COLUMN_DISCOUNT_TYPE);
-
-
                 Discount discount = new Discount(discountId,description);
                 discounts.add(discount);
             }
@@ -442,11 +421,66 @@ public class DbDriver {
             e.printStackTrace();
             return null;
         }
+    }
+    public static List<FlexibleDiscountPlan> queryFlexiDiscounts() {
+        try (Statement statement = conn.getConnection().createStatement();
+             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_FLEXIBLE)
+        ) {
+            List<FlexibleDiscountPlan> discounts = new LinkedList<>();
+            while (results.next()) {
+                int flexiId = results.getInt(COLUMN_FLEXI_ID);
+                int rate = results.getInt(COLUMN_FLEXI_RATE);
+                int range = results.getInt(COLUMN_RANGE);
+                int discountId = results.getInt(COLUMN_DISCOUNT_ID);
+            FlexibleDiscountPlan flexibleDiscountPlan = new FlexibleDiscountPlan(discountId, range, rate, flexiId);
+            discounts.add(flexibleDiscountPlan);
+        }
+            return discounts;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static List<VariableDiscountPlan> queryVariableDiscounts() {
+        try (Statement statement = conn.getConnection().createStatement();
+             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_VARIABLE)
+        ) {
+            List<VariableDiscountPlan> discounts = new LinkedList<>();
+            while (results.next()) {
+                int variableId = results.getInt(COLUMN_VAR_ID);
+                int rate = results.getInt(COLUMN_VARIABLE_RATE);
+                int discountId = results.getInt(COLUMN_DISCOUNT_ID);
+                int taskId = results.getInt(COLUMN_TASK_ID);
 
+                VariableDiscountPlan variableDiscountPlan = new VariableDiscountPlan(variableId,discountId,taskId,rate);
+                discounts.add(variableDiscountPlan);
+            }
+            return discounts;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static List<FixedDiscountPlan> queryFixedDiscounts() {
+        try (Statement statement = conn.getConnection().createStatement();
+             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_FIXED)
+        ) {
+            List<FixedDiscountPlan> discounts = new LinkedList<>();
+            while (results.next()) {
+                int fixedId = results.getInt(COLUMN_FIXED_ID);
+                int rate = results.getInt(COLUMN_FIXED_RATE);
+                int discountId = results.getInt(COLUMN_DISCOUNT_ID);
 
+                FixedDiscountPlan fixedDiscountPlan = new FixedDiscountPlan(rate,discountId,fixedId);
+                discounts.add(fixedDiscountPlan);
+            }
+            return discounts;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     public static List<TasksJobs> queryTasksJobs() {
-
         try (Statement statement = conn.getConnection().createStatement();
              ResultSet results = statement.executeQuery("SELECT * from " + TABLE_TASKS_AVAILABLE_JOBS)
         ) {
@@ -471,8 +505,6 @@ public class DbDriver {
             e.printStackTrace();
             return null;
         }
-
-
     }
     //Insert into the database.
     public static void insertDiscount(String discount) {
@@ -487,7 +519,6 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
     public static void insertVariableDiscount(double rate, int dId, int tId) {
@@ -510,7 +541,6 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
     public static void insertFixedDiscount(double rate, int Did) {
@@ -529,7 +559,6 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
     public static void insertFlexibleDiscount(double rate, int Did, float range) {
@@ -552,7 +581,6 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
 
@@ -568,12 +596,10 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
     public static void insertTasks(String desc, int did, float price, int duration) {
         try (Statement statement = conn.getConnection().createStatement()) {
-
             String sb1 = "insert into " + TABLE_TASKS_AVAILABLE +
                     "(" +
                     COLUMN_TASK_DESCRIPTION +
@@ -594,14 +620,15 @@ public class DbDriver {
                     duration +
                     ")";
             statement.execute(sb1);
-
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
-    public static void insertCustomer(String cName, String title, String firstName, String lastName, String address, String City, String postcode, String email, String phone, String type, int discountId) {
+    public static void insertCustomer(String cName, String title, String firstName, String lastName, String address, String City, String postcode, String email, String phone, String type) {
         try (Statement statement = conn.getConnection().createStatement()) {
+//            Discount discount = searchDiscount();
+//            int discountId= discount.getDiscountId()+1;
+//            insertDiscount("no discount");
             String sb1 = "insert into " + TABLE_CUSTOMER_ACCOUNT +
                     "(" +
                     COLUMN_CUSTOMER_NAME +
@@ -623,8 +650,6 @@ public class DbDriver {
                     COLUMN_PHONE_NUMBER +
                     ',' +
                     COLUMN_CUSTOMER_TYPE +
-                    ',' +
-                    (COLUMN_DISCOUNT_ID) +
                     ")" +
                     "values ('" +
                     cName +
@@ -646,14 +671,10 @@ public class DbDriver {
                     phone +
                     "', '" +
                     type +
-                    "', " +
-                    discountId +
-                    ")";
+                    "')";
             statement.execute(sb1);
-
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
     public static void insertStaffAccount(String name,String userName,String password,String address,String role,String phone) {
@@ -686,13 +707,11 @@ public class DbDriver {
                     phone +
                     "')";
             statement.execute(sb1);
-
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
-    public static void insertJob(int accountNumber, int priority, String instructions, String start, String deadline, int staffId, float price) {
+    public static void insertJob(int accountNumber, int priority, String instructions, String start, String deadline, int staffId, double price) {
         try (Statement statement = conn.getConnection().createStatement()) {
             String sb1 = "insert into " + TABLE_JOBS +
                     "(" +
@@ -728,7 +747,6 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
 
@@ -768,7 +786,6 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
 
@@ -788,13 +805,10 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
-    //TODO: Create inserts for discount types.
 
     //Update the database when changing the customer type or discount.
-
     public static void updateCustomerType(String isValuable, int discountId, int cId) {
         try (Statement statement = conn.getConnection().createStatement()) {
             String sb1 = "UPDATE " + TABLE_CUSTOMER_ACCOUNT +
@@ -814,7 +828,6 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
     public static void updateStartTask(String status,String start,String shift, int id) {
@@ -874,7 +887,6 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
     public static void removeTasks(int id) {
@@ -888,7 +900,6 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
     public static void removeTasksByJob(int id) {
@@ -902,7 +913,6 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
     public static void removeJob(int id) {
@@ -916,7 +926,6 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
 
@@ -930,9 +939,210 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    public static void updateJobPrice(double price, int id) {
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "UPDATE " + TABLE_JOBS +
+                    " SET " +
+                    COLUMN_TOTAL_PRICE +
+                    " = " +
+                    price +
+                    " WHERE " +
+                    COLUMN_JOB_ID +
+                    " = " +
+                    id;
+            System.out.println(sb1);
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+        public static Discount searchLastDiscountId() {
+            List<Discount> discounts = queryDiscounts();
+            if (discounts == null) {
+                System.out.println("No Discounts");
+                return null;
+            }
+            return discounts.get(discounts.size()-1);
+        }
+    public static void updateDiscount(String desc, int id) {
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "UPDATE " + TABLE_DISCOUNT +
+                    " SET " +
+                    COLUMN_DISCOUNT_TYPE +
+                    " = " +
+                    desc +
+                    " WHERE " +
+                    COLUMN_DISCOUNT_ID +
+                    " = " +
+                    id;
+            System.out.println(sb1);
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
 
         }
     }
+
+
+
+    //This will return a job which is searched by id.
+    public static Job searchJobs(int searchedJob){
+        List<Job> jobs = queryJobs();
+        if(jobs == null){
+            System.out.println("No Jobs");
+            return null;
+        }
+        for(Job j: jobs){
+            if (j.getJobId() == searchedJob){
+                return j;
+            }
+        }return null;
+    }
+    //Return the last job on the database, this is in order to access the last job id.
+    public static Job searchJobJustCreated() {
+        List<Job> jobs = queryJobs();
+        if (jobs == null) {
+            System.out.println("No Jobs");
+            return null;
+        }
+        return jobs.get(jobs.size() - 1);
+    }
+    //Search and print open jobs.
+    public static List<Job> searchAllJobs() {
+        List<Job> jobs = DbDriver.queryJobs();
+
+        if (jobs == null) {
+            System.out.println("No Jobs");
+            return null;
+        }
+        return jobs;
+    }
+
+    public static void printOpenJobs() {
+        List<Job> open = searchAllJobs();
+        for (Job j : open) {
+            if (j.getHours() == 0) {
+                System.out.println(j.getJobId());
+            }
+        }
+    }
+
+
+    //    search for a customer by id
+    public static CustomerAccount searchCustomer(int searchedCustomer) {
+        List<CustomerAccount> customers = queryCustomers();
+        if (customers == null) {
+            System.out.println("No customers");
+            return null;
+        }
+        for (CustomerAccount c : customers) {
+            if (c.getCustomerId() == searchedCustomer) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+
+
+    // search for a task by id.
+    public static Task searchTask(int taskId) {
+        List<Task> tasks = queryTasks();
+        if (tasks == null) {
+            System.out.println("No Tasks available");
+            return null;
+        }
+        for (Task t : tasks) {
+            if (t.getTaskId() == taskId) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+
+
+    //helper method to search and print all tasks in a particular job by selecting a job id.
+    public static List<Task> searchTasksJobsToPrint(int jobId) {
+        List<TasksJobs> jobs = queryTasksJobs();
+        List<Task> tasks = queryTasks();
+        List<Task> remaining = new LinkedList<>();
+        if (jobs == null) {
+            System.out.println("No Tasks");
+            return null;
+        }
+        for (TasksJobs t : jobs)
+            if (t.getJobId() == jobId) {
+                for (Task task : tasks)
+                    if (task.getTaskId() == t.getTaskId()) {
+                        remaining.add(task);
+                    }
+            }
+        return remaining;
+
+    }
+
+    //Search through job tasks from the database.  with specific jobtasks id.
+    public static TasksJobs searchTasksJobs(int id) {
+        List<TasksJobs> jobs = queryTasksJobs();
+        if (jobs == null) {
+            System.out.println("No Tasks in this job");
+            return null;
+        } else {
+            for (TasksJobs j : jobs) {
+                if (j.getJobId() == id) {
+                    return j;
+                }
+            }
+            return null;
+        }
+    }
+    public static List<TasksJobs> getAllTaskInfoOnAJob(int jobId) {
+        List<TasksJobs> jobs = queryTasksJobs();
+        List<TasksJobs> remaining = new LinkedList<>();
+        if (jobs == null) {
+            System.out.println("No Tasks");
+            return null;
+        }
+        for (TasksJobs t : jobs)
+            if (t.getJobId() == jobId) {
+                remaining.add(t);
+            }
+        return remaining;
+    }
+    public static void printOpenTasks(int jobId) {
+        List<Task> open = searchTasksJobsToPrint(jobId);
+        for (Task j : open) {
+            System.out.println(j.getTaskId() + " " + j.getDescription());
+        }
+    }
+
+
+
+
+
+  //Search for a discount
+    public static Discount getDiscount(int discountId) {
+        List<Discount> discount = queryDiscounts();
+        for (Discount d : discount) {
+            if (d.getDiscountId() == discountId) {
+                return d;
+            }
+        }return null;
+    }
+    //helper method to get the last discount id which was used
+    public static Discount getLastDiscountFromDB() {
+        List<Discount> discounts = queryDiscounts();
+        if (discounts == null) {
+            System.out.println("No Discounts");
+            return null;
+        }
+        return discounts.get(discounts.size()-1);
+    }
+
+
 
 
 }

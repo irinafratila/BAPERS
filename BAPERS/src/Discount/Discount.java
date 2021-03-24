@@ -17,6 +17,7 @@ public class Discount {
         return discountId;
     }
 
+
     public void setDiscountId(int discountId) {
         this.discountId = discountId;
     }
@@ -28,4 +29,5 @@ public class Discount {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

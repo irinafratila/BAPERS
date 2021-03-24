@@ -2,21 +2,23 @@ package JobTasks;
 
 import Customer.CustomerAccount;
 import Database.DbDriver;
+import Discount.FixedDiscountPlan;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    private static DbDriver db = new DbDriver();
+    private static final DbDriver db = new DbDriver();
 
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter Customer id");
         int searchedId = sc.nextInt();
-        CustomerAccount searchedCustomer = searchCustomer(searchedId);
-        searchedCustomer.updateCustomerType("valuable","flexi");
+        CustomerAccount searchedCustomer = db.searchCustomer(searchedId);
+//        searchedCustomer.updateCustomerType("valuable","variable");
+
         List<Integer> taskIds = new LinkedList<>();
         System.out.println("Please type the id of tasks you want");
         while (true) {
@@ -25,13 +27,11 @@ public class Main {
                 taskIds.add(inputValue);
             } else break;
         }
-        for (int i : taskIds) {
-            System.out.println(i);
-        }
+        for (int i : taskIds) System.out.println(i);
 
         List<Task> newTasks = new LinkedList<>();
         for (int i : taskIds) {
-            Task searchedTask = searchTask(i);
+            Task searchedTask = db.searchTask(i);
             newTasks.add(searchedTask);
             System.out.println(searchedTask.getDescription());
         }
@@ -51,137 +51,19 @@ public class Main {
 
         searchedCustomer.createJob(1,priority,specialInstructions,newTasks);
 
-        searchedCustomer.makePayment(1,6.6f,"card","visa","12/25",1234);
-        searchedCustomer.addTask(1,6);
-        searchedCustomer.removeTask(15);
-
-        printOpenJobs();
-        printOpenTasks(1);
-        List<TasksJobs> hello = searchTasksJobs1(4);
-        for(TasksJobs h: hello){
-            h.startTask("day",1);
-//        h.completeTask();
-            System.out.println(h.getTimeTaken());
-        }
+//        searchedCustomer.makePayment(1,6.6f,"card","visa","12/25",1234);
+//        searchedCustomer.addTask(1,6);
+//        searchedCustomer.removeTask(15);
+//        printOpenJobs();
+//        printOpenTasks(1);
+//        List<TasksJobs> hello = searchTasksJobs1(4);
+//        for(TasksJobs h: hello){
+//            h.startTask("day",1);
+////        h.completeTask();
+//            System.out.println(h.getTimeTaken());
+//        }
     }
 
-
-    //Search and print open jobs.
-    public static List<Job> searchJob() {
-        List<Job> jobs = db.queryJobs();
-
-        if (jobs == null) {
-            System.out.println("No Jobs");
-            return null;
-        }
-        return jobs;
-    }
-
-    public static void printOpenJobs() {
-        List<Job> open = searchJob();
-        for (Job j : open) {
-            if (j.getHours() == 0) {
-                System.out.println(j.getJobId());
-            }
-        }
-    }
-    //search and print all tasks by selecting a job id.
-    public static List<Task> searchTasksJobs(int jobId) {
-        List<TasksJobs> jobs = db.queryTasksJobs();
-        List<Task> tasks = db.queryTasks();
-        List<Task> remaining = new LinkedList<>();
-
-
-        if (jobs == null) {
-            System.out.println("No Tasks");
-            return null;
-        }
-        for (TasksJobs t : jobs)
-            if (t.getJobId() == jobId) {
-                for (Task task : tasks)
-                    if (task.getTaskId() == t.getTaskId()) {
-                        remaining.add(task);
-                    }
-            }
-        return remaining;
-
-
-    }
-    public static List<TasksJobs> searchTasksJobs1(int jobId) {
-        List<TasksJobs> jobs = db.queryTasksJobs();
-
-        List<TasksJobs> remaining = new LinkedList<>();
-
-
-        if (jobs == null) {
-            System.out.println("No Tasks");
-            return null;
-        }
-        for (TasksJobs t : jobs)
-            if (t.getJobId() == jobId) {
-
-
-                remaining.add(t);
-            }
-
-
-        return remaining;
-
-
-    }
-
-    public static void printOpenTasks(int jobId) {
-        List<Task> open = searchTasksJobs(jobId);
-        for (Task j : open) {
-
-            System.out.println(j.getTaskId() + " " + j.getDescription());
-
-        }
-    }
-
-
-    public static CustomerAccount searchCustomer(int searchedCustomer) {
-        List<CustomerAccount> customers = db.queryCustomers();
-        if (customers == null) {
-            System.out.println("No customers");
-            return null;
-        }
-        for (CustomerAccount c : customers) {
-            if (c.getCustomerId() == searchedCustomer) {
-                return c;
-            }
-        }
-        return null;
-    }
-
-    public static Task searchTask(int taskId) {
-        List<Task> tasks = db.queryTasks();
-        if (tasks == null) {
-            System.out.println("No Tasks available");
-            return null;
-        }
-        for (Task t : tasks) {
-            if (t.getTaskId() == taskId) {
-                return t;
-            }
-        }
-        return null;
-    }
-
-
-
-    public static Job searchJob(int searchedJob){
-        List<Job> jobs = db.queryJobs();
-        if(jobs == null){
-            System.out.println("No Jobs");
-            return null;
-        }
-        for(Job j: jobs){
-            if (j.getJobId() == searchedJob){
-                return j;
-            }
-        }return null;
-    }
 }
 
 

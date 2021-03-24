@@ -11,7 +11,6 @@ import java.util.ListIterator;
  */
 
 public class Job {
-    private static int count;
     private int priority;
     private Timestamp deadlineTimeStamp;
     private String deadline;
@@ -21,7 +20,7 @@ public class Job {
     private float timeTaken;
     private int startedBy;
     private List<Task> tasks;
-    private float price;
+    private double price;
     private int jobId;
     private boolean isJobComplete;
     private String specialInstructions;
@@ -30,8 +29,8 @@ public class Job {
     int customerId;
     int hours;
     int completedBy;
-
     private List<TasksJobs> tasksJobs;
+    double vat = 20;
 
 
     // Constructor for the Job class.
@@ -43,7 +42,6 @@ public class Job {
         this.deadline = deadline;
         this.status = status;
         this.startTime = start;
-        this.timeTaken = timeTaken;
         this.startedBy = startedBy;
         this.hours = hours;
         this.price = price;
@@ -189,20 +187,13 @@ public class Job {
         }
     }
 
-
-//    public Timestamp operationDeadline(){
-//
-//    }
-
-
-    public float calculatePrice(){
-        ListIterator<Task> tasksList = tasks.listIterator();
+    public double calculatePrice(){
+        ListIterator<Task> tasksList = this.tasks.listIterator();
         while (tasksList.hasNext()) {
             price += tasksList.next().getPrice();
+
      //TODO: Set price for valuable customers.
-            }return price;
-
-
+            }return price ;
     }
     public void alert(){
         Timestamp current = new Timestamp(System.currentTimeMillis());
@@ -219,6 +210,14 @@ public class Job {
 
     public int getPriority() {
         return priority;
+    }
+
+    public double getVat() {
+        return vat;
+    }
+
+    public void setVat(double vat) {
+        this.vat = vat;
     }
 
     public Timestamp getDeadlineTimeStamp() {
@@ -285,11 +284,11 @@ public class Job {
         this.tasks = tasks;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

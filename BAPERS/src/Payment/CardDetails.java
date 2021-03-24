@@ -1,9 +1,9 @@
 package Payment;
 
 public class CardDetails {
-    private String last4Digits;
-    private String cardType;
-    private String expiryDate;
+    private final String last4Digits;
+    private final String cardType;
+    private final String expiryDate;
 
     public CardDetails(String _last4Digits, String _cardType, String _expiryDate) {
         last4Digits = _last4Digits;

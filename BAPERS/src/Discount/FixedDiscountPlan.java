@@ -1,14 +1,16 @@
 package Discount;
 
-public class FixedDiscountPlan extends Discount{
+public class FixedDiscountPlan{
     private String setUpDate;
     private double discountRate; //the rate will be stored as a percentage (ie 20.0 for a 20% discount)
+    private int discountId;
+    private int fixedId;
     private double price; //the price of a job
 
-    public FixedDiscountPlan(int discountId, String description, String setUpDate, double discountRate) {
-        super(discountId, description);
-        this.setUpDate = setUpDate;
+    public FixedDiscountPlan(double discountRate, int discountId, int fixedId) {
         this.discountRate = discountRate;
+        this.discountId = discountId;
+        this.fixedId = fixedId;
     }
 
     public double calculatePrice() {
@@ -21,7 +23,7 @@ public class FixedDiscountPlan extends Discount{
         return setUpDate;
     }
 
-    protected double getDiscountRate() {
+    public double getDiscountRate() {
         return discountRate;
     }
 
@@ -33,5 +35,27 @@ public class FixedDiscountPlan extends Discount{
         this.discountRate = discountRate;
     }
 
+    public int getDiscountId() {
+        return discountId;
+    }
 
+    public void setDiscountId(int discountId) {
+        this.discountId = discountId;
+    }
+
+    public int getFixedId() {
+        return fixedId;
+    }
+
+    public void setFixedId(int fixedId) {
+        this.fixedId = fixedId;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }

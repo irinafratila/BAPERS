@@ -1,9 +1,9 @@
 package Payment;
 
 public class Transaction {
-    private int jobID;
+    private final int jobID;
     private double amount;
-    private String typeOfPayment;
+    private final String typeOfPayment;
 
 
     public Transaction(int jobID,double amount, String typeOfPayment) {
