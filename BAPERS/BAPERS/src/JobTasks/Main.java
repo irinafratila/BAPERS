@@ -1,21 +1,43 @@
 package JobTasks;
 
+import BapersControl.tempCustomerSession;
 import Customer.CustomerAccount;
+import Database.DBConnection;
 import Database.DbDriver;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+
+import java.io.IOException;
+import java.sql.Connection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    private BapersControl.Main m;
+    private DBConnection conn;
+    private Connection connDB;
+    @FXML
+    private TextField id;
 
+    @FXML
+    private Label searchCustomerMessageLabel;
 
-    public static void main(String[] args) {
+    public String idData = "";
+    public Main(){
+        this.m = new BapersControl.Main();
+        this.conn = new DBConnection();
+        this.connDB = conn.getConnection();
+    }
 
+    public static void main (String[] args){
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter Customer id");
         int searchedId = sc.nextInt();
         CustomerAccount searchedCustomer = DbDriver.searchCustomer(searchedId);
-        searchedCustomer.updateCustomerType("valuable","variable");
+        searchedCustomer.updateCustomerType("valuable","fixed");
 
         List<Integer> taskIds = new LinkedList<>();
         System.out.println("Please type the id of tasks you want");
@@ -60,6 +82,36 @@ public class Main {
 ////        h.completeTask();
 //            System.out.println(h.getTimeTaken());
 //        }
+    }
+
+
+
+
+    public void cancelRegister(ActionEvent event) throws IOException {
+        m.changeScene("/BapersControl/dashboard.fxml");
+    }
+
+    public void searchCustomer(ActionEvent event) throws IOException {
+        String ID = id.getText();
+        this.idData = ID;
+
+        try {
+
+            Boolean result;
+            result = DbDriver.searchCustomerAccount(ID);
+            // System.out.println("serchuser" + id + result);
+            if (result== true){
+                searchCustomerMessageLabel.setText("Customer found");
+//                BapersControl.Main m= new BapersControl.Main();
+                new tempCustomerSession(this.idData);
+//                m.changeScene("/Customer/createJob.fxml");
+                m.changeScene("/Customer/test.fxml");
+            }else{
+                searchCustomerMessageLabel.setText("Customer not found in db ");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

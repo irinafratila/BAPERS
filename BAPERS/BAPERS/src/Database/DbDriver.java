@@ -9,6 +9,8 @@ import JobTasks.Job;
 import JobTasks.Task;
 import JobTasks.TasksJobs;
 import Discount.FlexibleDiscountPlan;
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -407,6 +409,27 @@ public class DbDriver {
             return null;
         }
     }
+//    public static ObservableList<Task> queryTasksObservable() {
+//        try (Statement statement = conn.getConnection().createStatement();
+//             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_TASKS_AVAILABLE)
+//        ) {
+//            List<Task> tasks = new LinkedList<>();
+//            while (results.next()) {
+//                int taskId = results.getInt(COLUMN_TASK_ID);
+//                String description = results.getString(COLUMN_TASK_DESCRIPTION);
+//                int departmentId = results.getInt(COLUMN_DEPARTMENT_ID);
+//                float taskPrice = results.getFloat(COLUMN_TASK_PRICE);
+//                int duration = results.getInt(COLUMN_TASK_DURATION);
+//
+//                Task task = new Task(taskId, description, departmentId, taskPrice, duration);
+//                tasks.add(task);
+//            }
+//            return tasks;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
     public static List<Discount> queryDiscounts() {
         try (Statement statement = conn.getConnection().createStatement();
              ResultSet results = statement.executeQuery("SELECT * from " + TABLE_DISCOUNT)

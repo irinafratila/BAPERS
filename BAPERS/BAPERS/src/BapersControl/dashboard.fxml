@@ -60,7 +60,7 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Jobs">
+            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changeSceneJobs" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Jobs">
                <graphic>
                   <ImageView fitHeight="36.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>

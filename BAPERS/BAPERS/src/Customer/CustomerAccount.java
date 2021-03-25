@@ -49,11 +49,21 @@ public class CustomerAccount {
     }
 
     //Record payment data into the database, once the right amount is paid.
-    public void makePayment(int jobId, float amount, String cashOrCard, String cardType, String expiry, int lastDigits) {
+    public void makeCardPayment(int jobId, float amount, String cashOrCard, String cardType, String expiry, int lastDigits) {
         Job searchedJob = DbDriver.searchJobs(jobId);
         if (searchedJob.getPrice() == amount) {
             System.out.println("Payment was succesful!");
             DbDriver.insertPaymentHistory(searchedJob.getJobId(), searchedJob.getCustomerId(), cashOrCard, cardType, expiry, lastDigits, amount);
+        } else if (searchedJob.getPrice() < amount) {
+            System.out.println("You have overpaid, transaction unsuccessful");
+        } else System.out.println("You have underpaid, please pay the full price.");
+    }
+    //Record payment data into the database, once the right amount is paid.
+    public void makeCashPayment(int jobId, float amount, String cashOrCar ) {
+        Job searchedJob = DbDriver.searchJobs(jobId);
+        if (searchedJob.getPrice() == amount) {
+            System.out.println("Payment was succesful!");
+           // DbDriver.insertPaymentHistory(searchedJob.getJobId(), searchedJob.getCustomerId(), cashOrCard, amount);
         } else if (searchedJob.getPrice() < amount) {
             System.out.println("You have overpaid, transaction unsuccessful");
         } else System.out.println("You have underpaid, please pay the full price.");

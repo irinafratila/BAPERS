@@ -50,12 +50,12 @@ public class DashboardController implements Initializable {
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneJobs() throws  IOException{
         Main m = new Main();
-        m.changeScene("/Admin/user.fxml");
+        m.changeScene("/JobTasks/searchCustomer.fxml");
     }
     //change scene from dashboard to user page where you can create or delete user
     public void changeScenePayment() throws  IOException{
         Main m = new Main();
-        m.changeScene("/Admin/user.fxml");
+        m.changeScene("/Payment/payment.fxml");
     }
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneBackup() throws  IOException{
