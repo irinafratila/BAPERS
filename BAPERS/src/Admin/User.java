@@ -169,21 +169,23 @@ public class User {
         Main m= new Main();
         DBConnection conn = new DBConnection();
         Connection connDB = conn.getConnection();
-
         String fullname = fullName.getText();
-        String userName = username.getText();
-        String password = password1.getText();
-        String role = this.selection;
-        String insertField= "INSERT INTO" + DbDriver.TABLE_STAFF_ACCOUNT + " ( " +DbDriver.COLUMN_STAFF_NAME + ',' + DbDriver.COLUMN_USER_NAME + ',' + DbDriver.COLUMN_PASSWORD +',' + DbDriver.COLUMN_STAFF_ROLE + ") VALUES(";
-        String insertValue= fullname + "','" + userName + "','" + password + "','" + role + ")";
-        String inserttoDB = insertField + insertValue;
+            String userName = username.getText();
+            String password = password1.getText();
+            String role = this.selection;
+            String insertField = "INSERT INTO" + DbDriver.TABLE_STAFF_ACCOUNT + " ( " + DbDriver.COLUMN_STAFF_NAME + ',' + DbDriver.COLUMN_USER_NAME + ',' + DbDriver.COLUMN_STAFF_PASSWORD + ',' + DbDriver.COLUMN_STAFF_ROLE + ") VALUES(";
+            String insertValue = fullname + "','" + userName + "','" + password + "','" + role + ")";
+            String inserttoDB = insertField + insertValue;
 
-        try {
-            Statement statement = connDB.createStatement();
-            statement.executeUpdate(inserttoDB);
-            createUserMessageLabel.setText("User created succesfully");
-        }catch (SQLException e){
-            e.printStackTrace();
+            try {
+                Statement statement = connDB.createStatement();
+                statement.executeUpdate(inserttoDB);
+                createUserMessageLabel.setText("User created succesfully");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
 
     }

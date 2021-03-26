@@ -2,6 +2,8 @@ package JobTasks;
 
 import Customer.CustomerAccount;
 import Database.DbDriver;
+
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,16 +11,18 @@ import java.util.Scanner;
 public class Main {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
-        List<Job> open = DbDriver.getOpenJobs();
-        DbDriver.printJobs(open);
+        int ofo = DbDriver.insertStaffAccount("hfhf", "dd", "ds", "dd", "ddd", "242323");
 
+//        List<Job> open = DbDriver.getOpenJobs();
+//        DbDriver.printJobs(open);
+//
 //        Scanner sc = new Scanner(System.in);
 //        System.out.println("Please enter Customer id");
 //        int searchedId = sc.nextInt();
 //        CustomerAccount searchedCustomer = DbDriver.searchCustomer(searchedId);
-////      searchedCustomer.updateCustomerType("valuable","variable");
+////        searchedCustomer.updateCustomerType("valuable","fixed");
 //        List<Task> tasks = DbDriver.queryTasks();
 //        int tasksSize = tasks.size();
 //        List<Integer> taskIds = new LinkedList<>();

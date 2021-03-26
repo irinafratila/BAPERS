@@ -12,7 +12,7 @@ import java.sql.*;
 // this class is to connect to the databse
 public class DBConnection {
     private static Connection conn;
-    public static final String DB_NAME = "BAPERS";
+    public static final String DB_NAME = "bapers";
     private static final String url = "jdbc:mysql://localhost:3306/"+DB_NAME;
     private static final String user = "root";
     private static final String password = "helloworld12";
@@ -25,6 +25,7 @@ public class DBConnection {
         }catch (Exception e){
             e.printStackTrace();
             e.getCause();
+            System.out.println("database not available");
         }
 
         return conn;
