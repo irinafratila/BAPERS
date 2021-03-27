@@ -8,9 +8,6 @@ import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class Customer {
 
@@ -68,7 +65,15 @@ public class Customer {
     }
     public void changeSceneUpdateCustomer() throws Exception{
         try {
-            m.changeScene("/Customer/searchCustomer.fxml");
+            m.changeScene("/Customer/searchCustomerUpdate.fxml");
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+    public void changeSceneUpgradeCustomer() throws Exception{
+        try {
+            m.changeScene("/Customer/searchCustomerUpgrade.fxml");
         }catch (Exception e){
             e.printStackTrace();
             e.getCause();

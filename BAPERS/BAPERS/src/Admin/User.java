@@ -49,8 +49,6 @@ public class User{
     @FXML
     private RadioButton officeManager, shiftManager, technician, receptionist;
 
-    @FXML
-    private ImageView brandingImageView;
 
     public String selection = null;
     public String usernameData = null;
@@ -103,6 +101,7 @@ public class User{
             e.getCause();
         }
     }
+
 
 
     public void cancelRegister(ActionEvent event) throws IOException{

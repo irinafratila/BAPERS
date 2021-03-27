@@ -30,7 +30,7 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changeSceneCustomer" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Customer">
+            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changeSceneCustomer" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Customers">
                <graphic>
                   <ImageView fitHeight="36.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -45,7 +45,7 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changeSceneUser" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Create/Delete User">
+            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changeSceneUser" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Users">
                <graphic>
                   <ImageView fitHeight="36.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -60,7 +60,7 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changeSceneJobs" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Jobs">
+            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changeSceneJobs" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Jobs/Tasks">
                <graphic>
                   <ImageView fitHeight="36.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>

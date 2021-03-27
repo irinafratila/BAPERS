@@ -1,5 +1,10 @@
 package Discount;
 
+import Customer.CustomerAccount;
+import Database.DbDriver;
+
+import java.util.Scanner;
+
 public class Discount {
     private int discountId;
     private String description;
@@ -29,5 +34,30 @@ public class Discount {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public void applyFixedDiscount(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Please enter Customer id");
+        int searchedId = sc.nextInt();
+        CustomerAccount searchedCustomer = DbDriver.searchCustomer(searchedId);
+        searchedCustomer.updateCustomerType("valuable","fixed");
+    }
+
+    public void applyFlexiDiscount(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Please enter Customer id");
+        int searchedId = sc.nextInt();
+        CustomerAccount searchedCustomer = DbDriver.searchCustomer(searchedId);
+        searchedCustomer.updateCustomerType("valuable","flexible");
+    }
+
+    public void applyVarDiscount(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Please enter Customer id");
+        int searchedId = sc.nextInt();
+        CustomerAccount searchedCustomer = DbDriver.searchCustomer(searchedId);
+        searchedCustomer.updateCustomerType("valuable","variable");
+    }
+
 
 }

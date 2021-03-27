@@ -45,12 +45,11 @@ public class searchCustomer {
 
     }
 
-    public void searchCustomer(ActionEvent event) throws IOException {
+    public void searchCustomerUpdate(ActionEvent event) throws IOException {
         String ID = id.getText();
         this.idData = ID;
 
         try {
-
             Boolean result;
             result = DbDriver.searchCustomerAccount(ID);
            // System.out.println("serchuser" + id + result);
@@ -59,6 +58,27 @@ public class searchCustomer {
                 BapersControl.Main m= new BapersControl.Main();
                 new tempCustomerSession(this.idData);
                 m.changeScene("/Customer/updateCustomer.fxml");
+            }else{
+                searchCustomerMessageLabel.setText("Customer not found in db ");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void searchCustomerUpgrade(ActionEvent event) throws IOException {
+        String ID = id.getText();
+        this.idData = ID;
+
+        try {
+
+            Boolean result;
+            result = DbDriver.searchCustomerAccount(ID);
+            // System.out.println("serchuser" + id + result);
+            if (result== true){
+                searchCustomerMessageLabel.setText("Customer found");
+                BapersControl.Main m= new BapersControl.Main();
+                new tempCustomerSession(this.idData);
+                m.changeScene("/Customer/upgradeCustomer.fxml");
             }else{
                 searchCustomerMessageLabel.setText("Customer not found in db ");
             }

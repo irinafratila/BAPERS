@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="825.0" prefWidth="1001.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JobTasks.Main">
+<AnchorPane prefHeight="825.0" prefWidth="1001.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JobTasks.searchCustomer">
     <children>
         <AnchorPane prefHeight="111.0" prefWidth="1001.0" style="-fx-background-color: black;">
             <children>

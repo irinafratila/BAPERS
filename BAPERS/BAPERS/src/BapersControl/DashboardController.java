@@ -24,47 +24,49 @@ public class DashboardController implements Initializable {
     @FXML
     private Label welcomeLabel,roleLabel;
 
-    public DashboardController(){
+    private Main m;
 
+    public DashboardController(){
+        this.m = new Main();
     }
 
 
 
     // change scene to login page
     public void userLogOut(ActionEvent event) throws IOException {
-        Main m = new Main();
+//        Main m = new Main();
         m.changeScene("Login.fxml");
 
     }
 
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneUser() throws  IOException{
-        Main m = new Main();
+//        Main m = new Main();
         m.changeScene("/Admin/user.fxml");
     }
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneCustomer() throws  IOException{
-        Main m = new Main();
+//        Main m = new Main();
         m.changeScene("/Customer/customer.fxml");
     }
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneJobs() throws  IOException{
-        Main m = new Main();
-        m.changeScene("/JobTasks/searchCustomer.fxml");
+//        Main m = new Main();
+        m.changeScene("/JobTasks/jobTaskDashboard.fxml");
     }
     //change scene from dashboard to user page where you can create or delete user
     public void changeScenePayment() throws  IOException{
-        Main m = new Main();
+//        Main m = new Main();
         m.changeScene("/Payment/payment.fxml");
     }
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneBackup() throws  IOException{
-        Main m = new Main();
+//        Main m = new Main();
         m.changeScene("BackupDB.fxml");
     }
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneReport() throws  IOException{
-        Main m = new Main();
+//        Main m = new Main();
         m.changeScene("generateReport.fxml");
     }
 

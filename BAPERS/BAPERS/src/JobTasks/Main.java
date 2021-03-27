@@ -37,7 +37,7 @@ public class Main {
         System.out.println("Please enter Customer id");
         int searchedId = sc.nextInt();
         CustomerAccount searchedCustomer = DbDriver.searchCustomer(searchedId);
-        searchedCustomer.updateCustomerType("valuable","fixed");
+        searchedCustomer.updateCustomerType("valuable","flexi");
 
         List<Integer> taskIds = new LinkedList<>();
         System.out.println("Please type the id of tasks you want");
@@ -91,28 +91,7 @@ public class Main {
         m.changeScene("/BapersControl/dashboard.fxml");
     }
 
-    public void searchCustomer(ActionEvent event) throws IOException {
-        String ID = id.getText();
-        this.idData = ID;
 
-        try {
-
-            Boolean result;
-            result = DbDriver.searchCustomerAccount(ID);
-            // System.out.println("serchuser" + id + result);
-            if (result== true){
-                searchCustomerMessageLabel.setText("Customer found");
-//                BapersControl.Main m= new BapersControl.Main();
-                new tempCustomerSession(this.idData);
-//                m.changeScene("/Customer/createJob.fxml");
-                m.changeScene("/Customer/test.fxml");
-            }else{
-                searchCustomerMessageLabel.setText("Customer not found in db ");
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 
 }
 

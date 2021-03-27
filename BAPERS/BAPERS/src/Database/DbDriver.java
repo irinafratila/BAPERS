@@ -1149,6 +1149,52 @@ public class DbDriver {
 
     //added latest
 
+
+
+
+
+
+
+
+
+
+    public static Boolean deleteTask(int x) {
+
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("delete from ");
+            sb.append(TABLE_TASKS_AVAILABLE);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_TASK_ID);
+            sb.append(" = '");
+            sb.append(x);
+            sb.append("' ");
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.executeUpdate(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+
+    //This will return a job which is searched by id.
+    public static Boolean searchJob(int searchedJob){
+        List<Job> jobs = queryJobs();
+        if(jobs == null){
+            System.out.println("No Jobs");
+            return false;
+        }
+        for(Job j: jobs){
+            if (j.getJobId() == searchedJob){
+                return true;
+            }
+        }return false;
+    }
+
     public static Boolean verifyLogin(String x, String y) {
         try (Statement statement = conn.getConnection().createStatement();) {
             StringBuilder sb = new StringBuilder("SELECT count(1) FROM ");
@@ -1399,6 +1445,62 @@ public class DbDriver {
         }
     }
 
+    public static Boolean removeFlexibleDiscount(double rate, int Did, float range) {
+
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("delete from ");
+            sb.append(TABLE_FLEXIBLE);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_FLEXI_RATE);
+            sb.append(" = '");
+            sb.append(rate);
+            sb.append("' ");
+            sb.append(COLUMN_DISCOUNT_ID);
+            sb.append(" = '");
+            sb.append(Did);
+            sb.append("' ");
+            sb.append(COLUMN_RANGE);
+            sb.append(" = '");
+            sb.append(range);
+            sb.append("' ");
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.executeUpdate(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static Boolean removeVariableDiscount(double rate, int Did, int TaskId) {
+
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("delete from ");
+            sb.append(TABLE_FLEXIBLE);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_VARIABLE_RATE);
+            sb.append(" = '");
+            sb.append(rate);
+            sb.append("' ");
+            sb.append(COLUMN_DISCOUNT_ID);
+            sb.append(" = '");
+            sb.append(Did);
+            sb.append("' ");
+            sb.append(COLUMN_TASK_ID);
+            sb.append(" = '");
+            sb.append(TaskId);
+            sb.append("' ");
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.executeUpdate(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 //    public static void print() {
 //        try (Statement statement = conn.getConnection().createStatement();) {
 //            statement.execute("SET FOREIGN_KEY_CHECKS=0");
@@ -1464,8 +1566,65 @@ public class DbDriver {
                 String staff91 = result1.getString(9);
                 String staff101 = result1.getString(10);
                 String staff111 = result1.getString(11);
+                String staff112 = result1.getString(12);
 
-                System.out.println(staff11 +" : "+ staff21 +" : "+ staff31 +" : "+ staff41 +" : "+ staff51 +" : "+ staff61+" : "+ staff71+" : " + staff81 +" : " + staff91 +" : " +staff101 +" : " + staff111);
+                System.out.println(staff11 +" : "+ staff21 +" : "+ staff31 +" : "+ staff41 +" : "+ staff51 +" : "+ staff61+" : "+ staff71+" : " + staff81 +" : " + staff91 +" : " +staff101 +" : " + staff111+" : " + staff112);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //testing purposes to print out customer account and see how it changes with each action
+    public static void printJobs() {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("select * from ");
+            sb.append(TABLE_JOBS);
+
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+//            statement.executeUpdate(sb1);
+            ResultSet result1 = statement.executeQuery(sb1);
+            while (result1.next()) {
+                String staff11 = result1.getString(1);
+                String staff21 = result1.getString(2);
+                String staff31 = result1.getString(3);
+                String staff41 = result1.getString(4);
+                String staff51 = result1.getString(5);
+                String staff61 = result1.getString(6);
+                String staff71 = result1.getString(7);
+                String staff81 = result1.getString(8);
+                String staff91 = result1.getString(9);
+                String staff101 = result1.getString(10);
+                String staff111 = result1.getString(11);
+                String staff112 = result1.getString(12);
+
+                System.out.println(staff11 +" : "+ staff21 +" : "+ staff31 +" : "+ staff41 +" : "+ staff51 +" : "+ staff61+" : "+ staff71+" : " + staff81 +" : " + staff91 +" : " +staff101 +" : " + staff111 +" : " + staff112);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //testing purposes to print out customer account and see how it changes with each action
+    public static void printTasks() {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("select * from ");
+            sb.append(TABLE_TASKS_AVAILABLE);
+
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+//            statement.executeUpdate(sb1);
+            ResultSet result1 = statement.executeQuery(sb1);
+            while (result1.next()) {
+                String staff11 = result1.getString(1);
+                String staff21 = result1.getString(2);
+                String staff31 = result1.getString(3);
+                String staff41 = result1.getString(4);
+                String staff51 = result1.getString(5);
+
+
+                System.out.println(staff11 +" : "+ staff21 +" : "+ staff31 +" : "+ staff41 +" : "+ staff51);
             }
         } catch (SQLException e) {
             e.printStackTrace();

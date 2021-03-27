@@ -25,7 +25,9 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 1000, 769));
         primaryStage.show();
         DbDriver.printCust();
-//        DbDriver.printStaff();
+//        DbDriver.printStaff()
+//        DbDriver.printJobs();
+//        DbDriver.printTasks();
     }
 
     public void changeScene(String fxml) throws IOException {

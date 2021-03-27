@@ -180,6 +180,8 @@ public class CustomerAccount {
     //Update the customer type to either normal or valuable adjusting the discounts alongside.
     public void updateCustomerType(String isValuable, String type) {
 
+        System.out.println("im in update customer ");
+
         Discount d = DbDriver.getLastDiscountFromDB();
         int discountId = d.getDiscountId()+1;
         if (isValuable.equalsIgnoreCase("valuable")) {
@@ -192,12 +194,13 @@ public class CustomerAccount {
                 applyFixedDiscount();
             } else if (type.equalsIgnoreCase("variable")) {
                 DbDriver.insertDiscount(type);
-                applyVariableDiscount();
+               applyVariableDiscount();
             } else {
                 this.isValuable = false;
                 this.discountId = 1;
             }
         }
+        System.out.println(isValuable + discountId + getCustomerId());
         DbDriver.updateCustomerType(isValuable, discountId, getCustomerId());
     }
 
