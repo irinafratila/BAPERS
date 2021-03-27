@@ -7,5 +7,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="javafx.controls" exported="" />
+    <orderEntry type="module" module-name="javafx.fxml" exported="" />
+    <orderEntry type="module" module-name="javafx.graphics" exported="" />
+    <orderEntry type="library" exported="" name="mysql-connector-java-8.0" level="project" />
+    <orderEntry type="library" exported="" name="lib" level="project" />
   </component>
 </module>
