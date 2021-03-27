@@ -1,5 +1,7 @@
 package Admin;
 
+import javafx.scene.control.Alert;
+
 public interface I_Admin {
     void addUserAccount();
 //    void addUserAccount(String N, String U, String P);

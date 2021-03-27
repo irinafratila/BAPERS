@@ -47,7 +47,7 @@ public class TasksJobs {
         setStartTime(getStartTimeStamp().toString());
         setDayOrNight(dayOrNight);
         setStaffId(id);
-        DbDriver.updateStartTask(status,startTime,dayOrNight,taskJobId);
+        DbDriver.updateStartTask(status,id,startTime,dayOrNight,taskJobId);
 //TODO update the database once tasks start
     }
     public void completeTask() {

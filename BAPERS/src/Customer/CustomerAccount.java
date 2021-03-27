@@ -7,6 +7,7 @@ import JobTasks.Job;
 import JobTasks.Task;
 import Discount.*;
 
+import java.sql.SQLException;
 import java.util.*;
 
 import static Database.DbDriver.searchTask;
@@ -28,6 +29,7 @@ public class CustomerAccount {
     private String email;
     private List<Job> jobs;
     private Boolean isValuable;
+    private String customerType;
     private int discountId;
     Scanner sc = new Scanner(System.in);
     double rate;
@@ -45,12 +47,17 @@ public class CustomerAccount {
         this.jobs = null;
         this.customerId = id;
         this.isValuable = v;
+        if(isValuable){
+            customerType = "valauble";
+        }else {
+            customerType = "normal";
+        }
         this.discountId = discountId;
         this.jobs = new LinkedList<>();
     }
 
     //Record payment data into the database, once the right amount is paid.
-    public void makePayment(int jobId, float amount, String cashOrCard, String cardType, String expiry, int lastDigits) {
+    public void makePayment(int jobId, float amount, String cashOrCard, String cardType, String expiry, int lastDigits) throws SQLException {
         Job searchedJob = DbDriver.searchJobs(jobId);
         if (searchedJob.getPrice() == amount) {
             System.out.println("Payment was succesful!");
@@ -61,11 +68,11 @@ public class CustomerAccount {
     }
 
     //After searching a customer, they are able to create jobs. This will also be stored into the database.
-    public void createJob(int staffId, int priority, String specialInstructions, List<Task> newTasks) {
+    public void createJob(int staffId, int priority, String specialInstructions, List<Task> newTasks) throws SQLException {
 
         Job job = new Job(priority, specialInstructions, newTasks);
         double newPrice =0;
-        DbDriver.insertJob(getCustomerId(), job.getPriority(), job.getSpecialInstructions(), job.getStartTime(), job.getDeadline(), staffId, job.getPrice());
+        DbDriver.insertJob(getCustomer_name(),getTitle(),getFirstName(),getLastName(),getAddress(),getCity(),getPostcode(),getEmail(),getPhoneNumber(),getCustomerType(),getCustomerId(), job.getPriority(), job.getSpecialInstructions(), job.getStartTime(), job.getDeadline(), staffId, job.getPrice());
         Job searchedJob = DbDriver.searchJobJustCreated();// Will return  current job created from database.
         Discount d = DbDriver.getDiscount(getDiscountId());
         double rate;
@@ -85,8 +92,8 @@ public class CustomerAccount {
                 if (rates.size() > 0) {//Get the last rate.
                     rate = rates.get(rates.size() - 1);
                     newPrice = job.getPrice() - (job.getPrice() * rate / 100);
-                    newPrice *=  (1+(job.getVat()/100));//apply VAT on the new price.
-                    newPrice *= (1+(job.getPriorityRate()/100)); //Adjust the price according to the priority.
+                    newPrice *= (1 + (job.getVat() / 100));//apply VAT on the new price.
+                    newPrice *= (1 + (job.getPriorityRate() / 100)); //Adjust the price according to the priority.
                     job.setPrice(newPrice);
                     DbDriver.updateJobPrice(newPrice, searchedJob.getJobId());
                 }
@@ -98,15 +105,15 @@ public class CustomerAccount {
                 for (FixedDiscountPlan f : fixed) {
                     if (f.getDiscountId() == getDiscountId()) {
                         rate = f.getDiscountRate();
-                        rate *=  (1+(job.getVat()/100));
+
                         rates.add(rate);
                     }
                 }
                 if (rates.size() > 0) {
                     rate = rates.get(rates.size() - 1);
-                    newPrice = job.getPrice() - (job.getPrice() * rate / 100);
-                    newPrice *=  (1+(job.getVat()/100));
-                    newPrice *= (1+(job.getPriorityRate()/100)); //Adjust the price according to the priority.
+                    newPrice = job.getPrice() - (job.getPrice() * (rate / 100));
+                    newPrice *= (1 + (job.getVat() / 100));
+                    newPrice *= (1 + (job.getPriorityRate() / 100)); //Adjust the price according to the priority.
                     job.setPrice(newPrice);
                     DbDriver.updateJobPrice(newPrice, searchedJob.getJobId());
                 }
@@ -131,21 +138,23 @@ public class CustomerAccount {
                             double discount = (taskPrice * (rate / 100));
                             newPrice = newPrice + (taskPrice - discount);
                         }
-                    newPrice *=  (1+(job.getVat()/100));
-                    newPrice *= (1+(job.getPriorityRate()/100)); //Adjust the price according to the priority.
+                    newPrice *= (1 + (job.getVat() / 100));
+                    newPrice *= (1 + (job.getPriorityRate() / 100)); //Adjust the price according to the priority.
                     DbDriver.updateJobPrice(newPrice, searchedJob.getJobId());
                 }
             }
+        }
             else {
                 newPrice = job.getPrice()*(1+(job.getVat()/100));
                 newPrice *= (1+(job.getPriorityRate()/100)); //Adjust the price according to the priority.
                 DbDriver.updateJobPrice(newPrice, searchedJob.getJobId());
             }
 
-        }
+
                 for (Task t : job.getTasks())// Add the requested tasks onto the database.
                     DbDriver.insertTasksAvailableJobs(t.getTaskId(), searchedJob.getJobId());
                 jobs.add(job);
+                DbDriver.generateInvoice();
             }
 
 
@@ -156,7 +165,7 @@ public class CustomerAccount {
 
 
     // Add extra tasks after completing initial order.
-    public void addTask(int jobId, int taskId) {
+    public void addTask(int jobId, int taskId) throws SQLException {
         Job searchedJob = DbDriver.searchJobs(jobId);
         Task searchedTask = searchTask(taskId);
         DbDriver.insertTasksAvailableJobs(searchedTask.getTaskId(), searchedJob.getJobId());
@@ -169,20 +178,20 @@ public class CustomerAccount {
 
 
     //Update the customer type to either normal or valuable adjusting the discounts alongside.
-    public void updateCustomerType(String isValuable, String type) {
+    public void updateCustomerType(String isValuable, String type) throws SQLException {
 
         Discount d = DbDriver.searchLastDiscountId();
         int discountId = d.getDiscountId()+1;
         if (isValuable.equalsIgnoreCase("valuable")) {
             this.isValuable = true;
             if (type.equalsIgnoreCase("flexi")) {
-                DbDriver.insertDiscount(type);
+
                 applyFlexiDiscount();
             } else if (type.equalsIgnoreCase("fixed")) {
-                DbDriver.insertDiscount(type);
+
                 applyFixedDiscount();
             } else if (type.equalsIgnoreCase("variable")) {
-                DbDriver.insertDiscount(type);
+
                 applyVariableDiscount();
             } else {
                 this.isValuable = false;
@@ -193,15 +202,15 @@ public class CustomerAccount {
     }
 
 
-    public void applyFixedDiscount() {
+    public void applyFixedDiscount() throws SQLException {
         System.out.println("Please type in the rate");
         rate = sc.nextDouble();
         Discount d = DbDriver.searchLastDiscountId();
         int discountId = d.getDiscountId();
-        DbDriver.insertFixedDiscount(rate, discountId);
+        DbDriver.insertFixed(d.getDescription(),rate, discountId);
     }
-
-    public void applyVariableDiscount() {
+    //need to do a null pointer chaeck.
+    public void applyVariableDiscount() throws SQLException {
         int taskId;
         Discount d = DbDriver.searchLastDiscountId();
         int discountId = d.getDiscountId();
@@ -213,10 +222,10 @@ public class CustomerAccount {
             }
             System.out.println("Please type in the rate");
             rate = sc.nextDouble();
-            DbDriver.insertVariableDiscount(rate, discountId, taskId);
+            DbDriver.insertVariable(d.getDescription(),rate,  taskId);
         }
     }
-    public void applyFlexiDiscount() {
+    public void applyFlexiDiscount() throws SQLException {
         Map<Integer, Double> ranges = new HashMap<>();
         int range;
         Discount d = DbDriver.searchLastDiscountId();
@@ -230,7 +239,7 @@ public class CustomerAccount {
             System.out.println("Please type in the rate");
             rate = sc.nextDouble();
             ranges.put(range, rate);
-            DbDriver.insertFlexibleDiscount(rate, discountId, range);
+            DbDriver.insertFlexible(d.getDescription(),rate,  range);
         }
     }
 
@@ -344,5 +353,11 @@ public class CustomerAccount {
         this.jobs = jobs;
     }
 
+    public String getCustomerType() {
+        return customerType;
+    }
 
+    public void setCustomerType(String customerType) {
+        this.customerType = customerType;
+    }
 }

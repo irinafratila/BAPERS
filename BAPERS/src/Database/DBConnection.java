@@ -30,4 +30,26 @@ public class DBConnection {
         return conn;
     }
 
+
+//
+//    public void close() {
+//        try {
+//
+//            if (insertIntoCustomer != null) {
+//                insertIntoCustomer.close();
+//            }
+//
+//            if (queryCustomer != null) {
+//                queryCustomer.close();
+//            }
+//
+//
+//            if (conn != null) {
+//                conn.close();
+//            }
+//        } catch (SQLException e) {
+//            System.out.println("Couldn't close connection: " + e.getMessage());
+//        }
+//    }
+
 }
