@@ -2,6 +2,8 @@ package BapersControl;
 
 //import Customer.CustomerAccount;
 import Database.DBConnection;
+
+import Payment.Payment;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -48,6 +50,7 @@ public class DashboardController implements Initializable {
     public void changeSceneCustomer() throws  IOException{
 //        Main m = new Main();
         m.changeScene("/Customer/customer.fxml");
+
     }
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneJobs() throws  IOException{
@@ -57,7 +60,7 @@ public class DashboardController implements Initializable {
     //change scene from dashboard to user page where you can create or delete user
     public void changeScenePayment() throws  IOException{
 //        Main m = new Main();
-        m.changeScene("/Payment/payment.fxml");
+        m.changeScene("/Payment/paymentType.fxml");
     }
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneBackup() throws  IOException{

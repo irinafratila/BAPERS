@@ -49,7 +49,7 @@ public class CustomerAccount {
     }
 
     //Record payment data into the database, once the right amount is paid.
-    public void makeCardPayment(int jobId, float amount, String cashOrCard, String cardType, String expiry, int lastDigits) {
+    public static void makeCardPayment(int jobId, float amount, String cashOrCard, String cardType, String expiry, int lastDigits) {
         Job searchedJob = DbDriver.searchJobs(jobId);
         if (searchedJob.getPrice() == amount) {
             System.out.println("Payment was succesful!");
@@ -59,7 +59,7 @@ public class CustomerAccount {
         } else System.out.println("You have underpaid, please pay the full price.");
     }
     //Record payment data into the database, once the right amount is paid.
-    public void makeCashPayment(int jobId, float amount, String cashOrCar ) {
+    public static void makeCashPayment(int jobId, float amount, String cashOrCard ) {
         Job searchedJob = DbDriver.searchJobs(jobId);
         if (searchedJob.getPrice() == amount) {
             System.out.println("Payment was succesful!");

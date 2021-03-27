@@ -75,7 +75,7 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Payment">
+            <Button alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changeScenePayment" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Payment">
                <graphic>
                   <ImageView fitHeight="36.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>

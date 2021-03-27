@@ -24,9 +24,9 @@ public class Main extends Application {
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(new Scene(root, 1000, 769));
         primaryStage.show();
-        DbDriver.printCust();
+//        DbDriver.printCust();
 //        DbDriver.printStaff()
-//        DbDriver.printJobs();
+        DbDriver.printJobs();
 //        DbDriver.printTasks();
     }
 
