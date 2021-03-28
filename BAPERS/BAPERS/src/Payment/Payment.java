@@ -60,7 +60,7 @@ public class Payment {
         try {
             int JobID = Integer.parseInt(id.getText());
             Job searchedJob = DbDriver.searchJobs(JobID);
-            new BapersControl.tempJobSession(searchedJob.getJobId());
+            new BapersControl.tempJobSession(JobID);
             m.changeScene("/Payment/cardPayment.fxml");
 
         }catch (Exception e){

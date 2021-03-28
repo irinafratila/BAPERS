@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -142,51 +144,21 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <VBox layoutX="332.0" layoutY="241.0" prefHeight="505.0" prefWidth="623.0" />
-      <HBox alignment="CENTER_LEFT" layoutX="318.0" layoutY="201.0" prefHeight="45.0" prefWidth="660.0" spacing="30.0">
+      <VBox layoutX="332.0" layoutY="241.0" prefHeight="505.0" prefWidth="623.0">
          <children>
-            <Label prefHeight="28.0" prefWidth="134.0" text="Bapers">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-            </Label>
-            <Label prefHeight="28.0" prefWidth="134.0" text="Bapers">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-            </Label>
-            <Label prefHeight="28.0" prefWidth="134.0" text="Bapers">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-            </Label>
-            <Label prefHeight="28.0" prefWidth="134.0" text="Bapers">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-            </Label>
-            <Label prefHeight="28.0" prefWidth="134.0" text="Bapers">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-            </Label>
-         </children>
-      </HBox>
+            <TableView fx:id="tableView" prefHeight="502.0" prefWidth="623.0">
+              <columns>
+                <TableColumn fx:id="colJobID" prefWidth="48.965484619140625" text="Job ID" />
+                <TableColumn fx:id="colStaffID" prefWidth="61.264892578125" text="Staff ID" />
+                  <TableColumn fx:id="colPriority" prefWidth="70.53134155273438" text="Priority" />
+                  <TableColumn fx:id="colStatus" prefWidth="119.9686279296875" text="Status" />
+                  <TableColumn fx:id="colStart" prefWidth="107.39678955078125" text="Start" />
+                  <TableColumn fx:id="colEnd" prefWidth="104.60321044921875" text="Completion" />
+                  <TableColumn fx:id="colPrice" minWidth="0.0" prefWidth="82.2808837890625" text="Price" />
+                  <TableColumn fx:id="colInstruction" prefWidth="27.9873046875" text="Instruction" />
+              </columns>
+            </TableView>
+         </children></VBox>
       <HBox alignment="CENTER" layoutX="307.0" layoutY="98.0" prefHeight="85.0" prefWidth="660.0" spacing="50.0">
          <children>
             <VBox alignment="CENTER" prefHeight="63.0" prefWidth="100.0">
@@ -261,14 +233,21 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="111.0">
                <children>
-                  <ImageView fitHeight="54.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/home.png" />
-                     </image>
-                  </ImageView>
+                  <Button mnemonicParsing="false" textAlignment="CENTER">
+                     <graphic>
+                        <ImageView fx:id="alert" fitHeight="54.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../img/home.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
             </HBox>
          </children>
       </HBox>
+      <Button layoutX="505.0" layoutY="196.0" mnemonicParsing="false" onAction="#test" text="add" />
+      <Button layoutX="587.0" layoutY="197.0" mnemonicParsing="false" onAction="#show" text="show" />
+      <Button layoutX="663.0" layoutY="197.0" mnemonicParsing="false" onAction="#remove" text="remove" />
    </children>
 </AnchorPane>

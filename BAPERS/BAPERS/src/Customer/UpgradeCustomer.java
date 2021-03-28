@@ -69,7 +69,9 @@ public class UpgradeCustomer implements Initializable {
         // try and put discount rate here is any
         System.out.println("tesing upgrade " +custType );
         try {
-            if (custType != null) this.customerType.setText(custType);
+
+            // fix this 
+           // if (custType != null) this.customerType.setText(custType);
             //if (discount != null) this.discountI.setText(discount);
         }catch (Exception e){
             e.printStackTrace();
