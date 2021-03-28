@@ -3,6 +3,8 @@ package JobTasks;
 import Database.DbDriver;
 import Discount.Discount;
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * @author Muhammad Masum Miah
@@ -15,8 +17,8 @@ public class TasksJobs {
     private int taskId;
     private Timestamp startTimeStamp;
     private Timestamp completeTimeStamp;
-    private String startTime;
-    private String completeTime;
+    private Timestamp startTime;
+    private Timestamp completeTime;
     private long timeTaken;
     private String dayOrNight;
     private String isComplete;
@@ -27,12 +29,12 @@ public class TasksJobs {
 
 
     //Constructor when querying TasksJobs.
-    public TasksJobs(int taskJobId,int taskId, int jobId,int staffId,  String status,long timeTaken, String startTime,  String completeTime,String dayOrNight, String isComplete, String isOverdue) {
+    public TasksJobs(int taskJobId, int taskId, int jobId, int staffId, String status, long timeTaken, Timestamp startTime, Timestamp completeTime, String dayOrNight, String isComplete, String isOverdue) {
         this.taskJobId = taskJobId;
         this.jobId = jobId;
         this.taskId = taskId;
-        this.startTime = startTime;
-        this.completeTime = completeTime;
+        this.startTimeStamp = startTime;
+        this.completeTimeStamp = completeTime;
         this.timeTaken = timeTaken;
         this.dayOrNight = dayOrNight;
         this.isComplete = isComplete;
@@ -44,10 +46,11 @@ public class TasksJobs {
     public void startTask(String dayOrNight, int id){
         setStatus("In Progress");
         setStartTimeStamp(new Timestamp(System.currentTimeMillis()));
-        setStartTime(getStartTimeStamp().toString());
+
         setDayOrNight(dayOrNight);
         setStaffId(id);
-        DbDriver.updateStartTask(status,id,startTime,dayOrNight,taskJobId);
+        DbDriver.updateStartTask(status,id,startTimeStamp,dayOrNight,taskJobId);
+
 //TODO update the database once tasks start
     }
     public void completeTask() {
@@ -55,8 +58,7 @@ public class TasksJobs {
          setIsComplete("yes");
             setStatus("Complete");
             setCompleteTimeStamp(new Timestamp(System.currentTimeMillis()));
-            setCompleteTime(completeTimeStamp.toString());
-            setTimeTaken(((completeTimeStamp.getTime() - Timestamp.valueOf(startTime).getTime()) / 1000) / 60 / 60);
+            setTimeTaken(((completeTimeStamp.getTime() -startTimeStamp.getTime()) / 1000) / 60 / 60);
             Task task = DbDriver.searchTask(taskId);
             if(task != null)
             if ((double) timeTaken > task.getDuration()) {
@@ -64,13 +66,29 @@ public class TasksJobs {
             } else {
                 setIsOverdue("No");
             }
-            DbDriver.updateCompleteTask(status, completeTime, isComplete, isOverdue, (int) timeTaken, getTaskJobId());
+            DbDriver.updateCompleteTask(status, completeTimeStamp, isComplete, isOverdue, (int) timeTaken, getTaskJobId());
+
+
 
 
     }
     //TODO update the database once tasks start
 
 
+    //Sets the current task in operation.
+    public boolean setCurrentOperation(String dayOrNight, int id) {
+        List<TasksJobs>  tasksJobs = DbDriver.queryTasksJobs();
+        ListIterator<TasksJobs> tasksList = tasksJobs.listIterator();
+        while (tasksList.hasNext()) {
+            if (!tasksList.next().getIsComplete().equals(("yes"))) {
+                tasksList.next().startTask(dayOrNight,id);
+                return true;
+            }
+        }
+        System.out.println("All jobs are complete!");
+        return false;
+
+    }
     public int getTaskJobId() {
         return taskJobId;
     }
@@ -111,19 +129,19 @@ public class TasksJobs {
         this.completeTimeStamp = completeTimeStamp;
     }
 
-    public String getStartTime() {
+    public Timestamp getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
     }
 
-    public String getCompleteTime() {
+    public Timestamp getCompleteTime() {
         return completeTime;
     }
 
-    public void setCompleteTime(String completeTime) {
+    public void setCompleteTime(Timestamp completeTime) {
         this.completeTime = completeTime;
     }
 

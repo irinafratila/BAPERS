@@ -6,14 +6,14 @@ public class FlexibleDiscountPlan {
     private double rate;
     private int flexiId;
     private int discountId;
-    public FlexibleDiscountPlan(int discountId,  int range, double rate, int flexiId) {
+
+    public FlexibleDiscountPlan(int discountId, int range, double rate, int flexiId) {
 
         this.range = range;
         this.rate = rate;
         this.flexiId = flexiId;
-        this.discountId=discountId;
+        this.discountId = discountId;
     }
-
 
 
     public int getRange() {

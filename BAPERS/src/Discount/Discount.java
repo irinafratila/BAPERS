@@ -17,7 +17,6 @@ public class Discount {
         return discountId;
     }
 
-
     public void setDiscountId(int discountId) {
         this.discountId = discountId;
     }

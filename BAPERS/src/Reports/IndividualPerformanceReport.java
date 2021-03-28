@@ -3,14 +3,13 @@ package Reports;
 public class IndividualPerformanceReport {
     private int staff_id;
     private String name;
-   private String role;
-   private int taskId;
+    private String role;
+    private int taskId;
     private String location;
     private String startTime;
     private String complete;
     private double timeTaken;
-//    private double totalPerIndividual;
-//    private double totalEffort;
+
 
     public IndividualPerformanceReport(int staff_id, String name, String role, int taskId, String location, String startTime, String complete, double timeTaken) {
         this.staff_id = staff_id;
@@ -21,8 +20,7 @@ public class IndividualPerformanceReport {
         this.startTime = startTime;
         this.complete = complete;
         this.timeTaken = timeTaken;
-//        this.totalPerIndividual = totalPerIndividual;
-//        this.totalEffort = totalEffort;
+
     }
 
     public int getStaff_id() {

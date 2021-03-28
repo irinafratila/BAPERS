@@ -2,23 +2,22 @@ package Reports;
 
 import Database.DbDriver;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class Invoice {
-    int customerId ;
-    String name ;
-    String contact ;
-    String address ;
-    String phoneNumber ;
+    int customerId;
+    String name;
+    String contact;
+    String address;
+    String phoneNumber;
     String startTime;
-    int jobId ;
-    int taskId ;
+    int jobId;
+    int taskId;
     String desc;
-    double tPrice ;
-    double total ;
+    double tPrice;
+    double total;
 
-    public Invoice(int customerId, String name, String contact, String address, String phoneNumber,String start, int jobId, int taskId, String desc, double tPrice, double total) {
+    public Invoice(int customerId, String name, String contact, String address, String phoneNumber, String start, int jobId, int taskId, String desc, double tPrice, double total) {
         this.customerId = customerId;
         this.name = name;
         this.contact = contact;
@@ -32,32 +31,6 @@ public class Invoice {
         this.total = total;
     }
 
-    public void generateInvoice() {
-        List<Invoice> invoices = DbDriver.createInvoice();
-        for (int i = 0; i < invoices.size(); i++) {
-            Invoice invoice = invoices.get(i);
-            if (i == 0 && invoices.size() > 1) {
-
-                System.out.println("customer id = " + invoice.getCustomerId() + " Customer Name: " + invoice.getName() + "\n" +
-                        "Contact name: " + invoice.getContact() + " Address: " + invoice.getPhoneNumber() + "\n" +
-                        "Phone Number: " + invoice.getPhoneNumber() + " \n" +
-                        "Job Number: " + invoice.getJobId() + "\n" +
-                        " Task ID: " + invoice.getTaskId() + " Task Description" + invoice.getDesc() + "\n" +
-                        " Task Price: " + invoice.gettPrice() + " \n");
-            } else {
-                System.out.println(" Task ID: " + invoice.getTaskId() + " Task Description" + invoice.getDesc() + "\n" +
-                        " Task Price: " + invoice.gettPrice());
-                if (i == invoices.size()) {
-                    System.out.println(" Total Price after discount and VAT: " + invoice.getTotal());
-
-
-                }
-
-            }
-        }
-
-
-    }
 
     public int getCustomerId() {
         return customerId;

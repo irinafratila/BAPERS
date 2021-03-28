@@ -1,6 +1,8 @@
 package JobTasks;
 
 
+import Database.DbDriver;
+
 import java.sql.Timestamp;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -12,11 +14,9 @@ import java.util.ListIterator;
 
 public class Job {
     private int priority;
-    private Timestamp deadlineTimeStamp;
-    private String deadline;
+    private Timestamp deadline;
     private String status;
     private Timestamp startTimeStamp;
-    private String startTime;
     private double timeTaken;
     private int startedBy;
     private List<Task> tasks;
@@ -25,10 +25,9 @@ public class Job {
     private boolean isJobComplete;
     private String specialInstructions;
     private Timestamp completeTimeStamp;
-    private String completeTime;
     int customerId;
-    int hours;
     int completedBy;
+    String isOverdue;
     private List<TasksJobs> tasksJobs;
     double vat = 20;
     double priorityRate;
@@ -36,33 +35,43 @@ public class Job {
 
     // Constructor for the Job class.
 
-    public Job(int jobId, int account,int priority, String specialInstructions,String status,String start,String deadline,String completeTime,int hours,int startedBy, double price, int completedBy) {
+    public Job(int jobId, int account, int priority, String specialInstructions, String status, Timestamp start, Timestamp deadline, Timestamp completeTime, double timeTaken, int startedBy, double price, int completedBy, String isOverdue) {
 
         this.customerId = account;
         this.priority = priority;
         this.deadline = deadline;
         this.status = status;
-        this.startTime = start;
+        this.startTimeStamp = start;
         this.startedBy = startedBy;
-        this.hours = hours;
+        this.timeTaken = timeTaken;
         this.price = price;
         this.jobId = jobId;
         this.specialInstructions = specialInstructions;
-        this.completeTime = completeTime;
+        this.completeTimeStamp = completeTime;
         this.completedBy = completedBy;
+        this.isOverdue = isOverdue;
+        this.tasksJobs = DbDriver.getAllTaskInfoOnAJob(jobId);
     }
 
     public Job(int priority, String specialInstructions, List<Task> tasks) {
         this.priority = priority;
         this.specialInstructions = specialInstructions;
         startTimeStamp = new Timestamp(System.currentTimeMillis());
-        this.deadlineTimeStamp = setDeadline();
-        this.deadline = deadlineTimeStamp.toString();
+        this.deadline = setDeadline();
         this.status = "In progress";
         this.tasks = tasks;
         this.price = calculatePrice();
         this.isJobComplete = false;
-        this.startTime =startTimeStamp.toString();
+        this.isOverdue = "NO";
+
+    }
+
+    public String getIsOverdue() {
+        return isOverdue;
+    }
+
+    public void setIsOverdue(String isOverdue) {
+        this.isOverdue = isOverdue;
     }
 
     public double getPriorityRate() {
@@ -76,32 +85,32 @@ public class Job {
     // Calculate the deadline based on the priority of the job. 5 as highest priority.
     public Timestamp setDeadline() {
         if(priority ==5){
-            deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(1, ChronoUnit.HOURS));
+            deadline = Timestamp.from(startTimeStamp.toInstant().plus(1, ChronoUnit.HOURS));
             priorityRate =100;
         }
         else if(priority ==4){
-            deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(2, ChronoUnit.HOURS));
+            deadline = Timestamp.from(startTimeStamp.toInstant().plus(2, ChronoUnit.HOURS));
             priorityRate = 75;
         }
         else if(priority ==3){
-            deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(3, ChronoUnit.HOURS));
+            deadline = Timestamp.from(startTimeStamp.toInstant().plus(3, ChronoUnit.HOURS));
             priorityRate = 50;
         }
         else if(priority ==2){
-            deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(6, ChronoUnit.HOURS));
+            deadline = Timestamp.from(startTimeStamp.toInstant().plus(6, ChronoUnit.HOURS));
             priorityRate = 25;
         }
         else if(priority ==1){
-            deadlineTimeStamp = Timestamp.from(startTimeStamp.toInstant().plus(24, ChronoUnit.HOURS));
+            deadline = Timestamp.from(startTimeStamp.toInstant().plus(24, ChronoUnit.HOURS));
             priorityRate = 0;
         }
-        return deadlineTimeStamp;
+        return deadline;
     }
 
     //If the priority of the job changes.
     public void setPriority(int priority) {
         this.priority = priority;
-        deadlineTimeStamp = setDeadline();
+        deadline = setDeadline();
     }
 
     // Helper method Check to see if all tasks are complete.
@@ -119,7 +128,7 @@ public class Job {
     public boolean completeJobCheck(List<Job> jobs) {
         ListIterator<Job> check = jobs.listIterator();
         while (check.hasNext()) {
-            if (check.next().getCompleteTime().equalsIgnoreCase("null")) {
+            if (check.next().getCompleteTimeStamp() == null) {
                 System.out.println("Task \"" + check.next().getJobId() + "\" is not complete!");
                 return false;
             }
@@ -131,11 +140,17 @@ public class Job {
     public void completeJob(int user){
         if(completeJobTasksCheck()){
             this.completeTimeStamp = new Timestamp(System.currentTimeMillis());
-            this.completeTime  =completeTimeStamp.toString();
+
             this.isJobComplete = true;
             this.status = "Job Complete";
             this.completedBy = user;
             this.timeTaken = setTimeTaken();
+            if(deadline.getTime() - completeTimeStamp.getTime() <0) {
+                isOverdue = "Yes";
+            }
+            else{ isOverdue ="NO";
+            }
+            DbDriver.updateCompleteJob(status,completeTimeStamp,timeTaken,completedBy,isOverdue,getJobId());
         }
         else{
             System.out.println("Job cannot be completed!");
@@ -222,7 +237,7 @@ public class Job {
     }
     public void alert(){
         Timestamp current = new Timestamp(System.currentTimeMillis());
-        long leftToDeadline = ((deadlineTimeStamp.getTime() - current.getTime())/1000)/60/60;
+        long leftToDeadline = ((deadline.getTime() - current.getTime())/1000)/60/60;
         if (leftToDeadline < 50){
             //TODO create an alert
             System.out.println("deadline approaching" );
@@ -246,18 +261,18 @@ public class Job {
     }
 
     public Timestamp getDeadlineTimeStamp() {
-        return deadlineTimeStamp;
-    }
-
-    public void setDeadlineTimeStamp(Timestamp deadlineTimeStamp) {
-        this.deadlineTimeStamp = deadlineTimeStamp;
-    }
-
-    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(String deadline) {
+    public void setDeadlineTimeStamp(Timestamp deadlineTimeStamp) {
+        this.deadline = deadlineTimeStamp;
+    }
+
+    public Timestamp getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Timestamp deadline) {
         this.deadline = deadline;
     }
 
@@ -277,13 +292,6 @@ public class Job {
         this.startTimeStamp = startTimeStamp;
     }
 
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
 
     public double getTimeTaken() {
         return timeTaken;
@@ -349,13 +357,6 @@ public class Job {
         this.completeTimeStamp = completeTimeStamp;
     }
 
-    public String getCompleteTime() {
-        return completeTime;
-    }
-
-    public void setCompleteTime(String completeTime) {
-        this.completeTime = completeTime;
-    }
 
     public int getCustomerId() {
         return customerId;
@@ -365,13 +366,7 @@ public class Job {
         this.customerId = customerId;
     }
 
-    public int getHours() {
-        return hours;
-    }
 
-    public void setHours(int hours) {
-        this.hours = hours;
-    }
 
     public int getCompletedBy() {
         return completedBy;

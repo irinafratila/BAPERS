@@ -47,9 +47,9 @@ public class CustomerAccount {
         this.jobs = null;
         this.customerId = id;
         this.isValuable = v;
-        if(isValuable){
+        if (isValuable) {
             customerType = "valauble";
-        }else {
+        } else {
             customerType = "normal";
         }
         this.discountId = discountId;
@@ -57,10 +57,25 @@ public class CustomerAccount {
     }
 
     //Record payment data into the database, once the right amount is paid.
-    public void makePayment(int jobId, float amount, String cashOrCard, String cardType, String expiry, int lastDigits) throws SQLException {
+    public void makeCardPayment(int jobId, double amount, String cashOrCard, String cardType, String expiry, String lastDigits) throws SQLException {
         Job searchedJob = DbDriver.searchJobs(jobId);
         if (searchedJob.getPrice() == amount) {
             System.out.println("Payment was succesful!");
+            DbDriver.insertPaymentHistory(searchedJob.getJobId(), searchedJob.getCustomerId(), cashOrCard, cardType, expiry, lastDigits, amount);
+        } else if (searchedJob.getPrice() < amount) {
+            System.out.println("You have overpaid, transaction unsuccessful");
+        } else System.out.println("You have underpaid, please pay the full price.");
+    }
+
+    //Record payment data into the database, once the right amount is paid.
+    public void makeCashPayment(int jobId, double amount) throws SQLException {
+        Job searchedJob = DbDriver.searchJobs(jobId);
+        if (searchedJob.getPrice() == amount) {
+            System.out.println("Payment was succesful!");
+            String cashOrCard = "Cash";
+            String cardType = null;
+            String expiry = null;
+            String lastDigits = null;
             DbDriver.insertPaymentHistory(searchedJob.getJobId(), searchedJob.getCustomerId(), cashOrCard, cardType, expiry, lastDigits, amount);
         } else if (searchedJob.getPrice() < amount) {
             System.out.println("You have overpaid, transaction unsuccessful");
@@ -71,13 +86,13 @@ public class CustomerAccount {
     public void createJob(int staffId, int priority, String specialInstructions, List<Task> newTasks) throws SQLException {
 
         Job job = new Job(priority, specialInstructions, newTasks);
-        double newPrice =0;
-        DbDriver.insertJob(getCustomer_name(),getTitle(),getFirstName(),getLastName(),getAddress(),getCity(),getPostcode(),getEmail(),getPhoneNumber(),getCustomerType(),getCustomerId(), job.getPriority(), job.getSpecialInstructions(), job.getStartTime(), job.getDeadline(), staffId, job.getPrice());
+        double newPrice = 0;
+        DbDriver.insertJob(getCustomer_name(), getTitle(), getFirstName(), getLastName(), getAddress(), getCity(), getPostcode(), getEmail(), getPhoneNumber(), getCustomerType(), getCustomerId(), job.getPriority(), job.getSpecialInstructions(), job.getStartTimeStamp(), job.getDeadlineTimeStamp(), staffId, job.getPrice(), job.getIsOverdue());
         Job searchedJob = DbDriver.searchJobJustCreated();// Will return  current job created from database.
         Discount d = DbDriver.getDiscount(getDiscountId());
         double rate;
         //Validate the customer discount price in order to apply correct price with discount.
-        if(d!=null) {
+        if (d != null) {
             if (d.getDescription().equalsIgnoreCase("Flexi")) {
                 LinkedList<Double> rates = new LinkedList<>();
                 List<FlexibleDiscountPlan> flexi = DbDriver.queryFlexiDiscounts();
@@ -143,19 +158,18 @@ public class CustomerAccount {
                     DbDriver.updateJobPrice(newPrice, searchedJob.getJobId());
                 }
             }
+        } else {
+            newPrice = job.getPrice() * (1 + (job.getVat() / 100));
+            newPrice *= (1 + (job.getPriorityRate() / 100)); //Adjust the price according to the priority.
+            DbDriver.updateJobPrice(newPrice, searchedJob.getJobId());
         }
-            else {
-                newPrice = job.getPrice()*(1+(job.getVat()/100));
-                newPrice *= (1+(job.getPriorityRate()/100)); //Adjust the price according to the priority.
-                DbDriver.updateJobPrice(newPrice, searchedJob.getJobId());
-            }
 
 
-                for (Task t : job.getTasks())// Add the requested tasks onto the database.
-                    DbDriver.insertTasksAvailableJobs(t.getTaskId(), searchedJob.getJobId());
-                jobs.add(job);
-                DbDriver.generateInvoice();
-            }
+        for (Task t : job.getTasks())// Add the requested tasks onto the database.
+            DbDriver.insertTasksAvailableJobs(t.getTaskId(), searchedJob.getJobId());
+        jobs.add(job);
+        DbDriver.generateInvoice();
+    }
 
 
     public void deleteJob(int id) {
@@ -180,35 +194,34 @@ public class CustomerAccount {
     //Update the customer type to either normal or valuable adjusting the discounts alongside.
     public void updateCustomerType(String isValuable, String type) throws SQLException {
 
-        Discount d = DbDriver.searchLastDiscountId();
-        int discountId = d.getDiscountId()+1;
         if (isValuable.equalsIgnoreCase("valuable")) {
-            this.isValuable = true;
             if (type.equalsIgnoreCase("flexi")) {
-
+                DbDriver.insertDiscount(type);
                 applyFlexiDiscount();
             } else if (type.equalsIgnoreCase("fixed")) {
 
-                applyFixedDiscount();
+                applyFixedDiscount(type);
             } else if (type.equalsIgnoreCase("variable")) {
-
+                DbDriver.insertDiscount(type);
                 applyVariableDiscount();
             } else {
-                this.isValuable = false;
-                this.discountId = 1;
+                isValuable = "normal";
+                discountId = -1;
             }
         }
-        DbDriver.updateCustomerType(isValuable, discountId, getCustomerId());
+        Discount d = DbDriver.searchLastDiscountId();
+        System.out.println(isValuable +" - " + discountId +" - "+ getCustomerId());
+        DbDriver.updateCustomerType(isValuable, d.getDiscountId(), getCustomerId());
     }
 
 
-    public void applyFixedDiscount() throws SQLException {
+    public void applyFixedDiscount(String type) throws SQLException {
         System.out.println("Please type in the rate");
         rate = sc.nextDouble();
-        Discount d = DbDriver.searchLastDiscountId();
-        int discountId = d.getDiscountId();
-        DbDriver.insertFixed(d.getDescription(),rate, discountId);
+
+        DbDriver.insertFixed(type, rate);
     }
+
     //need to do a null pointer chaeck.
     public void applyVariableDiscount() throws SQLException {
         int taskId;
@@ -217,29 +230,28 @@ public class CustomerAccount {
         while (true) {
             System.out.println("Please type in the task id");
             taskId = sc.nextInt();
-            if(taskId == 0) {
+            if (taskId == 0) {
                 break;
             }
             System.out.println("Please type in the rate");
             rate = sc.nextDouble();
-            DbDriver.insertVariable(d.getDescription(),rate,  taskId);
+            DbDriver.insertVariable(discountId, rate, taskId);
         }
     }
+
     public void applyFlexiDiscount() throws SQLException {
-        Map<Integer, Double> ranges = new HashMap<>();
         int range;
         Discount d = DbDriver.searchLastDiscountId();
         int discountId = d.getDiscountId();
         while (true) {
             System.out.println("Please type in end of range");
             range = sc.nextInt();
-            if(range == 0){
+            if (range == 0) {
                 break;
             }
             System.out.println("Please type in the rate");
             rate = sc.nextDouble();
-            ranges.put(range, rate);
-            DbDriver.insertFlexible(d.getDescription(),rate,  range);
+            DbDriver.insertFlexible(discountId, rate, range);
         }
     }
 
@@ -345,6 +357,7 @@ public class CustomerAccount {
     public void setDiscountId(int discountId) {
         this.discountId = discountId;
     }
+
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
