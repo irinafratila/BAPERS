@@ -70,7 +70,7 @@ public class UpgradeCustomer implements Initializable {
         System.out.println("tesing upgrade " +custType );
         try {
 
-            // fix this 
+            // fix this
            // if (custType != null) this.customerType.setText(custType);
             //if (discount != null) this.discountI.setText(discount);
         }catch (Exception e){
