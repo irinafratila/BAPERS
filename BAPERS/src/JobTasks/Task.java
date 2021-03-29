@@ -27,6 +27,7 @@ public class Task {
         this.duration = duration;
         //TODO: if statements for discounts and to calculate price.
         this.price = price;
+
     }
 
     //getters and setters

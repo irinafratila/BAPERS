@@ -168,7 +168,7 @@ public class CustomerAccount {
         for (Task t : job.getTasks())// Add the requested tasks onto the database.
             DbDriver.insertTasksAvailableJobs(t.getTaskId(), searchedJob.getJobId());
         jobs.add(job);
-        DbDriver.generateInvoice();
+    
     }
 
 

@@ -183,7 +183,7 @@ public class DbDriver {
             " INNER JOIN " + TABLE_JOBS + " ON " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = " + TABLE_JOBS + "." + COLUMN_ACCOUNT_NUMBER + ")" +
             " INNER JOIN " + TABLE_JOB_TASKS + " ON " + TABLE_JOBS + "." + COLUMN_JOB_ID + " = " + TABLE_JOB_TASKS + "." + COLUMN_JOB_ID + ")" +
             " INNER JOIN " + TABLE_TASKS_AVAILABLE + " ON " + TABLE_JOB_TASKS + "." + COLUMN_TASK_ID + " = " + TABLE_TASKS_AVAILABLE + "." + COLUMN_TASK_ID + ")" +
-            " WHERE " + TABLE_JOBS + "." + COLUMN_JOB_ID + " = " + "(SELECT MAX(" + TABLE_JOBS + "." + COLUMN_JOB_ID + ") FROM " + TABLE_JOBS + ")";
+            " WHERE " + TABLE_JOBS + "." + COLUMN_JOB_ID + " = " + "?  ";
 
     public static final String upgradeCustomer = "UPDATE " + TABLE_CUSTOMER_ACCOUNT +
             " SET " + COLUMN_CUSTOMER_TYPE + " = " + "?" + " , " + COLUMN_DISCOUNT_ID + " = " +
@@ -1364,8 +1364,8 @@ public class DbDriver {
     }
 
     //Invoice creation
-    public static void generateInvoice() {
-        List<Invoice> invoices = DbDriver.createInvoice();
+    public static void generateInvoice(int id) {
+        List<Invoice> invoices = DbDriver.createInvoice(id);
         assert invoices != null;
         Invoice invoice1;
         invoice1 = invoices.get(0);
@@ -1393,10 +1393,11 @@ public class DbDriver {
         }
     }
 
-    public static List<Invoice> createInvoice() {
-        try (Statement statement = conn.getConnection().createStatement();
-             ResultSet results = statement.executeQuery(createInvoice)
+    public static List<Invoice> createInvoice(int id) {
+        try (PreparedStatement createIntoInvoice = conn.getConnection().prepareStatement(createInvoice)
         ) {
+            createIntoInvoice.setInt(1,id);
+            ResultSet results = createIntoInvoice.executeQuery();
             List<Invoice> invoices = new LinkedList<>();
             while (results.next()) {
 
@@ -1604,7 +1605,6 @@ public class DbDriver {
                      " INNER JOIN " + TABLE_TASKS_AVAILABLE + " ON " + TABLE_JOB_TASKS + "." + COLUMN_TASK_ID + " = " + TABLE_JOB_TASKS + "." + COLUMN_TASK_ID + ")" +
                      " INNER JOIN " + TABLE_DEPARTMENT + " ON " + TABLE_TASKS_AVAILABLE + "." + COLUMN_DEPARTMENT_ID + " = " + TABLE_DEPARTMENT + "." + COLUMN_DEPARTMENT_ID + ")" +
                      " WHERE CAST((" + TABLE_JOB_TASKS + "." + COLUMN_TASK_START_TIME + ") AS DATE) BETWEEN '" + d + "' AND '" + d1 + "'" +
-
                      " GROUP BY DATE, " + TABLE_DEPARTMENT + "." + COLUMN_LOCATION +
                      " ORDER BY " + TABLE_DEPARTMENT + "." + COLUMN_LOCATION)
         ) {

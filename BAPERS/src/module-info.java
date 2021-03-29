@@ -14,6 +14,6 @@ module BAPERS {
     opens Customer;
     opens Discount;
     opens JobTasks;
-//    opens Report;
+    opens Reports;
     opens Payment;
 }

@@ -15,9 +15,9 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
 
-        Thread thread = new AlertThread();
-        thread.start();
-        DbDriver.generateIndividualStaffReport(2);
+//        Thread thread = new AlertThread();
+//        thread.start();
+//        DbDriver.generateIndividualStaffReport(2);
 ////        System.out.println(DbDriver.createSummaryReport);
 ////
 //        //start tasks
@@ -31,7 +31,7 @@ public class Main {
 //DbDriver.generateIndividualStaffReport(5);
 //
 //////
-//        DbDriver.generateSummaryReport("2021-03-27","2021-03-29");
+        DbDriver.generateSummaryReport("2021-03-27","2021-03-29");
 //         DbDriver.insertStaffAccount("hfhf", "dd", "ds", "dd", "ddd", "242323");
 
 //        List<Job> open = DbDriver.getOpenJobs();
