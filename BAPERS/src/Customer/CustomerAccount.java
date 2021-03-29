@@ -83,11 +83,12 @@ public class CustomerAccount {
     }
 
     //After searching a customer, they are able to create jobs. This will also be stored into the database.
-    public void createJob(int staffId, int priority, String specialInstructions, List<Task> newTasks) throws SQLException {
+    //TODO made change here
+    public void createJob(int staffId, int priority, String specialInstructions, List<Task> newTasks, int quantity) throws SQLException {
 
-        Job job = new Job(priority, specialInstructions, newTasks);
+        Job job = new Job(priority, specialInstructions, newTasks,quantity);
         double newPrice = 0;
-        DbDriver.insertJob(getCustomer_name(), getTitle(), getFirstName(), getLastName(), getAddress(), getCity(), getPostcode(), getEmail(), getPhoneNumber(), getCustomerType(), getCustomerId(), job.getPriority(), job.getSpecialInstructions(), job.getStartTimeStamp(), job.getDeadlineTimeStamp(), staffId, job.getPrice(), job.getIsOverdue());
+        DbDriver.insertJob(getCustomer_name(), getTitle(), getFirstName(), getLastName(), getAddress(), getCity(), getPostcode(), getEmail(), getPhoneNumber(), getCustomerType(), getCustomerId(), job.getPriority(), job.getSpecialInstructions(), job.getStartTimeStamp(), job.getDeadlineTimeStamp(), staffId, job.getPrice(), job.getIsOverdue(),job.getQuantity());
         Job searchedJob = DbDriver.searchJobJustCreated();// Will return  current job created from database.
         Discount d = DbDriver.getDiscount(getDiscountId());
         double rate;
@@ -107,6 +108,7 @@ public class CustomerAccount {
                 if (rates.size() > 0) {//Get the last rate.
                     rate = rates.get(rates.size() - 1);
                     newPrice = job.getPrice() - (job.getPrice() * rate / 100);
+                    newPrice *= quantity;
                     newPrice *= (1 + (job.getVat() / 100));//apply VAT on the new price.
                     newPrice *= (1 + (job.getPriorityRate() / 100)); //Adjust the price according to the priority.
                     job.setPrice(newPrice);
@@ -127,6 +129,7 @@ public class CustomerAccount {
                 if (rates.size() > 0) {
                     rate = rates.get(rates.size() - 1);
                     newPrice = job.getPrice() - (job.getPrice() * (rate / 100));
+                    newPrice *= quantity;
                     newPrice *= (1 + (job.getVat() / 100));
                     newPrice *= (1 + (job.getPriorityRate() / 100)); //Adjust the price according to the priority.
                     job.setPrice(newPrice);
@@ -153,22 +156,25 @@ public class CustomerAccount {
                             double discount = (taskPrice * (rate / 100));
                             newPrice = newPrice + (taskPrice - discount);
                         }
+                    newPrice *= quantity;
                     newPrice *= (1 + (job.getVat() / 100));
                     newPrice *= (1 + (job.getPriorityRate() / 100)); //Adjust the price according to the priority.
                     DbDriver.updateJobPrice(newPrice, searchedJob.getJobId());
                 }
             }
         } else {
+
             newPrice = job.getPrice() * (1 + (job.getVat() / 100));
+            newPrice*= quantity;
             newPrice *= (1 + (job.getPriorityRate() / 100)); //Adjust the price according to the priority.
             DbDriver.updateJobPrice(newPrice, searchedJob.getJobId());
         }
-
-
-        for (Task t : job.getTasks())// Add the requested tasks onto the database.
-            DbDriver.insertTasksAvailableJobs(t.getTaskId(), searchedJob.getJobId());
+        for (int i =0; i<quantity; i++) {
+            for (Task t : job.getTasks())// Add the requested tasks onto the database.
+                DbDriver.insertTasksAvailableJobs(t.getTaskId(), searchedJob.getJobId());
+        }
         jobs.add(job);
-    
+
     }
 
 

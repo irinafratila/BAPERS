@@ -79,6 +79,8 @@ public class DbDriver {
     public static final String COLUMN_STAFF_ID_START = "STAFF_ID_START";
     public static final String COLUMN_STAFF_ID_COMPLETE = "STAFF_ID_COMPLETE";
     public static final String COLUMN_JOB_IS_OVERDUE = "JOB_IS_OVERDUE";
+    // TODO made change here
+    public static final String COLUMN_QUANTITY = "QUANTITY";
     //Create Department table variables.
     public static final String TABLE_DEPARTMENT = "DEPARTMENT";
     public static final String COLUMN_DEPARTMENT_ID = "DEPARTMENT_ID";
@@ -298,7 +300,9 @@ public class DbDriver {
                     COLUMN_HOURS_TO_COMPLETE + " int default 0,\n" +
                     COLUMN_STAFF_ID_START + " int,\n" +
                     COLUMN_STAFF_ID_COMPLETE + " int,\n" +
+                    //TODO made change here
                     COLUMN_JOB_IS_OVERDUE + " varchar(20),\n" +
+                    COLUMN_QUANTITY + " int, \n" +
                     COLUMN_TOTAL_PRICE + " float,\n" +
                     "PRIMARY KEY (" + COLUMN_JOB_ID + "),\n" +
                     "FOREIGN KEY(" + COLUMN_ACCOUNT_NUMBER + ") REFERENCES\n" +
@@ -525,9 +529,11 @@ public class DbDriver {
 
     //Job related code
 
+    //TODO made change here
+
     public static void insertJob(String cName, String title, String firstName, String lastName, String address, String City, String postcode,
                                  String email, String phone, String type, int accountNumber, int priority, String instructions, Timestamp start,
-                                 Timestamp deadline, int staffId, double price, String isOverdue) {
+                                 Timestamp deadline, int staffId, double price, String isOverdue, int quantity) {
         try (
                 Connection connection = conn.getConnection();
                 PreparedStatement insertIntoJob = connection.prepareStatement(insertJob)
@@ -546,6 +552,7 @@ public class DbDriver {
             insertIntoJob.setInt(6, staffId);
             insertIntoJob.setDouble(7, price);
             insertIntoJob.setString(8, isOverdue);
+            insertIntoJob.setInt(9,quantity);
 
             int affectedRows = insertIntoJob.executeUpdate();
 
@@ -573,7 +580,7 @@ public class DbDriver {
 
         }
     }
-
+    //TODO made change here
     public static List<Job> queryJobs() {
         try (Statement statement = conn.getConnection().createStatement();
              ResultSet results = statement.executeQuery("SELECT * from " + TABLE_JOBS)
@@ -593,9 +600,10 @@ public class DbDriver {
                 int staffIdComplete = results.getInt(COLUMN_STAFF_ID_COMPLETE);
                 double price = results.getDouble(COLUMN_TOTAL_PRICE);
                 String isOverdue = results.getString(COLUMN_JOB_IS_OVERDUE);
+                int quantity = results.getInt(COLUMN_QUANTITY);
 
 
-                Job job = new Job(jobId, accountNumber, priority, instructions, status, start, deadline, completeTime, hours, staffIdStart, price, staffIdComplete, isOverdue);
+                Job job = new Job(jobId, accountNumber, priority, instructions, status, start, deadline, completeTime, hours, staffIdStart, price, staffIdComplete, isOverdue, quantity);
 
                 jobs.add(job);
             }

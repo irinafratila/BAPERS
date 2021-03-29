@@ -33,6 +33,8 @@ public class Job {
     private List<TasksJobs> tasksJobs;
     double vat = 20;
     double priorityRate;
+    //TODO made change here
+    int quantity;
 
 
     // Constructor for the Job class.
@@ -53,7 +55,15 @@ public class Job {
         this.deadlineString = deadlineString;
     }
 
-    public Job(int jobId, int account, int priority, String specialInstructions, String status, Timestamp start, Timestamp deadline, Timestamp completeTime, double timeTaken, int startedBy, double price, int completedBy, String isOverdue) {
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+    //TODO made change here
+    public Job(int jobId, int account, int priority, String specialInstructions, String status, Timestamp start, Timestamp deadline, Timestamp completeTime, double timeTaken, int startedBy, double price, int completedBy, String isOverdue, int quantity) {
 
         this.customerId = account;
         this.priority = priority;
@@ -71,9 +81,11 @@ public class Job {
         this.isOverdue = isOverdue;
         this.tasksJobs = DbDriver.getAllTaskInfoOnAJob(jobId);
         this.deadlineString= deadline.toString();
+        this.quantity = quantity;
     }
+    //TODO made change here
 
-    public Job(int priority, String specialInstructions, List<Task> tasks) {
+    public Job(int priority, String specialInstructions, List<Task> tasks,int quantity) {
         this.priority = priority;
         this.specialInstructions = specialInstructions;
         startTimeStamp = new Timestamp(System.currentTimeMillis());
@@ -83,6 +95,7 @@ public class Job {
         this.price = calculatePrice();
         this.isJobComplete = false;
         this.isOverdue = "NO";
+        this.quantity = quantity;
 
     }
 

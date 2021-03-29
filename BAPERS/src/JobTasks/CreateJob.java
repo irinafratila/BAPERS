@@ -124,7 +124,16 @@ public class CreateJob implements Initializable {
 
         String specialInstructions = notes.getText();
 
-        searchedCustomer.createJob(staffId,priority,specialInstructions,newTasks);
+        //TODO made change here
+
+        int quantity = Integer.valueOf(jobQuantity.getText());
+
+        //TODO made change here
+
+        ,
+
+
+        searchedCustomer.createJob(staffId,priority,specialInstructions,newTasks,quantity);
 
         taskLabel.setText("Job has been created successfully for customer #"+searchedId+ "\n"+
                 "Job created by Staff id : " + staffId +" Username: " + staffusername);
