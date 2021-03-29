@@ -8,35 +8,42 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="769.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Admin.User">
     <children>
         <HBox alignment="CENTER" layoutX="2.0" prefHeight="205.0" prefWidth="997.0">
             <children>
-                <Button mnemonicParsing="false" onAction="#changeSceneHome" text="Button" />
-                <Label prefHeight="44.0" prefWidth="218.0" text="Back to home">
-                    <font>
-                        <Font size="36.0" />
-                    </font>
-                </Label>
+                <Button mnemonicParsing="false" onAction="#changeSceneHome">
+                    <graphic>
+                        <Label prefHeight="44.0" prefWidth="218.0" text="Back to home">
+                            <font>
+                                <Font size="36.0" />
+                            </font>
+                        </Label>
+                    </graphic></Button>
             </children>
         </HBox>
-        <VBox alignment="CENTER" layoutX="-2.0" layoutY="252.0" prefHeight="517.0" prefWidth="1001.0">
+        <VBox alignment="CENTER" layoutX="-2.0" layoutY="252.0" prefHeight="517.0" prefWidth="1001.0" spacing="100.0">
             <children>
-                <Button mnemonicParsing="false" onAction="#changeSceneCreateUser" prefHeight="73.0" prefWidth="211.0" style="-fx-background-color: black;" text="Create User">
+                <Button alignment="CENTER" mnemonicParsing="false" onAction="#changeSceneCreateUser" prefHeight="73.0" prefWidth="211.0" style="-fx-background-color: black; -fx-background-radius: 25;" text="Create User" textFill="WHITE">
                     <font>
                         <Font size="14.0" />
                     </font>
                     <VBox.margin>
-                        <Insets bottom="100.0" />
+                        <Insets />
                     </VBox.margin>
                 </Button>
-                <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#changeSceneDeleteUser" prefHeight="78.0" prefWidth="209.0" text="Delete User">
+                <Button alignment="CENTER" mnemonicParsing="false" onAction="#changeSceneUpdateUser" prefHeight="78.0" prefWidth="209.0" style="-fx-background-color: black; -fx-background-radius: 25;" text="Update User" textFill="WHITE">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Button alignment="CENTER" mnemonicParsing="false" onAction="#changeSceneDeleteUser" prefHeight="78.0" prefWidth="209.0" style="-fx-background-color: black; -fx-background-radius: 25;" text="Delete User" textFill="WHITE">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Button>
             </children>
         </VBox>
+        <Label fx:id="actionMessage" alignment="CENTER" layoutX="328.0" layoutY="210.0" prefHeight="47.0" prefWidth="345.0" />
     </children>
 </AnchorPane>

@@ -1,31 +1,34 @@
 package Admin;
 
+import BapersControl.Main;
+import Database.DBConnection;
+import javafx.beans.binding.When;
+
+import java.sql.Connection;
+
 public class Alert {
-    int alertID;
-    static int count = 0;
-    String message;
-    boolean seen = false;
 
-    public Alert(String M) {
-        message = M;
-        count++;
-        alertID = count;
+
+    private Main m;
+    private DBConnection conn;
+    private Connection connDB;
+
+
+    public Alert(){
+        this.m = new Main();
+        this.conn = new DBConnection();
+        this.connDB = conn.getConnection();
     }
 
-    public String getMessage() {
-        return message;
+
+    public void saveAlert(String message){
+        //save to db
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    public Object getAlert(){
+        // get from db
 
-    public boolean isSeen() {
-        return seen;
+        // while (result.next()) then blah blah
+        return null;
     }
-
-    public void setSeen(boolean seen) {
-        this.seen = seen;
-    }
-
 }

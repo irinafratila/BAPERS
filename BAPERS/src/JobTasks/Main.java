@@ -1,5 +1,6 @@
 package JobTasks;
 
+import Admin.AlertThread;
 import Customer.CustomerAccount;
 import Database.DbDriver;
 import Reports.Invoice;
@@ -14,66 +15,69 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
 
+        Thread thread = new AlertThread();
+        thread.start();
         DbDriver.generateIndividualStaffReport(2);
 ////        System.out.println(DbDriver.createSummaryReport);
 ////
-        //start tasks
-        List<TasksJobs> tasksToStart = DbDriver.queryTasksJobs();
-        for(TasksJobs t :tasksToStart){
-            if(t.getTaskJobId() <15){
-                t.startTask("day",1);
-                t.completeTask();
+//        //start tasks
+//        List<TasksJobs> tasksToStart = DbDriver.queryTasksJobs();
+//        for(TasksJobs t :tasksToStart){
+//            if(t.getTaskJobId() <15){
+//                t.startTask("day",1);
+//                t.completeTask();
+//            }
+//        }
+//DbDriver.generateIndividualStaffReport(5);
+//
+//////
+//        DbDriver.generateSummaryReport("2021-03-27","2021-03-29");
+//         DbDriver.insertStaffAccount("hfhf", "dd", "ds", "dd", "ddd", "242323");
+
+//        List<Job> open = DbDriver.getOpenJobs();
+//        DbDriver.printJobs(open);
+
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Please enter Customer id");
+        int searchedId = sc.nextInt();
+        CustomerAccount searchedCustomer = DbDriver.searchCustomer(searchedId);
+        searchedCustomer.updateCustomerType("valuable","variable");
+        List<Task> tasks = DbDriver.queryTasks();
+        int tasksSize = tasks.size();
+        List<Integer> taskIds = new LinkedList<>();
+        System.out.println("Please type the id of tasks you want");
+        while (true) {
+            int inputValue = sc.nextInt();
+            if (inputValue < tasksSize && inputValue > 0) {
+
+                    taskIds.add(inputValue);
+                } else break;
             }
+
+        for (int i : taskIds) System.out.println(i);
+
+        List<Task> newTasks = new LinkedList<>();
+        for (int i : taskIds) {
+            Task searchedTask = DbDriver.searchTask(i);
+            newTasks.add(searchedTask);
+            System.out.println(searchedTask.getDescription());
         }
 
+        System.out.println("What is the priority?");
+        int priority = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Any special instructions?");
 
-////
-//        DbDriver.generateSummaryReport("2021-03-27","2021-03-29");
-////         DbDriver.insertStaffAccount("hfhf", "dd", "ds", "dd", "ddd", "242323");
-//
-////        List<Job> open = DbDriver.getOpenJobs();
-////        DbDriver.printJobs(open);
-//
-//        Scanner sc = new Scanner(System.in);
-//        System.out.println("Please enter Customer id");
-//        int searchedId = sc.nextInt();
-//        CustomerAccount searchedCustomer = DbDriver.searchCustomer(searchedId);
-//        searchedCustomer.updateCustomerType("valuable","variable");
-//        List<Task> tasks = DbDriver.queryTasks();
-//        int tasksSize = tasks.size();
-//        List<Integer> taskIds = new LinkedList<>();
-//        System.out.println("Please type the id of tasks you want");
-//        while (true) {
-//            int inputValue = sc.nextInt();
-//            if (inputValue < tasksSize && inputValue > 0) {
-//
-//                    taskIds.add(inputValue);
-//                } else break;
-//            }
-//
-//        for (int i : taskIds) System.out.println(i);
-//
-//        List<Task> newTasks = new LinkedList<>();
-//        for (int i : taskIds) {
-//            Task searchedTask = DbDriver.searchTask(i);
-//            newTasks.add(searchedTask);
-//            System.out.println(searchedTask.getDescription());
-//        }
-//
-//        System.out.println("What is the priority?");
-//        int priority = sc.nextInt();
-//        sc.nextLine();
-//        System.out.println("Any special instructions?");
-//
-//
-//        String specialInstructions = sc.nextLine();
-//
-//        sc.close();
-//
-//
-//
-//
-//        searchedCustomer.createJob(1,priority,specialInstructions,newTasks);
+
+        String specialInstructions = sc.nextLine();
+
+        sc.close();
+
+
+
+
+        searchedCustomer.createJob(1,priority,specialInstructions,newTasks);
 //        Job j = DbDriver.searchJobs(1);
 //        j.completeJob(1);
 //        searchedCustomer.makeCashPayment(1,59.4);

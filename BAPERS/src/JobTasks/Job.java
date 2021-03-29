@@ -86,19 +86,19 @@ public class Job {
     public Timestamp setDeadline() {
         if(priority ==5){
             deadline = Timestamp.from(startTimeStamp.toInstant().plus(1, ChronoUnit.HOURS));
-            priorityRate =100;
+            priorityRate =200;
         }
         else if(priority ==4){
             deadline = Timestamp.from(startTimeStamp.toInstant().plus(2, ChronoUnit.HOURS));
-            priorityRate = 75;
+            priorityRate = 150;
         }
         else if(priority ==3){
             deadline = Timestamp.from(startTimeStamp.toInstant().plus(3, ChronoUnit.HOURS));
-            priorityRate = 50;
+            priorityRate = 100;
         }
         else if(priority ==2){
-            deadline = Timestamp.from(startTimeStamp.toInstant().plus(6, ChronoUnit.HOURS));
-            priorityRate = 25;
+            deadline = Timestamp.from(startTimeStamp.toInstant().plus(9, ChronoUnit.HOURS));
+            priorityRate = 50;
         }
         else if(priority ==1){
             deadline = Timestamp.from(startTimeStamp.toInstant().plus(24, ChronoUnit.HOURS));

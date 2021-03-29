@@ -1,46 +1,72 @@
 package Payment;
 
+import BapersControl.Main;
+import Database.DbDriver;
+import JobTasks.Job;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+
+import java.io.IOException;
+
 public class Payment {
-    private final int payment_ID;
-    private final int jobID;
-    private final int customer_ID;
-    private String cashOrCard;
-    private double amount;
 
+    private BapersControl.Main m;
 
-    public Payment(int payment_ID, int jobID, int customer_ID, String cashOrCard, double amount) {
-        this.payment_ID = payment_ID;
-        this.jobID = jobID;
-        this.customer_ID = customer_ID;
-        this.cashOrCard = cashOrCard;
-        this.amount = amount;
+    @FXML
+    private TextField id;
+
+    public Payment(){
+        this.m = new Main();
     }
 
-    public int getPayment_ID() {
-        return payment_ID;
+    public void cancelRegister(ActionEvent event) throws IOException {
+        m.changeScene("/BapersControl/dashboard.fxml");
     }
 
-    public int getJobID() {
-        return jobID;
+    public void changeSceneCardPayment() throws Exception{
+        try {
+            m.changeScene("/Payment/searchJobCard.fxml");
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+    public void changeSceneCashPayment() throws Exception{
+        try {
+            m.changeScene("/Payment/searchJobCash.fxml");
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
-    public int getCustomer_ID() {
-        return customer_ID;
+
+    public void searchJobCash() throws Exception{
+        try {
+            int JobID = Integer.parseInt(id.getText());
+            Job searchedJob = DbDriver.searchJobs(JobID);
+            new BapersControl.tempJobSession(searchedJob.getJobId());
+            m.changeScene("/Payment/cashPayment.fxml");
+
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
+
     }
 
-    public String getCashOrCard() {
-        return cashOrCard;
-    }
+    public void searchJobCard() throws Exception{
+        try {
+            int JobID = Integer.parseInt(id.getText());
+            Job searchedJob = DbDriver.searchJobs(JobID);
+            new BapersControl.tempJobSession(JobID);
+            m.changeScene("/Payment/cardPayment.fxml");
 
-    public void setCashOrCard(String cashOrCard) {
-        this.cashOrCard = cashOrCard;
-    }
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
 
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
     }
 }

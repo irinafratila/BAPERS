@@ -57,7 +57,7 @@ public class CustomerAccount {
     }
 
     //Record payment data into the database, once the right amount is paid.
-    public void makeCardPayment(int jobId, double amount, String cashOrCard, String cardType, String expiry, String lastDigits) throws SQLException {
+    public static void makeCardPayment(int jobId, double amount, String cashOrCard, String cardType, String expiry, String lastDigits) throws SQLException {
         Job searchedJob = DbDriver.searchJobs(jobId);
         if (searchedJob.getPrice() == amount) {
             System.out.println("Payment was succesful!");
@@ -68,7 +68,7 @@ public class CustomerAccount {
     }
 
     //Record payment data into the database, once the right amount is paid.
-    public void makeCashPayment(int jobId, double amount) throws SQLException {
+    public static void makeCashPayment(int jobId, double amount) throws SQLException {
         Job searchedJob = DbDriver.searchJobs(jobId);
         if (searchedJob.getPrice() == amount) {
             System.out.println("Payment was succesful!");
@@ -193,8 +193,9 @@ public class CustomerAccount {
 
     //Update the customer type to either normal or valuable adjusting the discounts alongside.
     public void updateCustomerType(String isValuable, String type) throws SQLException {
-
+        System.out.println("im in update customer ");
         if (isValuable.equalsIgnoreCase("valuable")) {
+            this.isValuable = true;
             if (type.equalsIgnoreCase("flexi")) {
                 DbDriver.insertDiscount(type);
                 applyFlexiDiscount();
@@ -209,7 +210,7 @@ public class CustomerAccount {
                 discountId = -1;
             }
         }
-        Discount d = DbDriver.searchLastDiscountId();
+        Discount d = DbDriver.getLastDiscountFromDB();
         System.out.println(isValuable +" - " + discountId +" - "+ getCustomerId());
         DbDriver.updateCustomerType(isValuable, d.getDiscountId(), getCustomerId());
     }
@@ -219,13 +220,13 @@ public class CustomerAccount {
         System.out.println("Please type in the rate");
         rate = sc.nextDouble();
 
-        DbDriver.insertFixed(type, rate);
+        DbDriver.insertFixedDiscount(type, rate);
     }
 
     //need to do a null pointer chaeck.
     public void applyVariableDiscount() throws SQLException {
         int taskId;
-        Discount d = DbDriver.searchLastDiscountId();
+        Discount d = DbDriver.getLastDiscountFromDB();
         int discountId = d.getDiscountId();
         while (true) {
             System.out.println("Please type in the task id");
@@ -235,13 +236,13 @@ public class CustomerAccount {
             }
             System.out.println("Please type in the rate");
             rate = sc.nextDouble();
-            DbDriver.insertVariable(discountId, rate, taskId);
+            DbDriver.insertVariableDiscount(discountId, rate, taskId);
         }
     }
 
     public void applyFlexiDiscount() throws SQLException {
         int range;
-        Discount d = DbDriver.searchLastDiscountId();
+        Discount d = DbDriver.getLastDiscountFromDB();
         int discountId = d.getDiscountId();
         while (true) {
             System.out.println("Please type in end of range");
@@ -251,7 +252,7 @@ public class CustomerAccount {
             }
             System.out.println("Please type in the rate");
             rate = sc.nextDouble();
-            DbDriver.insertFlexible(discountId, rate, range);
+            DbDriver.insertFlexibleDiscount(discountId, rate, range);
         }
     }
 
