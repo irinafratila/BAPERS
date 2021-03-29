@@ -15,8 +15,10 @@ import java.util.ListIterator;
 public class Job {
     private int priority;
     private Timestamp deadline;
+    private String deadlineString;
     private String status;
     private Timestamp startTimeStamp;
+    private String startTime;
     private double timeTaken;
     private int startedBy;
     private List<Task> tasks;
@@ -35,6 +37,22 @@ public class Job {
 
     // Constructor for the Job class.
 
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getDeadlineString() {
+        return deadlineString;
+    }
+
+    public void setDeadlineString(String deadlineString) {
+        this.deadlineString = deadlineString;
+    }
+
     public Job(int jobId, int account, int priority, String specialInstructions, String status, Timestamp start, Timestamp deadline, Timestamp completeTime, double timeTaken, int startedBy, double price, int completedBy, String isOverdue) {
 
         this.customerId = account;
@@ -42,6 +60,7 @@ public class Job {
         this.deadline = deadline;
         this.status = status;
         this.startTimeStamp = start;
+        this.startTime = startTimeStamp.toString();
         this.startedBy = startedBy;
         this.timeTaken = timeTaken;
         this.price = price;
@@ -51,6 +70,7 @@ public class Job {
         this.completedBy = completedBy;
         this.isOverdue = isOverdue;
         this.tasksJobs = DbDriver.getAllTaskInfoOnAJob(jobId);
+        this.deadlineString= deadline.toString();
     }
 
     public Job(int priority, String specialInstructions, List<Task> tasks) {

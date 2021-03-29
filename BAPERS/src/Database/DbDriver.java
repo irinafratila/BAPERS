@@ -13,7 +13,6 @@ import Reports.SummaryReport;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
-import javafx.collections.ObservableList;
 
 /**
  * @author Muhammad Masum Miah
@@ -1306,7 +1305,7 @@ public class DbDriver {
     }
 
 
-    public static void insertStaffAccount(String name, String userName, String password, String address, String
+    public static Boolean insertStaffAccount(String name, String userName, String password, String address, String
             role, String phone) throws SQLException {
         try (PreparedStatement queryStaffAccount = conn.getConnection().prepareStatement((QUERY_STAFF_ACCOUNT));
              PreparedStatement insertIntoStaff = conn.getConnection().prepareStatement(insertStaff)) {
@@ -1332,6 +1331,7 @@ public class DbDriver {
                 }
             }
         }
+        return null;
     }
 
 

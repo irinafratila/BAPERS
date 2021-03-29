@@ -81,37 +81,37 @@ public class UpgradeCustomer implements Initializable {
 
 
 
-    public void upgradeCallFixed(){
+    public void upgradeCallFixed() throws SQLException {
         String CustomerType = customerType.getText();
         updateCustomerType(CustomerType,"fixed");
     }
-    public void upgradeCallFlexi(){
+    public void upgradeCallFlexi() throws SQLException {
         String CustomerType = customerType.getText();
         updateCustomerType(CustomerType,"flexi");
     }
-    public void upgradeCallVariable(){
+    public void upgradeCallVariable() throws SQLException {
         String CustomerType = customerType.getText();
         updateCustomerType(CustomerType,"variable");
     }
 
-    public void downgradeCall(){
+    public void downgradeCall() throws SQLException {
         String CustomerType = customerType.getText();
         updateCustomerType(CustomerType,"");
     }
 
 
     //Update the customer type to either normal or valuable adjusting the discounts alongside.
-    public void updateCustomerType(String isValuable, String type) {
+    public void updateCustomerType(String isValuable, String type) throws SQLException {
 
         int id = Integer.parseInt(BapersControl.tempCustomerSession.getId());
         int discountId = d.getDiscountId()+1;
         if (isValuable.equalsIgnoreCase("valuable")) {
             if (type.equalsIgnoreCase("flexi")) {
                 DbDriver.insertDiscount(type);
+                applyFlexiDiscount();
 //                applyFlexiDiscount();
             } else if (type.equalsIgnoreCase("fixed")) {
-                DbDriver.insertDiscount(type);
-                applyFixedDiscount();
+                applyFixedDiscount(type);
             } else if (type.equalsIgnoreCase("variable")) {
                 DbDriver.insertDiscount(type);
                 applyVariableDiscount();
@@ -120,15 +120,17 @@ public class UpgradeCustomer implements Initializable {
                 discountId = 1;
             }
         }
+        Discount d = DbDriver.getLastDiscountFromDB();
         System.out.println(isValuable +" - " + discountId +" - "+ id);
-        DbDriver.updateCustomerType(isValuable, discountId, id);
+        DbDriver.updateCustomerType(isValuable, d.getDiscountId(), id);
     }
 
-    public void applyFixedDiscount() {
+    public void applyFixedDiscount(String type) throws SQLException {
         try {
-            int discountId = d.getDiscountId();
+
             int rate = Integer.parseInt(discountRate.getText());
-            DbDriver.insertFixedDiscount(rate, discountId);
+            DbDriver.insertFixedDiscount(type, rate);
+
             updateCustomerMessageLabel.setText("User has a fixed discount of "+ rate+"%");
             customerType.setText("");
             discountRate.setText("");
@@ -167,7 +169,7 @@ public class UpgradeCustomer implements Initializable {
         double rate = Double.parseDouble(discountRate.getText());
         taskDiscounts.put(TaskId,rate);
          System.out.println(rate +" - "+discountId +" - " + TaskId);
-        DbDriver.insertVariableDiscount(rate, discountId, TaskId);
+        DbDriver.insertVariableDiscount( discountId,rate, TaskId);
 
 
         discountRate.setText("");
@@ -236,7 +238,7 @@ public class UpgradeCustomer implements Initializable {
         double rate = Double.parseDouble(discountRate.getText());
         ranges.put(range,rate);
        // System.out.println(rate +" - "+discountId +" - " + range);
-        DbDriver.insertFlexibleDiscount(rate, discountId, range);
+        DbDriver.insertFlexibleDiscount(discountId,rate,  range);
         discountRate.setText("");
         discountRange.setText("");
     }

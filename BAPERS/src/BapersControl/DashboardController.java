@@ -92,7 +92,7 @@ public class DashboardController implements Initializable {
         List<Job> jobs =DbDriver.queryJobs();
 
         for (Job j : jobs){
-            JobTable jt = new JobTable(j.getJobId(),j.getCustomerId(),j.getPriority(),j.getStatus(),j.getStartTimeStamp(),j.getDeadline(),j.getPrice(),j.getSpecialInstructions());
+            JobTable jt = new JobTable(j.getJobId(),j.getCustomerId(),j.getPriority(),j.getStatus(),j.getStartTime(),j.getDeadlineString(),j.getPrice(),j.getSpecialInstructions());
             tableView.getItems().add(jt);
         }
         JobTable jt = new JobTable(9,7,1,"in progress","today","tomorrow", (double) 49.60,"N/A");
