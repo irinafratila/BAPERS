@@ -1,0 +1,52 @@
+customer id = 2 
+Customer Name: AirVia Ltd
+Contact name: Mr Boris Berezovsky 
+Address: 02073218523
+Phone Number: 02073218523 
+Job Number: 2
+1: Task ID: 2 
+Task Description: Black and white film processing
+ Task Price: 49.5
+2: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+3: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+4: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+5: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+6: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+7: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+8: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+9: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+10: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+11: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+12: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+13: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+14: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+15: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+ Total Price after discount and VAT: 1341.0
