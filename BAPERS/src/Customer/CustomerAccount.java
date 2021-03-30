@@ -6,6 +6,7 @@ import JobTasks.Job;
 import JobTasks.Task;
 import Discount.*;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -83,7 +84,7 @@ public class CustomerAccount {
 
     //After searching a customer, they are able to create jobs. This will also be stored into the database.
     //TODO made change here
-    public void createJob(int staffId, int priority, String specialInstructions, List<Task> newTasks, int quantity) throws SQLException {
+    public void createJob(int staffId, int priority, String specialInstructions, List<Task> newTasks, int quantity) throws SQLException, FileNotFoundException {
 
         Job job = new Job(priority, specialInstructions, newTasks,quantity);
         double newPrice = 0;
@@ -172,6 +173,7 @@ public class CustomerAccount {
             for (Task t : job.getTasks())// Add the requested tasks onto the database.
                 DbDriver.insertTasksAvailableJobs(t.getTaskId(), searchedJob.getJobId());
         }
+       DbDriver.generateInvoice(searchedJob.getJobId());
         jobs.add(job);
 
     }

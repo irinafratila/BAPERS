@@ -3,8 +3,13 @@ package JobTasks;
 import Alerts.DeadlineAlert;
 import Customer.CustomerAccount;
 import Database.DbDriver;
+import Reports.AutomateReports;
 
+import java.io.FileNotFoundException;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,10 +17,14 @@ import java.util.Scanner;
 public class Main {
 
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, FileNotFoundException {
 
-        System.out.println(DbDriver.createCustomerReport);
-        DbDriver.generateCustomerReport(1,"2021-03-25","2021-03-30");
+
+//        AutomateReports reports = new AutomateReports();
+//        reports.start();
+
+//        System.out.println(DbDriver.createCustomerReport);
+//        DbDriver.generateCustomerReport(1,"2021-03-25","2021-03-30");
 
 //        start tasks
 //        List<TasksJobs> tasksToStart = DbDriver.queryTasksJobs();
@@ -41,7 +50,7 @@ public class Main {
         System.out.println("Please enter Customer id");
         int searchedId = sc.nextInt();
         CustomerAccount searchedCustomer = DbDriver.searchCustomer(searchedId);
-        searchedCustomer.updateCustomerType("valuable","variable");
+//        searchedCustomer.updateCustomerType("valuable","variable");
         List<Task> tasks = DbDriver.queryTasks();
         int tasksSize = tasks.size();
         List<Integer> taskIds = new LinkedList<>();

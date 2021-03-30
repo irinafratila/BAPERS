@@ -1701,7 +1701,7 @@ public class DbDriver {
     //Individual Performance reports.
     public static void generateSummaryReport(String From, String To) throws FileNotFoundException {
 
-        PrintStream o = new PrintStream(new File("/Users/masum/Desktop/BAPERS/BAPERS/BAPERS/src/SummaryReports/SummaryReport"+From +"_"+To+".txt"));
+        PrintStream o = new PrintStream(new File("SummaryReport"+From +"_"+To+".txt"));
         System.setOut(o);
 
         List<SummaryReport> s = DbDriver.createSummaryReports(From, To);
@@ -2296,29 +2296,37 @@ public class DbDriver {
     }
 
     public static void generateCustomerReport(int id,String from, String to) {
-        List<CustomerReport> reports= DbDriver.createCustomerReport(id,from,to);
+        List<CustomerReport> reports = DbDriver.createCustomerReport(id, from, to);
         assert reports != null;
         CustomerReport report = reports.get(0);
 
         System.out.println("customer id = " + report.getCustomerId() + " \n" +
-                "Customer Name: " + report.getCustomer_name()+ "\n" +
+                "Customer Name: " + report.getCustomer_name() + "\n" +
                 "Contact name: " + report.getContact() + " \n" +
                 "Address: " + report.getAddress() + "\n" +
-                "Phone Number: " + report.getGetPhoneNumber()+ " \n" +
-                "1: Job Number: " + report.getJobId() + "\n" );
+                "Phone Number: " + report.getGetPhoneNumber() + " \n" +
+                "1: Job Number: " + report.getJobId() + "\n");
 
         if (reports.size() > 1) {
             for (int i = 1; i < reports.size(); i++) {
                 CustomerReport report1 = reports.get(i);
-                System.out.println(i + 1 + ": Job Number: "+ report1.getJobId());
-
+                System.out.println(i + 1 + ": Job Number: " + report1.getJobId());
 
 
             }
 
 
         }
+
     }
+    //Reports and Invoices
+
+
+
+
+
+
+    
 }
 
 
