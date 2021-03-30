@@ -1,0 +1,37 @@
+customer id = 1 
+Customer Name: City, University of London
+Contact name: Prof David Rhind 
+Address: 02070408000
+Phone Number: 02070408000 
+Job Number: 5
+1: Task ID: 2 
+Task Description: Black and white film processing
+ Task Price: 49.5
+2: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+3: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+4: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+5: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+6: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+7: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+8: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+9: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+10: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+ Total Price after discount and VAT: 326.34

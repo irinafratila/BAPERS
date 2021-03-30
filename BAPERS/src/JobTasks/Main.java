@@ -19,6 +19,7 @@ public class Main {
 
     public static void main(String[] args) throws SQLException, FileNotFoundException {
 
+        DbDriver.generateStaffReport();
 
 //        AutomateReports reports = new AutomateReports();
 //        reports.start();
@@ -27,13 +28,13 @@ public class Main {
 //        DbDriver.generateCustomerReport(1,"2021-03-25","2021-03-30");
 
 //        start tasks
-//        List<TasksJobs> tasksToStart = DbDriver.queryTasksJobs();
-//        for(TasksJobs t :tasksToStart){
-//            if(t.getTaskJobId() <15){
-//                t.startTask("day",1);
-//
-//            }
-//        }
+        List<TasksJobs> tasksToStart = DbDriver.queryTasksJobs();
+        for(TasksJobs t :tasksToStart){
+            if(t.getTaskJobId() <15){
+                t.startTask("day",1);
+
+            }
+        }
 //
 //
 //        Thread Deadline = new DeadlineAlert();

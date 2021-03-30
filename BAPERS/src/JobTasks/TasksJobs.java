@@ -46,7 +46,6 @@ public class TasksJobs {
     public void startTask(String dayOrNight, int id){
         setStatus("In Progress");
         setStartTimeStamp(new Timestamp(System.currentTimeMillis()));
-
         setDayOrNight(dayOrNight);
         setStaffId(id);
         DbDriver.updateStartTask(status,id,startTimeStamp,dayOrNight,taskJobId);
