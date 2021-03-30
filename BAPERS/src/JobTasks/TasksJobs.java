@@ -66,7 +66,7 @@ public class TasksJobs {
             } else {
                 setIsOverdue("No");
             }
-            DbDriver.updateCompleteTask(status, completeTimeStamp, isComplete, isOverdue, (int) timeTaken, getTaskJobId());
+            DbDriver.updateCompleteTask("Complete", completeTimeStamp, isComplete, isOverdue, (int) timeTaken, getTaskJobId());
 
 
 

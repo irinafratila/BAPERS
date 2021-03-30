@@ -33,7 +33,7 @@ public class CreateJob implements Initializable {
     private Label taskLabel;
 
     @FXML
-    private TextField id,jobPriority,notes;
+    private TextField id,jobPriority,notes,quantity;
 
     @FXML
     private ChoiceBox tasks;
@@ -124,16 +124,9 @@ public class CreateJob implements Initializable {
 
         String specialInstructions = notes.getText();
 
-        //TODO made change here
+        int Quantity = Integer.parseInt(quantity.getText());
 
-        int quantity = Integer.valueOf(jobQuantity.getText());
-
-        //TODO made change here
-
-        ,
-
-
-        searchedCustomer.createJob(staffId,priority,specialInstructions,newTasks,quantity);
+        searchedCustomer.createJob(staffId,priority,specialInstructions,newTasks,Quantity);
 
         taskLabel.setText("Job has been created successfully for customer #"+searchedId+ "\n"+
                 "Job created by Staff id : " + staffId +" Username: " + staffusername);

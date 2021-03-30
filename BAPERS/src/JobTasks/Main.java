@@ -1,9 +1,8 @@
 package JobTasks;
 
-import Admin.AlertThread;
+import Alerts.DeadlineAlert;
 import Customer.CustomerAccount;
 import Database.DbDriver;
-import Reports.Invoice;
 
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -15,27 +14,27 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
 
-//        Thread thread = new AlertThread();
-//        thread.start();
-//        DbDriver.generateIndividualStaffReport(2);
-////        System.out.println(DbDriver.createSummaryReport);
-////
-//        //start tasks
+        System.out.println(DbDriver.createCustomerReport);
+        DbDriver.generateCustomerReport(1,"2021-03-25","2021-03-30");
+
+//        start tasks
 //        List<TasksJobs> tasksToStart = DbDriver.queryTasksJobs();
 //        for(TasksJobs t :tasksToStart){
 //            if(t.getTaskJobId() <15){
 //                t.startTask("day",1);
-//                t.completeTask();
+//
 //            }
 //        }
-//DbDriver.generateIndividualStaffReport(5);
 //
-//////
-        DbDriver.generateSummaryReport("2021-03-27","2021-03-29");
-//         DbDriver.insertStaffAccount("hfhf", "dd", "ds", "dd", "ddd", "242323");
+//
+//        Thread Deadline = new DeadlineAlert();
+//        Deadline.start();
+//DbDriver.generateAlert();
+//DbDriver.taskDeadline();
+//
+//
 
-//        List<Job> open = DbDriver.getOpenJobs();
-//        DbDriver.printJobs(open);
+
 
 
         Scanner sc = new Scanner(System.in);
@@ -66,6 +65,8 @@ public class Main {
 
         System.out.println("What is the priority?");
         int priority = sc.nextInt();
+        System.out.println("what quantity?");
+        int quantity = sc.nextInt();
         sc.nextLine();
         System.out.println("Any special instructions?");
 
@@ -77,10 +78,10 @@ public class Main {
 
 
 
-        searchedCustomer.createJob(1,priority,specialInstructions,newTasks);
-//        Job j = DbDriver.searchJobs(1);
-//        j.completeJob(1);
-//        searchedCustomer.makeCashPayment(1,59.4);
+        searchedCustomer.createJob(1,priority,specialInstructions,newTasks,quantity);
+        Job j = DbDriver.searchJobs(2);
+        j.completeJob(1);
+//        searchedCustomer.makeCashPayment(1,19);
 //
 
 
