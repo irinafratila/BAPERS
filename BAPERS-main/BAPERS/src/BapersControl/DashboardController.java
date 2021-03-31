@@ -1,12 +1,10 @@
 package BapersControl;
 
 //import Customer.CustomerAccount;
-import Database.DBConnection;
 
 import Database.DbDriver;
 import JobTasks.Job;
 import JobTasks.JobTable;
-import Payment.Payment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -146,6 +144,17 @@ public class DashboardController implements Initializable {
 
     }
 
+    //change scene from dashboard to user page where you can create or delete user
+    public void changeSceneRelax() throws  IOException{
+//        Main m = new Main();
+        if(currentLoginSession.getRole().equalsIgnoreCase("Office manager") ){
+            m.changeScene("/Break/break.fxml");
+
+        }else {
+            //get back to work
+            m.changeScene("/BapersControl/noAccess.fxml");
+        }
+    }
 
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneUser() throws  IOException{
@@ -191,7 +200,7 @@ public class DashboardController implements Initializable {
     public void changeSceneBackup() throws  IOException{
 //        Main m = new Main();
         if (currentLoginSession.getRole().equalsIgnoreCase("Office manager")){
-            m.changeScene("BackupDB.fxml");
+            m.changeScene("/Database/BackupDB.fxml");
         }else {
             m.changeScene("/BapersControl/noAccess.fxml");
 

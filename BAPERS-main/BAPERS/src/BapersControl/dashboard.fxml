@@ -17,7 +17,7 @@
       <VBox layoutY="1.0" prefHeight="766.0" prefWidth="293.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fitHeight="150.0" fitWidth="293.0" pickOnBounds="true" preserveRatio="true" />
-            <Button fx:id="overview" alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Profile">
+            <Button fx:id="overview" alignment="BOTTOM_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#changeSceneRelax" prefHeight="71.0" prefWidth="297.0" style="-fx-background-color: white;" text="Take a Break">
                <graphic>
                   <ImageView fitHeight="36.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>

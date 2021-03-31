@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="825.0" prefWidth="1001.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BapersControl.BackupDB">
+<AnchorPane prefHeight="825.0" prefWidth="1001.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Database.BackupDB">
     <children>
         <AnchorPane prefHeight="111.0" prefWidth="1001.0" style="-fx-background-color: black;">
             <children>
@@ -19,15 +19,14 @@
                         <Image url="@../img/logo.png" />
                     </image>
                 </ImageView>
-                <Label layoutX="197.0" layoutY="47.0" text="User Registration" textFill="WHITE">
+                <Label layoutX="197.0" layoutY="47.0" prefHeight="29.0" prefWidth="213.0" text="Back Up &amp; Restore" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="24.0" />
                     </font>
                 </Label>
             </children>
         </AnchorPane>
-        <Label fx:id="deleteUserMessageLabel" layoutX="376.0" layoutY="133.0" prefHeight="31.0" prefWidth="301.0" />
-        <Label fx:id="confirmPasswordLabel" layoutX="577.0" layoutY="359.0" prefHeight="29.0" prefWidth="190.0" textFill="RED" />
+        <Label fx:id="dbBackupMessageLabel" alignment="CENTER" layoutX="319.0" layoutY="133.0" prefHeight="78.0" prefWidth="396.0" />
         <VBox alignment="CENTER" layoutX="1.0" layoutY="115.0" prefHeight="710.0" prefWidth="1000.0" spacing="30.0">
             <children>
                 <HBox alignment="CENTER" prefHeight="232.0" prefWidth="1000.0">
