@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -32,7 +33,7 @@ public class CreateJob implements Initializable {
     private Label taskLabel;
 
     @FXML
-    private TextField id,jobPriority,notes;
+    private TextField id,jobPriority,notes,quantity;
 
     @FXML
     private ChoiceBox tasks;
@@ -104,7 +105,7 @@ public class CreateJob implements Initializable {
     }
 
 
-    public void createJob(ActionEvent event) throws IOException {
+    public void createJob(ActionEvent event) throws IOException, SQLException {
 
 
         int searchedId = Integer.parseInt(BapersControl.tempCustomerSession.getId());
@@ -123,14 +124,20 @@ public class CreateJob implements Initializable {
 
         String specialInstructions = notes.getText();
 
-        searchedCustomer.createJob(staffId,priority,specialInstructions,newTasks);
+        int Quantity = Integer.parseInt(quantity.getText());
+
+        searchedCustomer.createJob(staffId,priority,specialInstructions,newTasks,Quantity);
 
         taskLabel.setText("Job has been created successfully for customer #"+searchedId+ "\n"+
                 "Job created by Staff id : " + staffId +" Username: " + staffusername);
 
+
+        m.changeScene("/Payment/viewInvoice.fxml");
+
         jobPriority.setText("");
         notes.setText("");
         tasks.setValue("");
+        quantity.setText("");
     }
 
 }

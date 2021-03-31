@@ -1,38 +1,25 @@
 package Alerts;
 
-
-import Database.DbDriver;
-import JobTasks.Job;
-
-import java.sql.Date;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.List;
-
 public class PaymentAlert extends  Thread {
     private int job_id =-1;
     private int account = -1;
-
-
     private String cname =null;
+
     @Override
     public void run() {
+        boolean flag = true;
 
-        while (true) {
+        while (flag) {
 
-            System.out.println("job ID: " + job_id + " Customer ID: " + getAccount() + " Customer Name: " + getCname());
-
-
-            try {
-                //Will run checks again after 15 minutes.
-                Thread.sleep(9000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            System.out.println("job ID: " + job_id + " Customer ID: " + getAccount() + " Customer Name: " + getCname() + " has passed thier payment deadline.");
+            flag = false;
 
 
         }
+
+
     }
+
 
     public int getJob_id() {
         return job_id;

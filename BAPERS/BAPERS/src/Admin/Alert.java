@@ -28,7 +28,7 @@ public class Alert {
     public Object getAlert(){
         // get from db
 
-       // while (result.next()) then blah blah
+        // while (result.next()) then blah blah
         return null;
     }
 }

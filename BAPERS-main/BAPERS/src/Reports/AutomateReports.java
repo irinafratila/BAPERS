@@ -1,5 +1,6 @@
 package Reports;
 
+import Database.DBBackupRestore;
 import Database.DbDriver;
 
 import java.io.FileNotFoundException;
@@ -10,6 +11,7 @@ import java.time.temporal.ChronoUnit;
 public class AutomateReports extends Thread{
     private String from, to;
     private Timestamp current, lastWeek;
+    DBBackupRestore backup = new DBBackupRestore();
 
     @Override
     public void run() {
@@ -23,6 +25,8 @@ public class AutomateReports extends Thread{
             Date dateFrom = new Date(lastWeek.getTime());
             from = dateFrom.toString();
             DbDriver.generateStaffReport();
+            //Backup the database on a weekly basis.
+            backup.dbBackup("root","TeaM27TeaM","bapers");
             try {
                 DbDriver.generateSummaryReport(from,to);
             } catch (FileNotFoundException e) {
@@ -31,8 +35,8 @@ public class AutomateReports extends Thread{
             try {
 
                 //will generate weekly.
-//                Thread.sleep(604800000);
-                Thread.sleep(5000);
+                Thread.sleep(604800000);
+//                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

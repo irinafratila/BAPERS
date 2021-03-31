@@ -1,29 +1,20 @@
 package Alerts;
 
-import Database.DbDriver;
-import JobTasks.Job;
-
-import java.sql.Timestamp;
-import java.util.List;
 
 public class TaskDeadlineAlert extends Thread{
 
     int taskId, jobTaskId;
     @Override
     public void run() {
+        boolean flag = true;
 
-        while (true) {
-
-
-            System.out.println("job task ID: " + getJobTaskId() + " task ID: " + getTaskId() );
+        while (flag) {
 
 
-            try {
-                //Will run checks again after 15 minutes.
-                Thread.sleep(9000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            System.out.println("job task ID: " + getJobTaskId() + " task ID: " + getTaskId() + " has passed their deadine" );
+
+
+            flag = false;
 
         }
     }

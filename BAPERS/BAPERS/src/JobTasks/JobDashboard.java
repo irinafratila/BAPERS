@@ -29,7 +29,7 @@ public class JobDashboard {
     }
     public void changeSceneUpdateJob() throws Exception{
         try {
-            m.changeScene("/JobTasks/updateJob.fxml");
+            m.changeScene("/JobTasks/searchJob.fxml");
         }catch (Exception e){
             e.printStackTrace();
             e.getCause();

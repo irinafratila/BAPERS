@@ -73,5 +73,11 @@
       </Label>
       <TextField fx:id="notes" layoutX="313.0" layoutY="517.0" prefHeight="36.0" prefWidth="234.0" promptText="Special Instructions" />
       <Label fx:id="taskLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="21.0" layoutY="235.0" prefHeight="171.0" prefWidth="952.0" />
+      <Label layoutX="174.0" layoutY="390.0" prefHeight="23.0" prefWidth="122.0" text="Quantity">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="quantity" layoutX="310.0" layoutY="385.0" prefHeight="36.0" prefWidth="234.0" promptText="Quantity" />
     </children>
 </AnchorPane>

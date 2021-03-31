@@ -1,3 +1,4 @@
+
 package Admin;
 
 import BapersControl.Main;
@@ -113,7 +114,7 @@ public class updateUser implements Initializable{
 //        String inserttoDB = insertField;
 
 
-       // "SELECT * FROM CUSTOMER_ACCOUNT WHERE CustomerName = '" + FullName + "' AND CustomerPhoneNumber = '" + phoneNumber +"';";
+        // "SELECT * FROM CUSTOMER_ACCOUNT WHERE CustomerName = '" + FullName + "' AND CustomerPhoneNumber = '" + phoneNumber +"';";
         try {
             System.out.println(id + fullname + userName + password +Address +role+number);
             DbDriver.updateStaffAccount(id,fullname,userName,password, Address,role,number);

@@ -1,6 +1,6 @@
 package JobTasks;
 
-import BapersControl.Main;
+
 import BapersControl.tempCustomerSession;
 import Database.DbDriver;
 import javafx.event.ActionEvent;
@@ -11,17 +11,18 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 
 public class searchCustomer {
+
     private BapersControl.Main m;
+
     @FXML
     private TextField id;
 
-    @FXML
-    private Label searchCustomerMessageLabel;
+    @FXML private Label searchCustomerMessageLabel;
 
     public String idData = "";
 
     public searchCustomer(){
-        this.m = new Main();
+        this.m = new BapersControl.Main();
     }
 
     public void cancelRegister(ActionEvent event) throws IOException {
@@ -51,4 +52,6 @@ public class searchCustomer {
             e.printStackTrace();
         }
     }
+
+
 }

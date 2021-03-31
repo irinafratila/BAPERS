@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
@@ -19,9 +20,9 @@ public class CardPayment implements Initializable {
 
     private BapersControl.Main m;
 
-    private int JobId,LastDigits;
+    private int JobId;
     private float Amount;
-    private String CashOrCard, CardType, Expiry;
+    private String CashOrCard, CardType, Expiry, LastDigits;
 
 
     @FXML
@@ -40,16 +41,16 @@ public class CardPayment implements Initializable {
         this.CashOrCard = "card";
         this.CardType = "";
         this.Expiry = "";
-        this.LastDigits= 0;
+        this.LastDigits= "0";
 
         System.out.println(id + "and " + searchedJob.getJobId());
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-       jobID.setText(String.valueOf(this.JobId));
-       amount.setText(String.valueOf(this.Amount));
-       cardType.setText("card");
+        jobID.setText(String.valueOf(this.JobId));
+        amount.setText(String.valueOf(this.Amount));
+        cardType.setText("card");
 
     }
 
@@ -59,17 +60,18 @@ public class CardPayment implements Initializable {
     }
 
 
-    public void MakePayment(){
-        System.out.println("call mnake card payment method ");
+    public void MakePayment() throws SQLException, IOException {
+        System.out.println("call make card payment method ");
 
         this.JobId = Integer.parseInt(jobID.getText());
         this.Amount = Float.parseFloat(amount.getText());
         this.CashOrCard = "card";
         this.CardType = cardType.getText();
         this.Expiry = ((TextField)expiry.getEditor()).getText();
-        this.LastDigits= Integer.parseInt(last4Digits.getText());
+        this.LastDigits= last4Digits.getText();
 
-       CustomerAccount.makeCardPayment(JobId,Amount,CashOrCard,CardType,Expiry,LastDigits);
+        CustomerAccount.makeCardPayment(JobId,Amount,CashOrCard,CardType,Expiry,LastDigits);
+//        m.changeScene("/Payment/viewInvoice.fxml");
         //make sure to update current status which is not curently done
 
         jobID.clear();

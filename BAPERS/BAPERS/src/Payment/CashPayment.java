@@ -53,12 +53,13 @@ public class CashPayment implements Initializable {
     }
 
 
-    public void MakePayment(){
+    public void MakePayment() throws IOException {
         System.out.println("call mnake cash payment method ");
 
         this.JobId = Integer.parseInt(jobID.getText());
         this.Amount = Float.parseFloat(amount.getText());
         this.CashOrCard = "cash";
+//        m.changeScene("/Payment/viewInvoice.fxml");
 
 //       CustomerAccount.makeCardPayment(JobId,Amount,CashOrCard,CardType,Expiry,LastDigits);
 

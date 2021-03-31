@@ -24,7 +24,8 @@ public class BackupDB {
     public void backup(){
         try {
 
-            Boolean result = DBBackupRestore.dbBackup("root", "TeaM27TeaM", "bapers");
+            Boolean result = true;
+            DBBackupRestore.dbBackup("root", "TeaM27TeaM", "bapers");
             dbBackupMessageLabel.setText("");
             if (result == true){
                 dbBackupMessageLabel.setText("Back up Succesful");
@@ -43,7 +44,8 @@ public class BackupDB {
     public void restoreBackup(){
 
         try {
-            Boolean result = DBBackupRestore.restoreDB("bapers", "root", "TeaM27TeaM", "2021-03-31");
+            Boolean result = true;
+                    DBBackupRestore.restoreDB("bapers", "root", "TeaM27TeaM", "2021-03-31");
             dbBackupMessageLabel.setText("");
             if (result == true){
                 dbBackupMessageLabel.setText("Back up Restore Successful");

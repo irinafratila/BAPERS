@@ -21,6 +21,7 @@ public class JobTable {
     }
 
     public JobTable(int jobID, int staffID, int priority,String status, String start,String end,Double price,String instruction){
+
         this.jobID = new SimpleIntegerProperty(jobID);
         this.staffID = new SimpleIntegerProperty(staffID);
         this.priority = new SimpleIntegerProperty(priority);

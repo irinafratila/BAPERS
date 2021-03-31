@@ -1,6 +1,9 @@
 package BapersControl;
 
+import Alerts.AutomateAlerts;
+import Alerts.JobDeadlineAlert;
 import Database.DbDriver;
+import Reports.AutomateReports;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,6 +20,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        AutomateAlerts alerts = new AutomateAlerts();
+        JobDeadlineAlert jobAlert = new JobDeadlineAlert();
+        AutomateReports reports = new AutomateReports();
+        alerts.start();
+        jobAlert.start();
+        reports.start();
         stg = primaryStage;
         primaryStage.setResizable(false);
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));

@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -58,7 +59,7 @@ public class CreateTask implements Initializable {
         m.changeScene("/JobTasks/taskDashboard.fxml");
     }
 
-    public void createTask(){
+    public void createTask() throws SQLException {
         String TaskDescription = desc.getText();
         int DepartmentID = Integer.parseInt(did.getText());
         float Price = Float.parseFloat(price.getText());

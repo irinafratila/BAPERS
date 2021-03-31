@@ -2,9 +2,10 @@ package JobTasks;
 
 import Database.DbDriver;
 import Discount.Discount;
-
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.ListIterator;
+
 /**
  * @author Muhammad Masum Miah
  */
@@ -16,8 +17,8 @@ public class TasksJobs {
     private int taskId;
     private Timestamp startTimeStamp;
     private Timestamp completeTimeStamp;
-    private String startTime;
-    private String completeTime;
+    private Timestamp startTime;
+    private Timestamp completeTime;
     private long timeTaken;
     private String dayOrNight;
     private String isComplete;
@@ -26,21 +27,14 @@ public class TasksJobs {
     private String status;
     private Discount discountType; //TODO  this will later be changed to the right discount data type instead of String
 
-    //Constructor for creating and inserting.
-    public TasksJobs(int jobId,int taskId) {
-        this.status = "Ready to process";
-        this.isComplete= "no";
-        this.isOverdue = "no";
-        this.taskId = taskId;
-        this.jobId = jobId;
-    }
+
     //Constructor when querying TasksJobs.
-    public TasksJobs(int taskJobId,int taskId, int jobId,int staffId,  String status,long timeTaken, String startTime,  String completeTime,String dayOrNight, String isComplete, String isOverdue) {
+    public TasksJobs(int taskJobId, int taskId, int jobId, int staffId, String status, long timeTaken, Timestamp startTime, Timestamp completeTime, String dayOrNight, String isComplete, String isOverdue) {
         this.taskJobId = taskJobId;
         this.jobId = jobId;
         this.taskId = taskId;
-        this.startTime = startTime;
-        this.completeTime = completeTime;
+        this.startTimeStamp = startTime;
+        this.completeTimeStamp = completeTime;
         this.timeTaken = timeTaken;
         this.dayOrNight = dayOrNight;
         this.isComplete = isComplete;
@@ -50,46 +44,50 @@ public class TasksJobs {
     }
 
     public void startTask(String dayOrNight, int id){
-        this.status = "In Progress";
-        this.startTimeStamp = new Timestamp(System.currentTimeMillis());
-        this.startTime = startTimeStamp.toString();
-        this.dayOrNight = dayOrNight;
-        this.staffId = id;
-        DbDriver.updateStartTask(status,startTime,dayOrNight,taskJobId);
+        setStatus("Started");
+        setStartTimeStamp(new Timestamp(System.currentTimeMillis()));
+        setDayOrNight(dayOrNight);
+        setStaffId(id);
+        DbDriver.updateStartTask(status,id,startTimeStamp,dayOrNight,taskJobId);
+
 //TODO update the database once tasks start
     }
     public void completeTask() {
 
-        this.isComplete = "yes";
-        this.status = "Complete";
-        this.completeTimeStamp = new Timestamp(System.currentTimeMillis());
-        this.completeTime = completeTimeStamp.toString();
-        this.timeTaken = ((completeTimeStamp.getTime() - Timestamp.valueOf(startTime).getTime()) / 1000) / 60 / 60;
-        Task task = searchTask(taskId);
-        if ((int) timeTaken > task.getDuration()) {
-            this.isOverdue = "overdue";
-        } else {
-            this.isOverdue = "No";
-        }
-        DbDriver.updateCompleteTask(status, completeTime, isComplete, isOverdue, (int) timeTaken, getTaskJobId());
+        setIsComplete("yes");
+        setStatus("Complete");
+        setCompleteTimeStamp(new Timestamp(System.currentTimeMillis()));
+        setTimeTaken(((completeTimeStamp.getTime() -startTimeStamp.getTime()) / 1000) / 60 / 60);
+        Task task = DbDriver.searchTask(taskId);
+        if(task != null)
+            if ((double) timeTaken > task.getDuration()) {
+                setIsOverdue("Overdue");
+            } else {
+                setIsOverdue("No");
+            }
+        DbDriver.updateCompleteTask("Complete", completeTimeStamp, isComplete, isOverdue, (int) timeTaken, getTaskJobId());
+
+
 
 
     }
     //TODO update the database once tasks start
 
-    public static Task searchTask(int taskId){
-        List<Task> tasks = DbDriver.queryTasks();
-        if(tasks == null){
-            System.out.println("No Tasks available");
-            return null;
-        }
-        for(Task t: tasks){
-            if (t.getTaskId() == taskId){
-                return t;
-            }
-        }return null;
-    }
 
+    //Sets the current task in operation.
+    public boolean setCurrentOperation(String dayOrNight, int id) {
+        List<TasksJobs>  tasksJobs = DbDriver.queryTasksJobs();
+        ListIterator<TasksJobs> tasksList = tasksJobs.listIterator();
+        while (tasksList.hasNext()) {
+            if (!tasksList.next().getIsComplete().equals(("yes"))) {
+                tasksList.next().startTask(dayOrNight,id);
+                return true;
+            }
+        }
+        System.out.println("All jobs are complete!");
+        return false;
+
+    }
     public int getTaskJobId() {
         return taskJobId;
     }
@@ -130,19 +128,19 @@ public class TasksJobs {
         this.completeTimeStamp = completeTimeStamp;
     }
 
-    public String getStartTime() {
+    public Timestamp getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
     }
 
-    public String getCompleteTime() {
+    public Timestamp getCompleteTime() {
         return completeTime;
     }
 
-    public void setCompleteTime(String completeTime) {
+    public void setCompleteTime(Timestamp completeTime) {
         this.completeTime = completeTime;
     }
 

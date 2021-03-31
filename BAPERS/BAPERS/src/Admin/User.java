@@ -53,7 +53,7 @@ public class User{
     public String selection = null;
     public String usernameData = null;
 
-//    String staffId, String name, String userName, String password, String address, String role, String phoneNumber
+    //    String staffId, String name, String userName, String password, String address, String role, String phoneNumber
     public User(){
         this.m = new Main();
         this.conn = new DBConnection();
@@ -65,8 +65,8 @@ public class User{
 
     public void changeSceneHome() throws Exception{
         try {
-          // BapersControl.Main m= new BapersControl.Main();
-           m.changeScene("/BapersControl/dashboard.fxml");
+            // BapersControl.Main m= new BapersControl.Main();
+            m.changeScene("/BapersControl/dashboard.fxml");
         }catch (Exception e){
             e.printStackTrace();
             e.getCause();
@@ -75,7 +75,7 @@ public class User{
 
     public void changeSceneCreateUser() throws Exception{
         try {
-          //  BapersControl.Main m= new BapersControl.Main();
+            //  BapersControl.Main m= new BapersControl.Main();
             m.changeScene("/Admin/createUser.fxml");
         }catch (Exception e){
             e.printStackTrace();
@@ -85,7 +85,7 @@ public class User{
 
     public void changeSceneDeleteUser() throws Exception{
         try {
-          //  BapersControl.Main m= new BapersControl.Main();
+            //  BapersControl.Main m= new BapersControl.Main();
             m.changeScene("/Admin/deleteUser.fxml");
         }catch (Exception e){
             e.printStackTrace();
@@ -94,7 +94,7 @@ public class User{
     }
     public void changeSceneUpdateUser() throws Exception{
         try {
-         //   BapersControl.Main m= new BapersControl.Main();
+            //   BapersControl.Main m= new BapersControl.Main();
             m.changeScene("/Admin/searchUser.fxml");
         }catch (Exception e){
             e.printStackTrace();
@@ -105,12 +105,10 @@ public class User{
 
 
     public void cancelRegister(ActionEvent event) throws IOException{
-      //  BapersControl.Main m= new BapersControl.Main();
+        //  BapersControl.Main m= new BapersControl.Main();
         m.changeScene("/Admin/user.fxml");
 
     }
 
 }
-
-
 

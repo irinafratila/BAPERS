@@ -86,4 +86,9 @@ public class Login  {
             e.getCause();
         }
     }
+
+    public void setText(ActionEvent actionEvent) {
+        username.setText("Manager");
+        password.setText("Get_it_done");
+    }
 }

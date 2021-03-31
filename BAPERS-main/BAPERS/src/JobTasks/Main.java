@@ -1,20 +1,13 @@
 package JobTasks;
 
-import Alerts.DeadlineAlert;
+import Alerts.AutomateAlerts;
+import Alerts.JobDeadlineAlert;
 import Customer.CustomerAccount;
 import Database.DbDriver;
 import Reports.AutomateReports;
-import Reports.Report;
 
-import java.awt.*;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -23,61 +16,32 @@ public class Main {
 
 
     public static void main(String[] args) throws SQLException, FileNotFoundException {
-
-       // DbDriver.generateStaffReport();
-
+//        AutomateAlerts alerts = new AutomateAlerts();
+//        alerts.start();
+//        JobDeadlineAlert jobAlert = new JobDeadlineAlert();
+//        jobAlert.start();
 //        AutomateReports reports = new AutomateReports();
-        //reports.start();
+//        reports.start();
 
 //        DbDriver.generateStaffReport();
-//        DbDriver.generateIndividualStaffReport(2);
 
-//        PrintStream console = System.out;
-//        System.setOut(console);
+//        AutomateReports reports = new AutomateReports();
+//        reports.start();
 
+//        System.out.println(DbDriver.createCustomerReport);
+//        DbDriver.generateCustomerReport(1,"2021-03-25","2021-03-30");
 
-        //search job
-//        List<TasksJobs> tasklist = DbDriver.getAllTaskInfoOnAJob(3);
-//        List<Integer> st = new LinkedList<>();
-//        for (TasksJobs t : tasklist){
-//            int id = t.getTaskId();
-//            st.add(id);
-//            String stats = t.getStatus();
-//            System.out.println(id +"-"+stats);
-//        }
-//
-//        List<TasksJobs> jobs =DbDriver.queryTasksJobs();
-//
-        System.out.println("done");
-        DbDriver.generateInvoice(1);
-
-        System.out.println("done");
-
-//        System.out.println( Date.valueOf("2021-03-25"));
-
-        //System.out.println(DbDriver.createCustomerReport);
-       // DbDriver.generateCustomerReport(1);
-
-//        start tasks
+      //  start tasks
 //        List<TasksJobs> tasksToStart = DbDriver.queryTasksJobs();
 //        for(TasksJobs t :tasksToStart){
-//            if(t.getTaskJobId() <15){
-//                t.startTask("day",1);
+////            if(t.getTaskJobId() <15){
+////                t.startTask("day",1);
+//                System.out.println(t.getJobId()+" - "+t.getStatus());
 //
-//            }
 //        }
-//
-//
-//        Thread Deadline = new DeadlineAlert();
-//        Deadline.start();
-//DbDriver.generateAlert();
-//DbDriver.taskDeadline();
-//
-//
 
-//
-//
-//
+
+
 //        Scanner sc = new Scanner(System.in);
 //        System.out.println("Please enter Customer id");
 //        int searchedId = sc.nextInt();
@@ -91,9 +55,9 @@ public class Main {
 //            int inputValue = sc.nextInt();
 //            if (inputValue < tasksSize && inputValue > 0) {
 //
-//                taskIds.add(inputValue);
-//            } else break;
-//        }
+//                    taskIds.add(inputValue);
+//                } else break;
+//            }
 //
 //        for (int i : taskIds) System.out.println(i);
 //

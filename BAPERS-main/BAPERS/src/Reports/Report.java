@@ -52,6 +52,7 @@ public class Report {
         int ID = Integer.parseInt(id.getText());
         this.idData = ID;
 
+        //String x = ;
         try {
 
             Boolean result;
@@ -65,7 +66,7 @@ public class Report {
 //                generateCustomerReport();
 
                 try {
-                    DbDriver.generateCustomerReport(ID);
+                    DbDriver.generateCustomerReport(ID,"2021-03-25","2021-04-01");
                     m.changeScene("/Reports/viewCustomerReport.fxml");
                 }catch (ArrayIndexOutOfBoundsException e){
                     System.out.println("The index you have entered is invalid");
@@ -109,7 +110,7 @@ public class Report {
         int id = BapersControl.tempJobSession.getId();
         System.out.println("genearting cust report for id : " + id);
         try {
-            DbDriver.generateCustomerReport(id);
+            DbDriver.generateCustomerReport(id,"2021-03-25","2021-04-01");
 
         }catch (Exception e){
             e.printStackTrace();
@@ -128,7 +129,7 @@ public class Report {
 
     public void generateBiplReport() throws FileNotFoundException {
 
-        DbDriver.generateSummaryReport("2021-03-27","2021-03-29");
+        DbDriver.generateSummaryReport("2021-03-27","2021-03-31");
         System.out.println("Generated report 3");
         try {
             m.changeScene("/Reports/viewBiplReport.fxml");

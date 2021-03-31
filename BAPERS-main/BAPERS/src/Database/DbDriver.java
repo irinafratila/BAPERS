@@ -9,7 +9,7 @@ import JobTasks.Job;
 import JobTasks.Task;
 import JobTasks.TasksJobs;
 import Discount.FlexibleDiscountPlan;
-import Payment.LatePaymentAlert;
+import Alerts.LatePaymentAlert;
 import Reports.CustomerReport;
 import Reports.IndividualPerformanceReport;
 import Reports.Invoice;
@@ -212,7 +212,7 @@ public class DbDriver {
             " WHERE " + TABLE_STAFF_ACCOUNT + "." + COLUMN_STAFF_ID + " = ? ";
 
     public static final String checkLatePayment = "SELECT " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + ", " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CUSTOMER_NAME +
-            ", " + TABLE_JOBS + "." + COLUMN_JOB_ID +
+            ", " + TABLE_JOBS + "." + COLUMN_JOB_ID + ", " + TABLE_JOBS + "." + COLUMN_COMPLETE_TIME +
             " FROM (( " + TABLE_CUSTOMER_ACCOUNT + "" +
             " INNER JOIN " + TABLE_JOBS + " ON " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = " + TABLE_JOBS + "." + COLUMN_ACCOUNT_NUMBER + ")" +
             " LEFT OUTER JOIN " + TABLE_PAYMENT_HISTORY + " ON " + TABLE_JOBS + "." + COLUMN_JOB_ID + " = " + TABLE_PAYMENT_HISTORY + "." + COLUMN_JOB_ID + ")" +
@@ -736,40 +736,6 @@ public class DbDriver {
         }
     }
 
-//    //TODO made change here
-//    public static List<Job> queryJobsAvailable() {
-//        try (Statement statement = conn.getConnection().createStatement();
-//             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_TASKS_AVAILABLE)
-//        ) {
-//            List<Job> jobs = new LinkedList<>();
-//            while (results.next()) {
-//                int jobId = results.getInt(COLUMN_JOB_ID);
-//                int accountNumber = results.getInt(COLUMN_ACCOUNT_NUMBER);
-//                int priority = results.getInt(COLUMN_PRIORITY);
-//                String status = results.getString(COLUMN_CURRENT_STATUS);
-//                String instructions = results.getString(COLUMN_SPECIAL_INSTRUCTIONS);
-//                Timestamp start = results.getTimestamp(COLUMN_START_TIME);
-//                Timestamp deadline = results.getTimestamp(COLUMN_JOB_DEADLINE);
-//                Timestamp completeTime = results.getTimestamp(COLUMN_COMPLETE_TIME);
-//                int hours = results.getInt(COLUMN_HOURS_TO_COMPLETE);
-//                int staffIdStart = results.getInt(COLUMN_STAFF_ID_START);
-//                int staffIdComplete = results.getInt(COLUMN_STAFF_ID_COMPLETE);
-//                double price = results.getDouble(COLUMN_TOTAL_PRICE);
-//                String isOverdue = results.getString(COLUMN_JOB_IS_OVERDUE);
-//                int quantity = results.getInt(COLUMN_QUANTITY);
-//
-//
-//                Job job = new Job(jobId, accountNumber, priority, instructions, status, start, deadline, completeTime, hours, staffIdStart, price, staffIdComplete, isOverdue, quantity);
-//
-//                jobs.add(job);
-//            }
-//            return jobs;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-
     public static void updateCompleteJob(String status, Timestamp completeTime, double hours, int staffId, String isOverdue, int jobId) {
         try (Statement statement = conn.getConnection().createStatement()) {
             String sb1 = "UPDATE " + TABLE_JOBS +
@@ -834,6 +800,100 @@ public class DbDriver {
         return null;
 
     }
+    public static Boolean updateJobStart(int id, String status,Timestamp start) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("UPDATE ");
+            sb.append(TABLE_JOBS);
+            sb.append(" SET ");
+            sb.append(COLUMN_CURRENT_STATUS);
+            sb.append(" = '");
+            sb.append(status);
+            sb.append("', ");
+            sb.append(COLUMN_START_TIME);
+            sb.append(" = '");
+            sb.append(start);
+            sb.append("' WHERE ");
+            sb.append(COLUMN_JOB_ID);
+            sb.append(" = ");
+            sb.append(id);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static Boolean updateJobComplete(int id, String status,Timestamp end) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("UPDATE ");
+            sb.append(TABLE_JOBS);
+            sb.append(" SET ");
+            sb.append(COLUMN_CURRENT_STATUS);
+            sb.append(" = '");
+            sb.append(status);
+            sb.append("', ");
+            sb.append(COLUMN_COMPLETE_TIME);
+            sb.append(" = '");
+            sb.append(end);
+            sb.append("' WHERE ");
+            sb.append(COLUMN_JOB_ID);
+            sb.append(" = ");
+            sb.append(id);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    //testing purposes to print out customer account and see how it changes with each action
+    public static void printJobs2() {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("select * from ");
+            sb.append(TABLE_JOBS);
+
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+//            statement.executeUpdate(sb1);
+            ResultSet result1 = statement.executeQuery(sb1);
+            while (result1.next()) {
+                String staff11 = result1.getString(1);
+                String staff21 = result1.getString(2);
+                String staff31 = result1.getString(3);
+                String staff41 = result1.getString(4);
+                String staff51 = result1.getString(5);
+                String staff61 = result1.getString(6);
+                String staff71 = result1.getString(7);
+                String staff81 = result1.getString(8);
+                String staff91 = result1.getString(9);
+                String staff101 = result1.getString(10);
+                String staff111 = result1.getString(11);
+                String staff112 = result1.getString(12);
+
+                System.out.println(staff11 + " : " + staff21 + " : " + staff31 + " : " + staff41 + " : " + staff51 + " : " + staff61 + " : " + staff71 + " : " + staff81 + " : " + staff91 + " : " + staff101 + " : " + staff111 + " : " + staff112);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    //This will return a job which is searched by id.
+    public static Boolean searchJobsBool(int searchedJob) {
+        List<Job> jobs = queryJobs();
+        if (jobs == null) {
+            System.out.println("No Jobs");
+            return false;
+        }
+        for (Job j : jobs) {
+            if (j.getJobId() == searchedJob) {
+                return true;
+            }
+        }
+        return null;
+    }
 
     //Search and print open jobs.
     public static List<Job> searchAllJobs() {
@@ -876,57 +936,7 @@ public class DbDriver {
         }
         return null;
     }
-    public static Boolean updateJobStart(int id, String status,Timestamp start) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("UPDATE ");
-            sb.append(TABLE_JOBS);
-            sb.append(" SET ");
-            sb.append(COLUMN_CURRENT_STATUS);
-            sb.append(" = '");
-            sb.append(status);
-            sb.append("', ");
-            sb.append(COLUMN_START_TIME);
-            sb.append(" = '");
-            sb.append(start);
-            sb.append("' WHERE ");
-            sb.append(COLUMN_JOB_ID);
-            sb.append(" = ");
-            sb.append(id);
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-            statement.execute(sb1);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
-    public static Boolean updateJobComplete(int id, String status,Timestamp end) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("UPDATE ");
-            sb.append(TABLE_JOBS);
-            sb.append(" SET ");
-            sb.append(COLUMN_CURRENT_STATUS);
-            sb.append(" = '");
-            sb.append(status);
-            sb.append("', ");
-            sb.append(COLUMN_COMPLETE_TIME);
-            sb.append(" = '");
-            sb.append(end);
-            sb.append("' WHERE ");
-            sb.append(COLUMN_JOB_ID);
-            sb.append(" = ");
-            sb.append(id);
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-            statement.execute(sb1);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
     //testing purposes to print out customer account and see how it changes with each action
     public static void printJobs1() {
         try (Statement statement = conn.getConnection().createStatement();) {
@@ -974,21 +984,6 @@ public class DbDriver {
         for (Job j : jobs) {
             if (j.getJobId() == searchedJob) {
                 return j;
-            }
-        }
-        return null;
-    }
-
-    //This will return a job which is searched by id.
-    public static Boolean searchJobsBool(int searchedJob) {
-        List<Job> jobs = queryJobs();
-        if (jobs == null) {
-            System.out.println("No Jobs");
-            return false;
-        }
-        for (Job j : jobs) {
-            if (j.getJobId() == searchedJob) {
-                return true;
             }
         }
         return null;
@@ -1726,30 +1721,6 @@ public class DbDriver {
         return null;
     }
 
-    //testing purposes to print out staff account and see how it changes with each action
-    public static void printStaff() {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("select * from ");
-            sb.append(TABLE_STAFF_ACCOUNT);
-
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-//            statement.executeUpdate(sb1);
-            ResultSet result1 = statement.executeQuery(sb1);
-            while (result1.next()) {
-                String staff11 = result1.getString(1);
-                String staff21 = result1.getString(2);
-                String staff31 = result1.getString(3);
-                String staff41 = result1.getString(4);
-                String staff51 = result1.getString(5);
-                String staff61 = result1.getString(6);
-                System.out.println(staff11 +"\n"+ staff21 +"\n"+ staff31 +"\n"+ staff41 +"\n"+ staff51 +"\n"+ staff61+"\n"+"\n");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public List<StaffAccount> queryStaff() {
         try (Statement statement = conn.getConnection().createStatement();
              ResultSet results = statement.executeQuery("SELECT * from " + TABLE_STAFF_ACCOUNT);
@@ -1864,7 +1835,6 @@ public class DbDriver {
     }
 
 
-
     public static void insertPaymentHistory(int jobId, int customerId, String cashOrCard, String cardType, String expiry, String lastDigits, double amount) throws SQLException {
         try (PreparedStatement insertIntoPayments = conn.getConnection().prepareStatement(insertPayment);
              PreparedStatement queryPayments = conn.getConnection().prepareStatement(QUERY_PAYMENTS)) {
@@ -1938,9 +1908,10 @@ public class DbDriver {
                 int accountNumber = results.getInt(1);
                 String name = results.getString(2);
                 int job_ID = results.getInt(3);
+                Timestamp complete = results.getTimestamp(4);
 
 
-                LatePaymentAlert report = new LatePaymentAlert(accountNumber, name, job_ID);
+                LatePaymentAlert report = new LatePaymentAlert(accountNumber, name, job_ID,complete);
                 reports.add(report);
 
             }
@@ -1951,21 +1922,60 @@ public class DbDriver {
         }
     }
 
+//
+//    public static void generateLatePaymentAlert() {
+//        PaymentAlert alert = new PaymentAlert();
+//        List<LatePaymentAlert> LPA = DbDriver.latePaymentAlert();
+//
+//        for (LatePaymentAlert l : LPA) {
+//            int cust = l.getAccount();
+//            CustomerAccount searchedCUStomer = DbDriver.searchCustomer(cust);
+//            alert.setCname(l.getName());
+//            alert.setAccount(l.getAccount());
+//            alert.setJob_id(l.getJobId());
+//            alert.start();
+//
+//        }
 
-    public static void generateLatePaymentAlert() {
+
+    //    }
+    public static void generateAlertPayment() {
+        Timestamp current;
         PaymentAlert alert = new PaymentAlert();
         List<LatePaymentAlert> LPA = DbDriver.latePaymentAlert();
-
+        List<CustomerAccount> customers = DbDriver.queryCustomers();
+        List<Job> jobs = DbDriver.searchAllJobs();
         for (LatePaymentAlert l : LPA) {
             int cust = l.getAccount();
-            CustomerAccount searchedCUStomer = DbDriver.searchCustomer(cust);
             alert.setCname(l.getName());
             alert.setAccount(l.getAccount());
             alert.setJob_id(l.getJobId());
-            alert.start();
+            CustomerAccount searchedCUStomer = DbDriver.searchCustomer(cust);
+            if (searchedCUStomer.getCustomerType().equalsIgnoreCase("normal")) {
+                alert.start();
+            } else {
+                //if date is passed the 10th, then alert manager
+                current = new Timestamp(System.currentTimeMillis());
+                Date d = new Date(current.getTime());
+                String Day = d.toString();
+                int day = Integer.parseInt(Day.substring(8));
+                int month = Integer.parseInt((Day.substring(5, 7)));
+                int year = Integer.parseInt((Day.substring(0, 4)));
 
+                Date d1 = new Date(l.getComplete().getTime());
+                String day2 = d1.toString();
+                int dayOfPayment = Integer.parseInt(day2.substring(8));
+                int monthOfPayment = Integer.parseInt(day2.substring(5, 7));
+                int yearOfPayment = Integer.parseInt(day2.substring(0, 4));
+
+
+                // for valuable customers. only if the 10th has passed an alert will generate.
+                if (day > 10 && dayOfPayment < 11 || month - monthOfPayment == 1 || year - yearOfPayment == 1) {
+                    alert.start();
+                }
+
+            }
         }
-
 
     }
 
@@ -1981,7 +1991,7 @@ public class DbDriver {
             for (Task t : tasks) {
                 if (t.getTaskId() == tj.getTaskId()) {
                     if (!tj.getStatus().equalsIgnoreCase("complete")) {
-                        if (t.getDuration() - checkDeadline < 20) {
+                        if (t.getDuration() - checkDeadline < 0) {
                             alert.setJobTaskId(tj.getTaskJobId());
                             alert.setTaskId(tj.getTaskId());
                             alert.start();
@@ -2004,9 +2014,9 @@ public class DbDriver {
 
 
     //Create customer reports to show jobs by customer
-    public static List<CustomerReport> createCustomerReport(int id) {
-//        Date d = Date.valueOf(from);
-//        Date d1 = Date.valueOf(to);
+    public static List<CustomerReport> createCustomerReport(int id, String from, String to) {
+        Date d = Date.valueOf(from);
+        Date d1 = Date.valueOf(to);
         try (Statement statement = conn.getConnection().createStatement();
              ResultSet results = statement.executeQuery("SELECT " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + ", " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CUSTOMER_NAME + ", " +
                      "concat(" + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_TITLE + " , " + "' ' ," + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_FIRST_NAME + ", " + "' ' ," + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_LAST_NAME + ") AS CONTACT, " +
@@ -2015,10 +2025,10 @@ public class DbDriver {
                      " FROM  " + TABLE_CUSTOMER_ACCOUNT + "" +
                      " INNER JOIN " + TABLE_JOBS + " ON " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = " + TABLE_JOBS + "." + COLUMN_ACCOUNT_NUMBER +
                      " WHERE " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = " + id
-//                     + " AND CAST((" + TABLE_JOBS + "." + COLUMN_START_TIME + ") AS DATE) BETWEEN '" + d + "' AND '" + d1 + "'"
-                     )
+                     + " AND CAST((" + TABLE_JOBS + "." + COLUMN_START_TIME + ") AS DATE) BETWEEN '" + d + "' AND '" + d1 + "'")
         ) {
 
+            if (results.next()){
             List<CustomerReport> reports = new LinkedList<>();
             while (results.next()) {
 
@@ -2035,18 +2045,22 @@ public class DbDriver {
                 reports.add(report);
             }
             return reports;
+            }else{
+                System.out.println("Customer has no jobs with Bapers");
+                return null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public static void generateCustomerReport(int id) throws FileNotFoundException {
+    public static void generateCustomerReport(int id, String from, String to) throws FileNotFoundException {
 
-        PrintStream o = new PrintStream(new File("CustomerReport" + id + ".txt"));
+        PrintStream o = new PrintStream(new File("SummaryReport" + from + "_" + to + ".txt"));
         System.setOut(o);
 
-        List<CustomerReport> reports = DbDriver.createCustomerReport(id);
+        List<CustomerReport> reports = DbDriver.createCustomerReport(id, from, to);
         assert reports != null;
         CustomerReport report = reports.get(0);
 
@@ -2061,15 +2075,13 @@ public class DbDriver {
             for (int i = 1; i < reports.size(); i++) {
                 CustomerReport report1 = reports.get(i);
                 System.out.println(i + 1 + ": Job Number: " + report1.getJobId());
+
             }
-            }else{
-            System.out.println("No job for this customer.");
 
 
         }
-        PrintStream console = System.out;
-        System.setOut(console);
         o.close();
+
     }
 
 
@@ -2090,20 +2102,17 @@ public class DbDriver {
                      " ORDER BY " + TABLE_DEPARTMENT + "." + COLUMN_LOCATION)
         ) {
             List<SummaryReport> reports = new LinkedList<>();
-            if (results.next()){
-                while (results.next()) {
+            while (results.next()) {
 
-                    Date date = results.getDate(1);
-                    String location = results.getString(2);
-                    double totalTime = results.getDouble(3);
+                Date date = results.getDate(1);
+                String location = results.getString(2);
+                double totalTime = results.getDouble(3);
 
 
-                    SummaryReport report = new SummaryReport(date, location, totalTime);
-                    reports.add(report);
+                SummaryReport report = new SummaryReport(date, location, totalTime);
+                reports.add(report);
 
-                }
             }
-
             return reports;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -2158,9 +2167,8 @@ public class DbDriver {
 
         }
         System.out.println("total shift hours: " + totalHoursForAllJobs);
-        PrintStream console = System.out;
-        System.setOut(console);
         o.close();
+
     }
 
     //Individual Performance reports. Staff can be searched by ID.
@@ -2219,8 +2227,6 @@ public class DbDriver {
             System.out.println("total effort: " + totalEffort);
 
         }
-        PrintStream console = System.out;
-        System.setOut(console);
         o.close();
     }
 
@@ -2373,9 +2379,6 @@ public class DbDriver {
 
 
         }
-
-        PrintStream console = System.out;
-        System.setOut(console);
         o.close();
     }
 
@@ -2410,7 +2413,4 @@ public class DbDriver {
     }
 
 
-
-
 }
-

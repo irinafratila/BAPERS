@@ -3,6 +3,7 @@ package Discount;
 import Customer.CustomerAccount;
 import Database.DbDriver;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Discount {
@@ -35,7 +36,7 @@ public class Discount {
         this.description = description;
     }
 
-    public void applyFixedDiscount(){
+    public void applyFixedDiscount() throws SQLException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter Customer id");
         int searchedId = sc.nextInt();
@@ -43,7 +44,7 @@ public class Discount {
         searchedCustomer.updateCustomerType("valuable","fixed");
     }
 
-    public void applyFlexiDiscount(){
+    public void applyFlexiDiscount() throws SQLException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter Customer id");
         int searchedId = sc.nextInt();
@@ -51,7 +52,7 @@ public class Discount {
         searchedCustomer.updateCustomerType("valuable","flexible");
     }
 
-    public void applyVarDiscount(){
+    public void applyVarDiscount() throws SQLException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter Customer id");
         int searchedId = sc.nextInt();

@@ -1,12 +1,10 @@
 package BapersControl;
 
 //import Customer.CustomerAccount;
-import Database.DBConnection;
 
 import Database.DbDriver;
 import JobTasks.Job;
 import JobTasks.JobTable;
-import Payment.Payment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,7 +29,7 @@ public class DashboardController implements Initializable {
     private Button logout;
 
     @FXML
-    private Label welcomeLabel,roleLabel;
+    private Label welcomeLabel,roleLabel,noAccessLabel,priceLabel,noOfJobsLabel;
 
     @FXML
     private TableView <JobTable>tableView;
@@ -56,10 +54,13 @@ public class DashboardController implements Initializable {
 
     private Main m;
 
+    private int totalPrice,noOfJobs;
 
     public DashboardController(){
 
         this.m = new Main();
+        this.totalPrice = 0;
+        this.noOfJobs = 0;
     }
 
     @Override
@@ -80,23 +81,24 @@ public class DashboardController implements Initializable {
         colInstruction.setCellValueFactory(new PropertyValueFactory<>("Instruction"));
         tableView.setItems(observableList  );
         test();
+        calulateDetails();
 
     }
 
 
     ObservableList<JobTable> observableList = FXCollections.observableArrayList(
-            new JobTable(12,1,5,"in progress","today","tomorrow", (double) 99.60,"N/A")
+//            new JobTable(12,1,5,"in progress","today","tomorrow", (double) 99.60,"N/A")
     );
 
     public void test(){
         List<Job> jobs =DbDriver.queryJobs();
 
         for (Job j : jobs){
-            JobTable jt = new JobTable(j.getJobId(),j.getCustomerId(),j.getPriority(),j.getStatus(),j.getStartTime(),j.getDeadline(),j.getPrice(),j.getSpecialInstructions());
+            JobTable jt = new JobTable(j.getJobId(),j.getCustomerId(),j.getPriority(),j.getStatus(),j.getStartTime(),j.getDeadlineString(),j.getPrice(),j.getSpecialInstructions());
             tableView.getItems().add(jt);
         }
-        JobTable jt = new JobTable(9,7,1,"in progress","today","tomorrow", (double) 49.60,"N/A");
-        tableView.getItems().add(jt);
+//        JobTable jt = new JobTable(9,7,1,"in progress","today","tomorrow", (double) 49.60,"N/A");
+//        tableView.getItems().add(jt);
     }
     public void show(){
 //        List<Job> jobs =DbDriver.queryJobs();
@@ -143,37 +145,89 @@ public class DashboardController implements Initializable {
     }
 
     //change scene from dashboard to user page where you can create or delete user
+    public void changeSceneRelax() throws  IOException{
+//        Main m = new Main();
+        if(currentLoginSession.getRole().equalsIgnoreCase("Office manager") ){
+            m.changeScene("/Break/break.fxml");
+
+        }else {
+            //get back to work
+            m.changeScene("/BapersControl/noAccess.fxml");
+        }
+    }
+
+    //change scene from dashboard to user page where you can create or delete user
     public void changeSceneUser() throws  IOException{
 //        Main m = new Main();
-        m.changeScene("/Admin/user.fxml");
+        if(currentLoginSession.getRole().equalsIgnoreCase("Office manager") ){
+            m.changeScene("/Admin/user.fxml");
+
+        }else {
+            m.changeScene("/BapersControl/noAccess.fxml");
+        }
     }
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneCustomer() throws  IOException{
 //        Main m = new Main();
-        m.changeScene("/Customer/customer.fxml");
+        if (currentLoginSession.getRole().equalsIgnoreCase("Office manager") || currentLoginSession.getRole().equalsIgnoreCase("Shift manager") || currentLoginSession.getRole().equalsIgnoreCase( "Receptionist") ){
+            m.changeScene("/Customer/customer.fxml");
+        }else {
+            m.changeScene("/BapersControl/noAccess.fxml");
 
+        }
     }
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneJobs() throws  IOException{
 //        Main m = new Main();
-        m.changeScene("/JobTasks/jobTaskDashboard.fxml");
+        if (currentLoginSession.getRole().equalsIgnoreCase("Office manager") || currentLoginSession.getRole().equalsIgnoreCase("Shift manager") || currentLoginSession.getRole().equalsIgnoreCase("Receptionist") || currentLoginSession.getRole().equalsIgnoreCase("Technician") ){
+            m.changeScene("/JobTasks/jobTaskDashboard.fxml");
+        }else {
+            m.changeScene("/BapersControl/noAccess.fxml");
+
+        }
     }
     //change scene from dashboard to user page where you can create or delete user
     public void changeScenePayment() throws  IOException{
 //        Main m = new Main();
-        m.changeScene("/Payment/paymentType.fxml");
+        if (currentLoginSession.getRole().equalsIgnoreCase("Office manager") || currentLoginSession.getRole().equalsIgnoreCase("Shift manager")|| currentLoginSession.getRole().equalsIgnoreCase( "Receptionist")){
+            m.changeScene("/Payment/paymentType.fxml");
+        }else {
+            m.changeScene("/BapersControl/noAccess.fxml");
+
+        }
     }
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneBackup() throws  IOException{
 //        Main m = new Main();
-        m.changeScene("BackupDB.fxml");
+        if (currentLoginSession.getRole().equalsIgnoreCase("Office manager")){
+            m.changeScene("/Database/BackupDB.fxml");
+        }else {
+            m.changeScene("/BapersControl/noAccess.fxml");
+
+        }
     }
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneReport() throws  IOException{
 //        Main m = new Main();
-        m.changeScene("generateReport.fxml");
+        if (currentLoginSession.getRole().equalsIgnoreCase("Office manager")){
+            m.changeScene("/Reports/generateReport.fxml");
+        }else {
+            m.changeScene("/BapersControl/noAccess.fxml");
+
+        }
     }
 
+
+    public void calulateDetails(){
+        List<Job> Jobs = DbDriver.searchAllJobs();
+        for(Job j : Jobs){
+           totalPrice += j.getPrice();
+           noOfJobs++;
+        }
+
+        priceLabel.setText(String.valueOf("£"+totalPrice));
+        noOfJobsLabel.setText(String.valueOf(noOfJobs));
+    }
 
 }
 
