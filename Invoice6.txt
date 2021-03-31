@@ -1,0 +1,1789 @@
+customer id = 1 
+Customer Name: City, University of London
+Contact name: Prof David Rhind 
+Address: 02070408000
+Phone Number: 02070408000 
+Job Number: 6
+1: Task ID: 1 
+Task Description: Use of large copy camera
+ Task Price: 19.0
+2: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+3: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+4: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+5: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+6: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+7: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+8: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+9: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+10: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+11: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+12: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+13: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+14: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+15: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+16: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+17: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+18: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+19: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+20: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+21: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+22: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+23: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+24: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+25: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+26: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+27: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+28: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+29: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+30: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+31: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+32: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+33: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+34: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+35: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+36: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+37: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+38: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+39: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+40: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+41: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+42: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+43: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+44: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+45: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+46: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+47: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+48: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+49: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+50: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+51: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+52: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+53: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+54: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+55: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+56: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+57: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+58: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+59: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+60: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+61: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+62: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+63: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+64: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+65: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+66: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+67: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+68: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+69: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+70: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+71: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+72: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+73: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+74: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+75: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+76: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+77: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+78: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+79: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+80: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+81: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+82: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+83: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+84: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+85: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+86: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+87: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+88: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+89: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+90: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+91: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+92: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+93: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+94: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+95: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+96: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+97: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+98: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+99: Task ID: 1 
+ Task Description: Use of large copy camera
+ Task Price: 19.0
+100: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+101: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+102: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+103: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+104: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+105: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+106: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+107: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+108: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+109: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+110: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+111: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+112: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+113: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+114: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+115: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+116: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+117: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+118: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+119: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+120: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+121: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+122: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+123: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+124: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+125: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+126: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+127: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+128: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+129: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+130: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+131: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+132: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+133: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+134: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+135: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+136: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+137: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+138: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+139: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+140: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+141: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+142: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+143: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+144: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+145: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+146: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+147: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+148: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+149: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+150: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+151: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+152: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+153: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+154: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+155: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+156: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+157: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+158: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+159: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+160: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+161: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+162: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+163: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+164: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+165: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+166: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+167: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+168: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+169: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+170: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+171: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+172: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+173: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+174: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+175: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+176: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+177: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+178: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+179: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+180: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+181: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+182: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+183: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+184: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+185: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+186: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+187: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+188: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+189: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+190: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+191: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+192: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+193: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+194: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+195: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+196: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+197: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+198: Task ID: 2 
+ Task Description: Black and white film processing
+ Task Price: 49.5
+199: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+200: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+201: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+202: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+203: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+204: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+205: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+206: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+207: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+208: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+209: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+210: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+211: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+212: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+213: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+214: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+215: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+216: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+217: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+218: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+219: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+220: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+221: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+222: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+223: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+224: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+225: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+226: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+227: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+228: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+229: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+230: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+231: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+232: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+233: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+234: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+235: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+236: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+237: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+238: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+239: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+240: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+241: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+242: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+243: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+244: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+245: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+246: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+247: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+248: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+249: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+250: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+251: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+252: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+253: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+254: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+255: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+256: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+257: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+258: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+259: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+260: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+261: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+262: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+263: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+264: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+265: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+266: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+267: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+268: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+269: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+270: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+271: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+272: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+273: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+274: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+275: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+276: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+277: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+278: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+279: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+280: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+281: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+282: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+283: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+284: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+285: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+286: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+287: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+288: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+289: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+290: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+291: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+292: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+293: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+294: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+295: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+296: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+297: Task ID: 3 
+ Task Description: Bag up
+ Task Price: 6.0
+298: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+299: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+300: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+301: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+302: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+303: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+304: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+305: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+306: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+307: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+308: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+309: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+310: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+311: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+312: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+313: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+314: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+315: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+316: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+317: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+318: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+319: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+320: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+321: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+322: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+323: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+324: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+325: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+326: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+327: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+328: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+329: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+330: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+331: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+332: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+333: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+334: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+335: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+336: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+337: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+338: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+339: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+340: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+341: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+342: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+343: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+344: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+345: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+346: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+347: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+348: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+349: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+350: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+351: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+352: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+353: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+354: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+355: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+356: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+357: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+358: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+359: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+360: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+361: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+362: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+363: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+364: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+365: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+366: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+367: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+368: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+369: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+370: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+371: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+372: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+373: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+374: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+375: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+376: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+377: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+378: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+379: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+380: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+381: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+382: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+383: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+384: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+385: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+386: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+387: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+388: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+389: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+390: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+391: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+392: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+393: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+394: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+395: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+396: Task ID: 4 
+ Task Description: Colour film processing
+ Task Price: 80.0
+397: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+398: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+399: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+400: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+401: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+402: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+403: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+404: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+405: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+406: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+407: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+408: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+409: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+410: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+411: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+412: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+413: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+414: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+415: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+416: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+417: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+418: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+419: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+420: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+421: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+422: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+423: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+424: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+425: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+426: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+427: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+428: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+429: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+430: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+431: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+432: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+433: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+434: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+435: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+436: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+437: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+438: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+439: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+440: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+441: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+442: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+443: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+444: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+445: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+446: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+447: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+448: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+449: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+450: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+451: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+452: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+453: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+454: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+455: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+456: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+457: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+458: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+459: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+460: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+461: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+462: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+463: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+464: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+465: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+466: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+467: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+468: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+469: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+470: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+471: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+472: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+473: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+474: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+475: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+476: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+477: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+478: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+479: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+480: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+481: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+482: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+483: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+484: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+485: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+486: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+487: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+488: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+489: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+490: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+491: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+492: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+493: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+494: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+495: Task ID: 5 
+ Task Description: Colour Transparency Processing
+ Task Price: 110.3
+496: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+497: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+498: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+499: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+500: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+501: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+502: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+503: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+504: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+505: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+506: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+507: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+508: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+509: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+510: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+511: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+512: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+513: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+514: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+515: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+516: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+517: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+518: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+519: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+520: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+521: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+522: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+523: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+524: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+525: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+526: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+527: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+528: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+529: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+530: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+531: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+532: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+533: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+534: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+535: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+536: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+537: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+538: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+539: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+540: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+541: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+542: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+543: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+544: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+545: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+546: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+547: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+548: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+549: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+550: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+551: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+552: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+553: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+554: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+555: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+556: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+557: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+558: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+559: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+560: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+561: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+562: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+563: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+564: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+565: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+566: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+567: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+568: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+569: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+570: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+571: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+572: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+573: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+574: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+575: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+576: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+577: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+578: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+579: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+580: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+581: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+582: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+583: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+584: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+585: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+586: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+587: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+588: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+589: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+590: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+591: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+592: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+593: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+594: Task ID: 6 
+ Task Description: Use of small copy camera
+ Task Price: 8.5
+ Total Price after discount and VAT: 95456.0

@@ -9,7 +9,7 @@ import JobTasks.Job;
 import JobTasks.Task;
 import JobTasks.TasksJobs;
 import Discount.FlexibleDiscountPlan;
-import Payment.LatePaymentAlert;
+import Alerts.LatePaymentAlert;
 import Reports.CustomerReport;
 import Reports.IndividualPerformanceReport;
 import Reports.Invoice;
@@ -212,7 +212,7 @@ public class DbDriver {
             " WHERE " + TABLE_STAFF_ACCOUNT + "." + COLUMN_STAFF_ID + " = ? ";
 
     public static final String checkLatePayment = "SELECT " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + ", " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CUSTOMER_NAME +
-            ", " + TABLE_JOBS + "." + COLUMN_JOB_ID +
+            ", " + TABLE_JOBS + "." + COLUMN_JOB_ID + ", " + TABLE_JOBS + "." + COLUMN_COMPLETE_TIME +
             " FROM (( " + TABLE_CUSTOMER_ACCOUNT + "" +
             " INNER JOIN " + TABLE_JOBS + " ON " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = " + TABLE_JOBS + "." + COLUMN_ACCOUNT_NUMBER + ")" +
             " LEFT OUTER JOIN " + TABLE_PAYMENT_HISTORY + " ON " + TABLE_JOBS + "." + COLUMN_JOB_ID + " = " + TABLE_PAYMENT_HISTORY + "." + COLUMN_JOB_ID + ")" +
@@ -799,6 +799,100 @@ public class DbDriver {
 
         return null;
 
+    }
+    public static Boolean updateJobStart(int id, String status,Timestamp start) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("UPDATE ");
+            sb.append(TABLE_JOBS);
+            sb.append(" SET ");
+            sb.append(COLUMN_CURRENT_STATUS);
+            sb.append(" = '");
+            sb.append(status);
+            sb.append("', ");
+            sb.append(COLUMN_START_TIME);
+            sb.append(" = '");
+            sb.append(start);
+            sb.append("' WHERE ");
+            sb.append(COLUMN_JOB_ID);
+            sb.append(" = ");
+            sb.append(id);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static Boolean updateJobComplete(int id, String status,Timestamp end) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("UPDATE ");
+            sb.append(TABLE_JOBS);
+            sb.append(" SET ");
+            sb.append(COLUMN_CURRENT_STATUS);
+            sb.append(" = '");
+            sb.append(status);
+            sb.append("', ");
+            sb.append(COLUMN_COMPLETE_TIME);
+            sb.append(" = '");
+            sb.append(end);
+            sb.append("' WHERE ");
+            sb.append(COLUMN_JOB_ID);
+            sb.append(" = ");
+            sb.append(id);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    //testing purposes to print out customer account and see how it changes with each action
+    public static void printJobs2() {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("select * from ");
+            sb.append(TABLE_JOBS);
+
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+//            statement.executeUpdate(sb1);
+            ResultSet result1 = statement.executeQuery(sb1);
+            while (result1.next()) {
+                String staff11 = result1.getString(1);
+                String staff21 = result1.getString(2);
+                String staff31 = result1.getString(3);
+                String staff41 = result1.getString(4);
+                String staff51 = result1.getString(5);
+                String staff61 = result1.getString(6);
+                String staff71 = result1.getString(7);
+                String staff81 = result1.getString(8);
+                String staff91 = result1.getString(9);
+                String staff101 = result1.getString(10);
+                String staff111 = result1.getString(11);
+                String staff112 = result1.getString(12);
+
+                System.out.println(staff11 + " : " + staff21 + " : " + staff31 + " : " + staff41 + " : " + staff51 + " : " + staff61 + " : " + staff71 + " : " + staff81 + " : " + staff91 + " : " + staff101 + " : " + staff111 + " : " + staff112);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    //This will return a job which is searched by id.
+    public static Boolean searchJobsBool(int searchedJob) {
+        List<Job> jobs = queryJobs();
+        if (jobs == null) {
+            System.out.println("No Jobs");
+            return false;
+        }
+        for (Job j : jobs) {
+            if (j.getJobId() == searchedJob) {
+                return true;
+            }
+        }
+        return null;
     }
 
     //Search and print open jobs.
@@ -1814,9 +1908,10 @@ public class DbDriver {
                 int accountNumber = results.getInt(1);
                 String name = results.getString(2);
                 int job_ID = results.getInt(3);
+                Timestamp complete = results.getTimestamp(4);
 
 
-                LatePaymentAlert report = new LatePaymentAlert(accountNumber, name, job_ID);
+                LatePaymentAlert report = new LatePaymentAlert(accountNumber, name, job_ID,complete);
                 reports.add(report);
 
             }
@@ -1827,21 +1922,60 @@ public class DbDriver {
         }
     }
 
+//
+//    public static void generateLatePaymentAlert() {
+//        PaymentAlert alert = new PaymentAlert();
+//        List<LatePaymentAlert> LPA = DbDriver.latePaymentAlert();
+//
+//        for (LatePaymentAlert l : LPA) {
+//            int cust = l.getAccount();
+//            CustomerAccount searchedCUStomer = DbDriver.searchCustomer(cust);
+//            alert.setCname(l.getName());
+//            alert.setAccount(l.getAccount());
+//            alert.setJob_id(l.getJobId());
+//            alert.start();
+//
+//        }
 
-    public static void generateLatePaymentAlert() {
+
+//    }
+    public static void generateAlertPayment() {
+        Timestamp current;
         PaymentAlert alert = new PaymentAlert();
         List<LatePaymentAlert> LPA = DbDriver.latePaymentAlert();
-
+        List<CustomerAccount> customers = DbDriver.queryCustomers();
+        List<Job> jobs = DbDriver.searchAllJobs();
         for (LatePaymentAlert l : LPA) {
             int cust = l.getAccount();
-            CustomerAccount searchedCUStomer = DbDriver.searchCustomer(cust);
             alert.setCname(l.getName());
             alert.setAccount(l.getAccount());
             alert.setJob_id(l.getJobId());
-            alert.start();
+            CustomerAccount searchedCUStomer = DbDriver.searchCustomer(cust);
+            if (searchedCUStomer.getCustomerType().equalsIgnoreCase("normal")) {
+                alert.start();
+            } else {
+                //if date is passed the 10th, then alert manager
+                current = new Timestamp(System.currentTimeMillis());
+                Date d = new Date(current.getTime());
+                String Day = d.toString();
+                int day = Integer.parseInt(Day.substring(8));
+                int month = Integer.parseInt((Day.substring(5, 7)));
+                int year = Integer.parseInt((Day.substring(0, 4)));
 
+                Date d1 = new Date(l.getComplete().getTime());
+                String day2 = d1.toString();
+                int dayOfPayment = Integer.parseInt(day2.substring(8));
+                int monthOfPayment = Integer.parseInt(day2.substring(5, 7));
+                int yearOfPayment = Integer.parseInt(day2.substring(0, 4));
+
+
+                // for valuable customers. only if the 10th has passed an alert will generate.
+                if (day > 10 && dayOfPayment < 11 || month - monthOfPayment == 1 || year - yearOfPayment == 1) {
+                    alert.start();
+                }
+
+            }
         }
-
 
     }
 
@@ -1857,7 +1991,7 @@ public class DbDriver {
             for (Task t : tasks) {
                 if (t.getTaskId() == tj.getTaskId()) {
                     if (!tj.getStatus().equalsIgnoreCase("complete")) {
-                        if (t.getDuration() - checkDeadline < 20) {
+                        if (t.getDuration() - checkDeadline < 0) {
                             alert.setJobTaskId(tj.getTaskJobId());
                             alert.setTaskId(tj.getTaskId());
                             alert.start();

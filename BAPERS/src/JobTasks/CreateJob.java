@@ -131,9 +131,13 @@ public class CreateJob implements Initializable {
         taskLabel.setText("Job has been created successfully for customer #"+searchedId+ "\n"+
                 "Job created by Staff id : " + staffId +" Username: " + staffusername);
 
+
+        m.changeScene("/Payment/viewInvoice.fxml");
+
         jobPriority.setText("");
         notes.setText("");
         tasks.setValue("");
+        quantity.setText("");
     }
 
 }

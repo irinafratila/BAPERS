@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 public class DBBackupRestore {
 
-    public static void dbBackup(String dbUser, String dbPass, String dbName) {
+    public  void dbBackup(String dbUser, String dbPass, String dbName) {
         Timestamp current = new Timestamp(System.currentTimeMillis());
         Date date = new Date(current.getTime());
         String d = date.toString();
@@ -24,15 +24,15 @@ public class DBBackupRestore {
         }
     }
 
-    public static void main(String[] args) {
-        dbBackup("root","helloworld12","bapers");
-        restoreDB("bapers","root","helloworld12","2021-03-31");
+//    public static void main(String[] args) {
+////        dbBackup("root","helloworld12","bapers");
+//        restoreDB("bapers","root","helloworld12","2021-03-31");
 
 
-    }
+//    }
 
 
-    public static void restoreDB(String dbName, String dbUserName, String dbPassword, String date){
+    public  void restoreDB(String dbName, String dbUserName, String dbPassword, String date){
         String source = "/Users/masum/Desktop/BAPERS/dbBackup"+date+".sql";
 
 

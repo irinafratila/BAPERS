@@ -40,7 +40,7 @@ public class currentSessionStaff {
 
     public void getStaffDetails(String username){
 //        String userName = username;
-        String query = "SELECT * FROM STAFF_ACCOUNT WHERE STAFFID = '" + id + "';";
+        String query = "SELECT * FROM STAFF_ACCOUNT WHERE STAFF_ID = '" + id + "';";
 
         System.out.println(id + "first check");
         try {

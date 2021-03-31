@@ -25,7 +25,7 @@ public class TasksJobs {
     private String isOverdue;
     private int staffId;
     private String status;
-    private Discount discountType; //TODO  this will later be changed to the right discount data type instead of String
+    private Discount discountType;
 
 
     //Constructor when querying TasksJobs.
@@ -66,9 +66,6 @@ public class TasksJobs {
                 setIsOverdue("No");
             }
             DbDriver.updateCompleteTask("Complete", completeTimeStamp, isComplete, isOverdue, (int) timeTaken, getTaskJobId());
-
-
-
 
     }
     //TODO update the database once tasks start

@@ -24,15 +24,17 @@ public class Main extends Application {
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(new Scene(root, 1000, 769));
         primaryStage.show();
-        DbDriver.printCust();
-//        DbDriver.printStaff()
+//        DbDriver.printCust();
+//        DbDriver.printStaff();
 //        DbDriver.printJobs();
+        DbDriver.searchOpenJobs();
 //        DbDriver.printTasks();
+//        DbDriver.generateSummaryReport("2021-03-27","2021-03-29");
     }
 
     public void changeScene(String fxml) throws IOException {
-        System.out.println(User.class.getResource(fxml));
-        System.out.println(getClass().getResource("/Admin/createUser.fxml"));
+//        System.out.println(User.class.getResource(fxml));
+//        System.out.println(getClass().getResource("/Admin/createUser.fxml"));
         Parent pane = FXMLLoader.load(getClass().getResource(fxml));
         stg.getScene().setRoot(pane);
     }
