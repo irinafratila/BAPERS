@@ -11,8 +11,10 @@ public class TaskDeadlineAlert extends Thread{
         while (flag) {
 
 
-            System.out.println("job task ID: " + getJobTaskId() + " task ID: " + getTaskId() + " has passed their deadine" );
+            String x = "job task ID: " + getJobTaskId() + " task ID: " + getTaskId() + " has passed their deadine";
 
+            System.out.println("job task ID: " + getJobTaskId() + " task ID: " + getTaskId() + " has passed their deadine" );
+            new AlertSession(x);
 
             flag = false;
 

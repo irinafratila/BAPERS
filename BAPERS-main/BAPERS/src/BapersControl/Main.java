@@ -25,7 +25,7 @@ public class Main extends Application {
         AutomateReports reports = new AutomateReports();
         alerts.start();
         jobAlert.start();
-        reports.start();
+       // reports.start();
         stg = primaryStage;
         primaryStage.setResizable(false);
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));

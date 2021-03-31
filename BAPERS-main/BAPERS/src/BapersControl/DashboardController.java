@@ -2,6 +2,7 @@ package BapersControl;
 
 //import Customer.CustomerAccount;
 
+import Alerts.AlertSession;
 import Database.DbDriver;
 import JobTasks.Job;
 import JobTasks.JobTable;
@@ -12,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,8 +30,10 @@ public class DashboardController implements Initializable {
     @FXML
     private Button logout;
 
+
+
     @FXML
-    private Label welcomeLabel,roleLabel,noAccessLabel,priceLabel,noOfJobsLabel;
+    private Label welcomeLabel,roleLabel,noAccessLabel,priceLabel,noOfJobsLabel,alert;
 
     @FXML
     private TableView <JobTable>tableView;
@@ -215,6 +219,18 @@ public class DashboardController implements Initializable {
             m.changeScene("/BapersControl/noAccess.fxml");
 
         }
+    }
+    //change scene from dashboard to alert oage
+    public void openAlerts() throws  IOException{
+
+//        if (AlertSession.checkForAlert()== false){
+//            alert.setText("");
+//        }else{
+//            alert.setText("Alert!!");
+//        }
+            m.changeScene("/Alerts/alert.fxml");
+
+
     }
 
 

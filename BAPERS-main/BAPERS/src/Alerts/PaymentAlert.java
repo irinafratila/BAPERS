@@ -11,7 +11,10 @@ public class PaymentAlert extends  Thread {
 
         while (flag) {
 
+            String x = "job ID: " + job_id + " Customer ID: " + getAccount() + " Customer Name: " + getCname() + " has passed thier payment deadline.";
+
             System.out.println("job ID: " + job_id + " Customer ID: " + getAccount() + " Customer Name: " + getCname() + " has passed thier payment deadline.");
+            new AlertSession(x);
             flag = false;
 
 

@@ -2412,5 +2412,25 @@ public class DbDriver {
         }
     }
 
+//    public static Boolean checkPayment(int JobID){
+//        try (PreparedStatement checkPayment = conn.getConnection().prepareStatement(checkLatePayment)){
+//            checkPayment.setString(1, String.valueOf(JobID));
+//            ResultSet results = checkPayment.executeQuery();
+//            while (results.next()) {
+//                return true;
+//                System.out.println("customer exists");
+//            }
+//
+////            if (results.next()){
+////
+////                System.out.println("failed");
+////                return false;
+////            }
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
+//        return false;
+//    }
+
 
 }

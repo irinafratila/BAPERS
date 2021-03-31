@@ -231,15 +231,11 @@
                   <Label fx:id="roleLabel" prefHeight="41.0" prefWidth="218.0" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="111.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="144.0">
                <children>
-                  <Button mnemonicParsing="false" textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#openAlerts" textAlignment="CENTER">
                      <graphic>
-                        <ImageView fx:id="alert" fitHeight="54.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../img/home.png" />
-                           </image>
-                        </ImageView>
+                        <Label fx:id="alert" prefHeight="17.0" prefWidth="132.0" />
                      </graphic>
                   </Button>
                </children>

@@ -46,8 +46,14 @@ public class Payment {
         try {
             int JobID = Integer.parseInt(id.getText());
             Job searchedJob = DbDriver.searchJobs(JobID);
-            new BapersControl.tempJobSession(searchedJob.getJobId());
-            m.changeScene("/Payment/cashPayment.fxml");
+
+            Boolean result = true;
+            //DbDriver.checkPayment(JobID);
+            if(result = true){
+                new BapersControl.tempJobSession(searchedJob.getJobId());
+                m.changeScene("/Payment/cashPayment.fxml");
+            }
+
 
         }catch (Exception e){
             e.printStackTrace();
