@@ -32,12 +32,12 @@
             <children>
                 <HBox alignment="CENTER" prefHeight="232.0" prefWidth="1000.0">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#generateCustomerReport" prefHeight="41.0" prefWidth="322.0" text="Customer Report">
+                        <Button mnemonicParsing="false" onAction="#changeSceneSearchCustomer" prefHeight="41.0" prefWidth="322.0" text="Customer Report">
                             <opaqueInsets>
                                 <Insets bottom="10.0" />
                             </opaqueInsets>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#generateStaffReport" prefHeight="41.0" prefWidth="322.0" text="Staff Report">
+                        <Button mnemonicParsing="false" onAction="#changeSceneSearchUser" prefHeight="41.0" prefWidth="322.0" text="Staff Report">
                             <opaqueInsets>
                                 <Insets bottom="10.0" />
                             </opaqueInsets>

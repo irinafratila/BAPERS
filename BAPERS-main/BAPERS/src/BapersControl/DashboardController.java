@@ -31,7 +31,7 @@ public class DashboardController implements Initializable {
     private Button logout;
 
     @FXML
-    private Label welcomeLabel,roleLabel,noAccessLabel;
+    private Label welcomeLabel,roleLabel,noAccessLabel,priceLabel,noOfJobsLabel;
 
     @FXML
     private TableView <JobTable>tableView;
@@ -56,10 +56,13 @@ public class DashboardController implements Initializable {
 
     private Main m;
 
+    private int totalPrice,noOfJobs;
 
     public DashboardController(){
 
         this.m = new Main();
+        this.totalPrice = 0;
+        this.noOfJobs = 0;
     }
 
     @Override
@@ -80,6 +83,7 @@ public class DashboardController implements Initializable {
         colInstruction.setCellValueFactory(new PropertyValueFactory<>("Instruction"));
         tableView.setItems(observableList  );
         test();
+        calulateDetails();
 
     }
 
@@ -202,6 +206,18 @@ public class DashboardController implements Initializable {
             m.changeScene("/BapersControl/noAccess.fxml");
 
         }
+    }
+
+
+    public void calulateDetails(){
+        List<Job> Jobs = DbDriver.searchAllJobs();
+        for(Job j : Jobs){
+           totalPrice += j.getPrice();
+           noOfJobs++;
+        }
+
+        priceLabel.setText(String.valueOf("£"+totalPrice));
+        noOfJobsLabel.setText(String.valueOf(noOfJobs));
     }
 
 }

@@ -4,6 +4,7 @@ module BAPERS {
     requires javafx.controls;
     requires javafx.graphics;
     requires java.sql;
+    requires java.desktop;
     //requires mysql.conncetor.java;
 
     //requires kotlin.stdlib;
@@ -15,5 +16,6 @@ module BAPERS {
     opens Discount;
     opens JobTasks;
     opens Reports;
+    opens Alerts;
     opens Payment;
 }

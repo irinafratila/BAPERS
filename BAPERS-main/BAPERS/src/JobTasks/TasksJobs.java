@@ -44,9 +44,8 @@ public class TasksJobs {
     }
 
     public void startTask(String dayOrNight, int id){
-        setStatus("In Progress");
+        setStatus("Started");
         setStartTimeStamp(new Timestamp(System.currentTimeMillis()));
-
         setDayOrNight(dayOrNight);
         setStaffId(id);
         DbDriver.updateStartTask(status,id,startTimeStamp,dayOrNight,taskJobId);
@@ -55,18 +54,18 @@ public class TasksJobs {
     }
     public void completeTask() {
 
-         setIsComplete("yes");
-            setStatus("Complete");
-            setCompleteTimeStamp(new Timestamp(System.currentTimeMillis()));
-            setTimeTaken(((completeTimeStamp.getTime() -startTimeStamp.getTime()) / 1000) / 60 / 60);
-            Task task = DbDriver.searchTask(taskId);
-            if(task != null)
+        setIsComplete("yes");
+        setStatus("Complete");
+        setCompleteTimeStamp(new Timestamp(System.currentTimeMillis()));
+        setTimeTaken(((completeTimeStamp.getTime() -startTimeStamp.getTime()) / 1000) / 60 / 60);
+        Task task = DbDriver.searchTask(taskId);
+        if(task != null)
             if ((double) timeTaken > task.getDuration()) {
                 setIsOverdue("Overdue");
             } else {
                 setIsOverdue("No");
             }
-            DbDriver.updateCompleteTask(status, completeTimeStamp, isComplete, isOverdue, (int) timeTaken, getTaskJobId());
+        DbDriver.updateCompleteTask("Complete", completeTimeStamp, isComplete, isOverdue, (int) timeTaken, getTaskJobId());
 
 
 

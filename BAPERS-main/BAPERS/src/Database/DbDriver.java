@@ -1,15 +1,19 @@
 package Database;
 
+import Admin.StaffAccount;
+import Alerts.PaymentAlert;
+import Alerts.TaskDeadlineAlert;
 import Customer.CustomerAccount;
 import Discount.*;
 import JobTasks.Job;
 import JobTasks.Task;
 import JobTasks.TasksJobs;
 import Discount.FlexibleDiscountPlan;
+import Payment.LatePaymentAlert;
+import Reports.CustomerReport;
 import Reports.IndividualPerformanceReport;
 import Reports.Invoice;
 import Reports.SummaryReport;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -19,9 +23,15 @@ import java.util.*;
 
 /**
  * @author Muhammad Masum Miah
+ * version 1.0
+ * This class is the datasource for BAPERS.
+ * Everything which is linked to the MYSQL database is stored here.
  */
 
 public class DbDriver {
+
+    //Establish DB Connection.
+    private static final DBConnection conn = new DBConnection();
 
     //Create Discount table variables.
     public static final String TABLE_DISCOUNT = "DISCOUNT";
@@ -55,7 +65,7 @@ public class DbDriver {
     public static final String COLUMN_CUSTOMER_TYPE = "CUSTOMER_TYPE";
     //Create Staff account table variables.
     public static final String TABLE_STAFF_ACCOUNT = "STAFF_ACCOUNT";
-    public static final String COLUMN_STAFF_ID = "STAFFID";
+    public static final String COLUMN_STAFF_ID = "STAFF_ID";
     public static final String COLUMN_STAFF_NAME = "STAFF_NAME";
     public static final String COLUMN_USER_NAME = "USER_NAME";
     public static final String COLUMN_STAFF_PASSWORD = "STAFF_PASSWORD";
@@ -64,13 +74,13 @@ public class DbDriver {
     public static final String COLUMN_STAFF_PHONE_NUMBER = "STAFF_PHONE_NUMBER";
     //Create Tasks table variables.
     public static final String TABLE_TASKS_AVAILABLE = "TASKS_AVAILABLE";
-    public static final String COLUMN_TASK_ID = "TASKID";
+    public static final String COLUMN_TASK_ID = "TASK_ID";
     public static final String COLUMN_TASK_DESCRIPTION = "TASK_DESCRIPTION";
     public static final String COLUMN_TASK_PRICE = "TASK_PRICE";
     public static final String COLUMN_TASK_DURATION = "TASK_DURATION";
     //Create Jobs table variables.
     public static final String TABLE_JOBS = "JOBS";
-    public static final String COLUMN_JOB_ID = "JOBID";
+    public static final String COLUMN_JOB_ID = "JOB_ID";
     public static final String COLUMN_START_TIME = "START_TIME";
     public static final String COLUMN_HOURS_TO_COMPLETE = "HOURS_TO_COMPLETE";
     public static final String COLUMN_TOTAL_PRICE = "TOTAL_PRICE";
@@ -107,9 +117,6 @@ public class DbDriver {
     public static final String COLUMN_AMOUNT = "AMOUNT";
 
 
-    //Establish DB Connection.
-    private static final DBConnection conn = new DBConnection();
-
     //Query statements to check  existence before inserting.
     //Have placed a '?' placeholder to avoid SQL injection attacks.
     public static final String QUERY_CUSTOMER = "SELECT * FROM " +
@@ -138,7 +145,7 @@ public class DbDriver {
 
     public static final String insertJob = "insert into " + TABLE_JOBS + "(" + COLUMN_ACCOUNT_NUMBER + ',' + COLUMN_PRIORITY +
             ',' + COLUMN_SPECIAL_INSTRUCTIONS + ',' + COLUMN_START_TIME + ',' + COLUMN_JOB_DEADLINE + ',' +
-            COLUMN_STAFF_ID_START + ',' + COLUMN_TOTAL_PRICE + ',' + COLUMN_JOB_IS_OVERDUE + ',' + COLUMN_QUANTITY +")" + "values (?,?,?,?,?,?,?,?,?)";
+            COLUMN_STAFF_ID_START + ',' + COLUMN_TOTAL_PRICE + ',' + COLUMN_JOB_IS_OVERDUE + ',' + COLUMN_QUANTITY + ")" + "values (?,?,?,?,?,?,?,?,?)";
 
     private static final String insertDiscount = "Insert into " + TABLE_DISCOUNT + "(" + COLUMN_DISCOUNT_TYPE +
             ")" + "values (?)";
@@ -191,7 +198,7 @@ public class DbDriver {
 
     public static final String upgradeCustomer = "UPDATE " + TABLE_CUSTOMER_ACCOUNT +
             " SET " + COLUMN_CUSTOMER_TYPE + " = " + "?" + " , " + COLUMN_DISCOUNT_ID + " = " +
-            "?"+ " WHERE " + COLUMN_ACCOUNT_NUMBER + " = " + "? ";
+            "?" + " WHERE " + COLUMN_ACCOUNT_NUMBER + " = " + "? ";
 
 
     public static final String createIndividualStaffReport = "SELECT " + TABLE_STAFF_ACCOUNT + "." + COLUMN_STAFF_ID + ", " + TABLE_STAFF_ACCOUNT + "." + COLUMN_STAFF_NAME +
@@ -202,8 +209,24 @@ public class DbDriver {
             " INNER JOIN " + TABLE_JOB_TASKS + " ON " + TABLE_STAFF_ACCOUNT + "." + COLUMN_STAFF_ID + " = " + TABLE_JOB_TASKS + "." + COLUMN_STAFF_ID + ")" +
             " INNER JOIN " + TABLE_TASKS_AVAILABLE + " ON " + TABLE_JOB_TASKS + "." + COLUMN_TASK_ID + " = " + TABLE_TASKS_AVAILABLE + "." + COLUMN_TASK_ID + ")" +
             " INNER JOIN " + TABLE_DEPARTMENT + " ON " + TABLE_TASKS_AVAILABLE + "." + COLUMN_DEPARTMENT_ID + " = " + TABLE_DEPARTMENT + "." + COLUMN_DEPARTMENT_ID + ")" +
-            " WHERE " + TABLE_STAFF_ACCOUNT +"." + COLUMN_STAFF_ID + " = ? ";
+            " WHERE " + TABLE_STAFF_ACCOUNT + "." + COLUMN_STAFF_ID + " = ? ";
 
+    public static final String checkLatePayment = "SELECT " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + ", " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CUSTOMER_NAME +
+            ", " + TABLE_JOBS + "." + COLUMN_JOB_ID +
+            " FROM (( " + TABLE_CUSTOMER_ACCOUNT + "" +
+            " INNER JOIN " + TABLE_JOBS + " ON " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = " + TABLE_JOBS + "." + COLUMN_ACCOUNT_NUMBER + ")" +
+            " LEFT OUTER JOIN " + TABLE_PAYMENT_HISTORY + " ON " + TABLE_JOBS + "." + COLUMN_JOB_ID + " = " + TABLE_PAYMENT_HISTORY + "." + COLUMN_JOB_ID + ")" +
+            " WHERE " + TABLE_PAYMENT_HISTORY + "." + COLUMN_JOB_ID + " IS NULL AND " + TABLE_JOBS + "." + COLUMN_CURRENT_STATUS + " = 'Job Complete'";
+
+
+    public static final String createCustomerReport = "SELECT " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + ", " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CUSTOMER_NAME + ", " +
+            "concat(" + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_TITLE + " , " + "' ' ," + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_FIRST_NAME + ", " + "' ' ," + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_LAST_NAME + ") AS CONTACT, " +
+            "concat(" + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ADDRESS + ", " + "' ' , " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CITY + ", " + "' ' ," + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_POSTCODE + ") AS ADDRESS, " +
+            TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_PHONE_NUMBER + ", " + TABLE_JOBS + "." + COLUMN_JOB_ID +
+            " FROM  " + TABLE_CUSTOMER_ACCOUNT + "" +
+            " INNER JOIN " + TABLE_JOBS + " ON " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = " + TABLE_JOBS + "." + COLUMN_ACCOUNT_NUMBER +
+            " WHERE " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = ?"
+            + " AND CAST((" + TABLE_JOBS + "." + COLUMN_START_TIME + ") AS DATE) BETWEEN '" + "d" + "' AND '" + "d" + "'";
 
     public static void main(String[] args) throws SQLException {
 
@@ -211,9 +234,7 @@ public class DbDriver {
         //By putting statement  in the parenthesis, there is no need to close statement at the end.
         try (Statement statement = conn.getConnection().createStatement()) {
 
-
             // For testing purposes, delete all tables before running code.
-            statement.execute("SET FOREIGN_KEY_CHECKS=0");
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_PAYMENT_HISTORY);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_JOB_TASKS);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_JOBS);
@@ -225,7 +246,6 @@ public class DbDriver {
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_FLEXIBLE);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_FIXED);
             statement.execute("DROP TABLE IF EXISTS  " + TABLE_DISCOUNT);
-            statement.execute("SET FOREIGN_KEY_CHECKS=1");
 
             //Create individual tables
             statement.execute("CREATE TABLE IF NOT EXISTS " + TABLE_DISCOUNT + " \n" +
@@ -305,7 +325,7 @@ public class DbDriver {
                     COLUMN_STAFF_ID_START + " int,\n" +
                     COLUMN_STAFF_ID_COMPLETE + " int,\n" +
                     COLUMN_JOB_IS_OVERDUE + " varchar(20),\n" +
-                    COLUMN_QUANTITY + " int,\n" +
+                    COLUMN_QUANTITY + " int, \n" +
                     COLUMN_TOTAL_PRICE + " float,\n" +
                     "PRIMARY KEY (" + COLUMN_JOB_ID + "),\n" +
                     "FOREIGN KEY(" + COLUMN_ACCOUNT_NUMBER + ") REFERENCES\n" +
@@ -392,9 +412,6 @@ public class DbDriver {
             insertTasks("Mount transparencies", 3, 55.50, 45);
 
 
-            int a = insertDiscount("no discount");
-            System.out.println("discount id = " + a);
-
             System.out.println("Connected to Database!");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -405,30 +422,7 @@ public class DbDriver {
     // Each table is categorised with it's inserts, querys, updates, where needed and search methods.
 
 
-    // TODO:Update once admin class is complete.
-//    public List<User> queryUser() {
-//        try (Statement statement = conn.getConnection().createStatement();
-//             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_STAFF_ACCOUNT);
-//        ) {
-//            List<User> users = new LinkedList<>();
-//            while (results.next()) {
-//                int staffId = results.getString(COLUMN_STAFF_ID;
-//                String name = results.getString(COLUMN_STAFF_NAME);
-//                String userName = results.getString(COLUMN_USER_NAME);
-//                String password = results.getString(COLUMN_PASSWORD);
-//                String address = results.getString(COLUMN_STAFF_ADDRESS);
-//                String role = results.getString(COLUMN_STAFF_ROLE);
-//                String phoneNumber = results.getString(COLUMN_STAFF_PHONE_NUMBER);
-//
-//                User staff = new User(staffId,name,userName,password,address,role,phoneNumber);
-//                users.add(staff);
-//            }
-//            return users;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
+
 
 
     //Insert statement to enter data into individual tables  into the database.
@@ -491,6 +485,41 @@ public class DbDriver {
         }
     }
 
+    public static Boolean searchCustomerAccount(String id) {
+        List<CustomerAccount> customers = queryCustomers();
+        if (customers == null) {
+            System.out.println("No customers");
+            return false;
+        }
+        for (CustomerAccount c : customers) {
+            if (c.getCustomerId() == Integer.parseInt(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Boolean deleteCustomerAccount(String x) {
+
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("delete from ");
+            sb.append(TABLE_CUSTOMER_ACCOUNT);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_ACCOUNT_NUMBER);
+            sb.append(" = '");
+            sb.append(x);
+            sb.append("' ");
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.executeUpdate(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
     //    search for a customer by id
     public static CustomerAccount searchCustomer(int searchedCustomer) {
         List<CustomerAccount> customers = queryCustomers();
@@ -506,9 +535,8 @@ public class DbDriver {
         return null;
     }
 
-    //TODO: Put all customer related CRUD here.
     //Update the database when changing the customer type or discount.
-    public static void updateCustomerType(String isValuable, int discountId, int cId)throws SQLException {
+    public static void updateCustomerType(String isValuable, int discountId, int cId) throws SQLException {
         try (PreparedStatement updateCustomer = conn.getConnection().prepareStatement(upgradeCustomer);
              PreparedStatement queryCustomer = conn.getConnection().prepareStatement(QUERY_CUSTOMER_FOR_UPDATE)
         ) {
@@ -517,9 +545,9 @@ public class DbDriver {
             ResultSet results = queryCustomer.executeQuery();
             if (results.next()) {
                 System.out.println("customer exists");
-                updateCustomer.setString(1,isValuable);
-                updateCustomer.setInt(2,discountId);
-                updateCustomer.setInt(3,cId);
+                updateCustomer.setString(1, isValuable);
+                updateCustomer.setInt(2, discountId);
+                updateCustomer.setInt(3, cId);
                 int affectedRows = updateCustomer.executeUpdate();
                 if (affectedRows != 1) {
                     throw new SQLException("Couldn't insert customer!");
@@ -533,10 +561,96 @@ public class DbDriver {
         }
     }
 
+    //testing purposes to print out customer account and see how it changes with each action
+    public static void printCust() {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("select * from ");
+            sb.append(TABLE_CUSTOMER_ACCOUNT);
+
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+//            statement.executeUpdate(sb1);
+            ResultSet result1 = statement.executeQuery(sb1);
+            while (result1.next()) {
+                String staff11 = result1.getString(1);
+                String staff21 = result1.getString(2);
+                String staff31 = result1.getString(3);
+                String staff41 = result1.getString(4);
+                String staff51 = result1.getString(5);
+                String staff61 = result1.getString(6);
+                String staff71 = result1.getString(7);
+                String staff81 = result1.getString(8);
+                String staff91 = result1.getString(9);
+                String staff101 = result1.getString(10);
+                String staff111 = result1.getString(11);
+                String staff112 = result1.getString(12);
+
+                System.out.println(staff11 + " : " + staff21 + " : " + staff31 + " : " + staff41 + " : " + staff51 + " : " + staff61 + " : " + staff71 + " : " + staff81 + " : " + staff91 + " : " + staff101 + " : " + staff111 + " : " + staff112);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Boolean updateCustomerAccount(String id, String CustomerName, String Title, String FirstName,
+                                                String LastName, String Address, String City, String PostCode, String
+                                                        Email, String PhoneNumber) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("UPDATE ");
+            sb.append(TABLE_CUSTOMER_ACCOUNT);
+            sb.append(" SET ");
+            sb.append(COLUMN_CUSTOMER_NAME);
+            sb.append(" = '");
+            sb.append(CustomerName);
+            sb.append("', ");
+            sb.append(COLUMN_CONTACT_TITLE);
+            sb.append(" = '");
+            sb.append(Title);
+            sb.append("', ");
+            sb.append(COLUMN_CONTACT_FIRST_NAME);
+            sb.append(" = '");
+            sb.append(FirstName);
+            sb.append("', ");
+            sb.append(COLUMN_CONTACT_LAST_NAME);
+            sb.append(" = '");
+            sb.append(LastName);
+            sb.append("', ");
+            sb.append(COLUMN_ADDRESS);
+            sb.append(" = '");
+            sb.append(Address);
+            sb.append("', ");
+            sb.append(COLUMN_CITY);
+            sb.append(" = '");
+            sb.append(City);
+            sb.append("', ");
+            sb.append(COLUMN_POSTCODE);
+            sb.append(" = '");
+            sb.append(PostCode);
+            sb.append("', ");
+            sb.append(COLUMN_EMAIL_ADDRESS);
+            sb.append(" = '");
+            sb.append(Email);
+            sb.append("', ");
+            sb.append(COLUMN_PHONE_NUMBER);
+            sb.append(" = '");
+            sb.append(PhoneNumber);
+            sb.append("' WHERE ");
+            sb.append(COLUMN_ACCOUNT_NUMBER);
+            sb.append(" = ");
+            sb.append(id);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     //Job related code
 
-    //TODO made change here
 
     public static void insertJob(String cName, String title, String firstName, String lastName, String address, String City, String postcode,
                                  String email, String phone, String type, int accountNumber, int priority, String instructions, Timestamp start,
@@ -559,7 +673,7 @@ public class DbDriver {
             insertIntoJob.setInt(6, staffId);
             insertIntoJob.setDouble(7, price);
             insertIntoJob.setString(8, isOverdue);
-            insertIntoJob.setInt(9,quantity);
+            insertIntoJob.setInt(9, quantity);
 
             int affectedRows = insertIntoJob.executeUpdate();
 
@@ -587,6 +701,7 @@ public class DbDriver {
 
         }
     }
+
     //TODO made change here
     public static List<Job> queryJobs() {
         try (Statement statement = conn.getConnection().createStatement();
@@ -621,6 +736,39 @@ public class DbDriver {
         }
     }
 
+//    //TODO made change here
+//    public static List<Job> queryJobsAvailable() {
+//        try (Statement statement = conn.getConnection().createStatement();
+//             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_TASKS_AVAILABLE)
+//        ) {
+//            List<Job> jobs = new LinkedList<>();
+//            while (results.next()) {
+//                int jobId = results.getInt(COLUMN_JOB_ID);
+//                int accountNumber = results.getInt(COLUMN_ACCOUNT_NUMBER);
+//                int priority = results.getInt(COLUMN_PRIORITY);
+//                String status = results.getString(COLUMN_CURRENT_STATUS);
+//                String instructions = results.getString(COLUMN_SPECIAL_INSTRUCTIONS);
+//                Timestamp start = results.getTimestamp(COLUMN_START_TIME);
+//                Timestamp deadline = results.getTimestamp(COLUMN_JOB_DEADLINE);
+//                Timestamp completeTime = results.getTimestamp(COLUMN_COMPLETE_TIME);
+//                int hours = results.getInt(COLUMN_HOURS_TO_COMPLETE);
+//                int staffIdStart = results.getInt(COLUMN_STAFF_ID_START);
+//                int staffIdComplete = results.getInt(COLUMN_STAFF_ID_COMPLETE);
+//                double price = results.getDouble(COLUMN_TOTAL_PRICE);
+//                String isOverdue = results.getString(COLUMN_JOB_IS_OVERDUE);
+//                int quantity = results.getInt(COLUMN_QUANTITY);
+//
+//
+//                Job job = new Job(jobId, accountNumber, priority, instructions, status, start, deadline, completeTime, hours, staffIdStart, price, staffIdComplete, isOverdue, quantity);
+//
+//                jobs.add(job);
+//            }
+//            return jobs;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
     public static void updateCompleteJob(String status, Timestamp completeTime, double hours, int staffId, String isOverdue, int jobId) {
         try (Statement statement = conn.getConnection().createStatement()) {
@@ -668,6 +816,25 @@ public class DbDriver {
         return jobs.get(jobs.size() - 1);
     }
 
+    //Takes in customer id.
+    public static List<Job> searchJobByCustomer(int id) {
+        List<Job> jobs = searchAllJobs();
+        List<Job> customerJob = new LinkedList<>();
+        if (jobs != null)
+            for (Job j : jobs) {
+                if (j.getCustomerId() == id) {
+                    customerJob.add(j);
+                }
+            }
+
+        if (customerJob.size() > 0) {
+            return customerJob;
+        }
+
+        return null;
+
+    }
+
     //Search and print open jobs.
     public static List<Job> searchAllJobs() {
         List<Job> jobs = queryJobs();
@@ -676,6 +843,21 @@ public class DbDriver {
             return null;
         }
         return jobs;
+    }
+
+    //This will return a job which is searched by id.
+    public static Boolean searchJob(int searchedJob) {
+        List<Job> jobs = queryJobs();
+        if (jobs == null) {
+            System.out.println("No Jobs");
+            return false;
+        }
+        for (Job j : jobs) {
+            if (j.getJobId() == searchedJob) {
+                return true;
+            }
+        }
+        return false;
     }
 
     //    helper method to check all open jobs
@@ -694,6 +876,87 @@ public class DbDriver {
         }
         return null;
     }
+    public static Boolean updateJobStart(int id, String status,Timestamp start) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("UPDATE ");
+            sb.append(TABLE_JOBS);
+            sb.append(" SET ");
+            sb.append(COLUMN_CURRENT_STATUS);
+            sb.append(" = '");
+            sb.append(status);
+            sb.append("', ");
+            sb.append(COLUMN_START_TIME);
+            sb.append(" = '");
+            sb.append(start);
+            sb.append("' WHERE ");
+            sb.append(COLUMN_JOB_ID);
+            sb.append(" = ");
+            sb.append(id);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static Boolean updateJobComplete(int id, String status,Timestamp end) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("UPDATE ");
+            sb.append(TABLE_JOBS);
+            sb.append(" SET ");
+            sb.append(COLUMN_CURRENT_STATUS);
+            sb.append(" = '");
+            sb.append(status);
+            sb.append("', ");
+            sb.append(COLUMN_COMPLETE_TIME);
+            sb.append(" = '");
+            sb.append(end);
+            sb.append("' WHERE ");
+            sb.append(COLUMN_JOB_ID);
+            sb.append(" = ");
+            sb.append(id);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    //testing purposes to print out customer account and see how it changes with each action
+    public static void printJobs1() {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("select * from ");
+            sb.append(TABLE_JOBS);
+
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+//            statement.executeUpdate(sb1);
+            ResultSet result1 = statement.executeQuery(sb1);
+            while (result1.next()) {
+                String staff11 = result1.getString(1);
+                String staff21 = result1.getString(2);
+                String staff31 = result1.getString(3);
+                String staff41 = result1.getString(4);
+                String staff51 = result1.getString(5);
+                String staff61 = result1.getString(6);
+                String staff71 = result1.getString(7);
+                String staff81 = result1.getString(8);
+                String staff91 = result1.getString(9);
+                String staff101 = result1.getString(10);
+                String staff111 = result1.getString(11);
+                String staff112 = result1.getString(12);
+
+                System.out.println(staff11 + " : " + staff21 + " : " + staff31 + " : " + staff41 + " : " + staff51 + " : " + staff61 + " : " + staff71 + " : " + staff81 + " : " + staff91 + " : " + staff101 + " : " + staff111 + " : " + staff112);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void printJobs(List<Job> jobs) {
         for (Job j : jobs) {
@@ -711,6 +974,21 @@ public class DbDriver {
         for (Job j : jobs) {
             if (j.getJobId() == searchedJob) {
                 return j;
+            }
+        }
+        return null;
+    }
+
+    //This will return a job which is searched by id.
+    public static Boolean searchJobsBool(int searchedJob) {
+        List<Job> jobs = queryJobs();
+        if (jobs == null) {
+            System.out.println("No Jobs");
+            return false;
+        }
+        for (Job j : jobs) {
+            if (j.getJobId() == searchedJob) {
+                return true;
             }
         }
         return null;
@@ -793,7 +1071,6 @@ public class DbDriver {
             connection.setAutoCommit(false);
 
 
-
             // Insert variable discount
             insertIntoVariable.setDouble(1, rate);
             insertIntoVariable.setInt(2, discount);
@@ -869,7 +1146,6 @@ public class DbDriver {
             connection.setAutoCommit(false);
 
 
-
             // Insert variable discount
             insertIntoFlexible.setDouble(1, rate);
             insertIntoFlexible.setInt(2, discount);
@@ -882,7 +1158,7 @@ public class DbDriver {
 
             }
         } catch (Exception e) {
-            System.out.println("Insert job exception: " + e.getMessage());
+            System.out.println("Insert Flexible discount exception: " + e.getMessage());
             try {
                 System.out.println("Performing rollback");
                 conn.getConnection().rollback();
@@ -1024,7 +1300,61 @@ public class DbDriver {
         }
     }
 
+    public static Boolean removeFlexibleDiscount(double rate, int Did, float range) {
 
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("delete from ");
+            sb.append(TABLE_FLEXIBLE);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_FLEXI_RATE);
+            sb.append(" = '");
+            sb.append(rate);
+            sb.append("' ");
+            sb.append(COLUMN_DISCOUNT_ID);
+            sb.append(" = '");
+            sb.append(Did);
+            sb.append("' ");
+            sb.append(COLUMN_RANGE);
+            sb.append(" = '");
+            sb.append(range);
+            sb.append("' ");
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.executeUpdate(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static Boolean removeVariableDiscount(double rate, int Did, int TaskId) {
+
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("delete from ");
+            sb.append(TABLE_FLEXIBLE);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_VARIABLE_RATE);
+            sb.append(" = '");
+            sb.append(rate);
+            sb.append("' ");
+            sb.append(COLUMN_DISCOUNT_ID);
+            sb.append(" = '");
+            sb.append(Did);
+            sb.append("' ");
+            sb.append(COLUMN_TASK_ID);
+            sb.append(" = '");
+            sb.append(TaskId);
+            sb.append("' ");
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.executeUpdate(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
     //Department related code
@@ -1125,6 +1455,52 @@ public class DbDriver {
             statement.execute(sb1);
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    //testing purposes to print out customer account and see how it changes with each action
+    public static void printTasks() {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("select * from ");
+            sb.append(TABLE_TASKS_AVAILABLE);
+
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+//            statement.executeUpdate(sb1);
+            ResultSet result1 = statement.executeQuery(sb1);
+            while (result1.next()) {
+                String staff11 = result1.getString(1);
+                String staff21 = result1.getString(2);
+                String staff31 = result1.getString(3);
+                String staff41 = result1.getString(4);
+                String staff51 = result1.getString(5);
+
+
+                System.out.println(staff11 + " : " + staff21 + " : " + staff31 + " : " + staff41 + " : " + staff51);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static Boolean deleteTask(int x) {
+
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("delete from ");
+            sb.append(TABLE_TASKS_AVAILABLE);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_TASK_ID);
+            sb.append(" = '");
+            sb.append(x);
+            sb.append("' ");
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.executeUpdate(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -1350,6 +1726,144 @@ public class DbDriver {
         return null;
     }
 
+    //testing purposes to print out staff account and see how it changes with each action
+    public static void printStaff() {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("select * from ");
+            sb.append(TABLE_STAFF_ACCOUNT);
+
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+//            statement.executeUpdate(sb1);
+            ResultSet result1 = statement.executeQuery(sb1);
+            while (result1.next()) {
+                String staff11 = result1.getString(1);
+                String staff21 = result1.getString(2);
+                String staff31 = result1.getString(3);
+                String staff41 = result1.getString(4);
+                String staff51 = result1.getString(5);
+                String staff61 = result1.getString(6);
+                System.out.println(staff11 +"\n"+ staff21 +"\n"+ staff31 +"\n"+ staff41 +"\n"+ staff51 +"\n"+ staff61+"\n"+"\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<StaffAccount> queryStaff() {
+        try (Statement statement = conn.getConnection().createStatement();
+             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_STAFF_ACCOUNT);
+        ) {
+            List<StaffAccount> users = new LinkedList<>();
+            while (results.next()) {
+                int staffId = results.getInt(COLUMN_STAFF_ID);
+                String name = results.getString(COLUMN_STAFF_NAME);
+                String userName = results.getString(COLUMN_USER_NAME);
+                String password = results.getString(COLUMN_STAFF_PASSWORD);
+                String address = results.getString(COLUMN_STAFF_ADDRESS);
+                String role = results.getString(COLUMN_STAFF_ROLE);
+                String phoneNumber = results.getString(COLUMN_STAFF_PHONE_NUMBER);
+
+                StaffAccount staff = new StaffAccount(staffId,name,userName,password,address,role,phoneNumber);
+                users.add(staff);
+            }
+            return users;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+    public static Boolean deleteStaffAccount(String x) {
+
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("delete from ");
+            sb.append(TABLE_STAFF_ACCOUNT);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_STAFF_ID);
+            sb.append(" = '");
+            sb.append(x);
+            sb.append("' ");
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.executeUpdate(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static Boolean searchStaffAccount(String x) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("select count(1) from  ");
+            sb.append(TABLE_STAFF_ACCOUNT);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_STAFF_ID);
+            sb.append(" = '");
+            sb.append(x);
+            sb.append("' ");
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            ResultSet result = statement.executeQuery(sb1);
+            while (result.next()) {
+                if (result.getInt(1) == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static Boolean updateStaffAccount(String id, String name, String userName, String password, String address, String role, String phone) {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("UPDATE ");
+            sb.append(TABLE_STAFF_ACCOUNT);
+            sb.append(" SET ");
+            sb.append(COLUMN_STAFF_NAME);
+            sb.append(" = '");
+            sb.append(name);
+            sb.append("', ");
+            sb.append(COLUMN_USER_NAME);
+            sb.append(" = '");
+            sb.append(userName);
+            sb.append("', ");
+            sb.append(COLUMN_STAFF_PASSWORD);
+            sb.append(" = '");
+            sb.append(password);
+            sb.append("', ");
+            sb.append(COLUMN_STAFF_ADDRESS);
+            sb.append(" = '");
+            sb.append(address);
+            sb.append("', ");
+            sb.append(COLUMN_STAFF_ROLE);
+            sb.append(" = '");
+            sb.append(role);
+            sb.append("', ");
+            sb.append(COLUMN_STAFF_PHONE_NUMBER);
+            sb.append(" = '");
+            sb.append(phone);
+            sb.append("' WHERE ");
+            sb.append(COLUMN_STAFF_ID);
+            sb.append(" = ");
+            sb.append(id);
+            String sb1 = sb.toString();
+            System.out.println(sb1);
+            statement.execute(sb1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 
     public static void insertPaymentHistory(int jobId, int customerId, String cashOrCard, String cardType, String expiry, String lastDigits, double amount) throws SQLException {
         try (PreparedStatement insertIntoPayments = conn.getConnection().prepareStatement(insertPayment);
@@ -1379,48 +1893,133 @@ public class DbDriver {
         }
     }
 
-    //Invoice creation
-    // takes in jobID
-    public static void generateInvoice(int id) throws FileNotFoundException {
 
-        PrintStream o = new PrintStream(new File("Invoice"+id+".txt"));
-        System.setOut(o);
-
-        List<Invoice> invoices = DbDriver.createInvoice(id);
-        assert invoices != null;
-        Invoice invoice1;
-        invoice1 = invoices.get(0);
-        System.out.println("customer id = " + invoice1.getCustomerId() + " \n" +
-                "Customer Name: " + invoice1.getName() + "\n" +
-                "Contact name: " + invoice1.getContact() + " \n" +
-                "Address: " + invoice1.getPhoneNumber() + "\n" +
-                "Phone Number: " + invoice1.getPhoneNumber() + " \n" +
-                "Job Number: " + invoice1.getJobId() + "\n" +
-                "1: Task ID: " + invoice1.getTaskId() + " \n" +
-                "Task Description: " + invoice1.getDesc() + "\n" +
-                " Task Price: " + invoice1.gettPrice());
-        if (invoices.size() > 1) {
-            for (int i = 1; i < invoices.size(); i++) {
-                Invoice invoice = invoices.get(i);
-                System.out.println(i + 1 + ": Task ID: " + invoice.getTaskId() + " \n"
-                        + " Task Description: " + invoice.getDesc() + "\n" +
-                        " Task Price: " + invoice.gettPrice());
-                if (i == invoices.size() - 1) {
-                    System.out.println(" Total Price after discount and VAT: " + invoices.get(i).getTotal());
+    public static Boolean verifyLogin(String x, String y) throws SQLException {
+        try (Statement statement = conn.getConnection().createStatement();) {
+            StringBuilder sb = new StringBuilder("SELECT count(1) FROM ");
+            sb.append(TABLE_STAFF_ACCOUNT);
+            sb.append(" WHERE ");
+            sb.append(COLUMN_USER_NAME);
+            sb.append(" = '");
+            sb.append(x);
+            sb.append("' AND ");
+            sb.append(COLUMN_STAFF_PASSWORD);
+            sb.append(" = '");
+            sb.append(y);
+            sb.append("'");
+            String sb1 = sb.toString();
+            System.out.println("SELECT count(1) FROM STAFF_ACCOUNT WHERE USER_NAME = '" + "USERNAME" + "' AND PASSWORD ='" + "PASS" + "'");
+            System.out.println(sb1);
+            ResultSet result = statement.executeQuery(sb1);
+            while (result.next()) {
+                if (result.getInt(1) == 1) {
+                    return true;
+                } else {
+                    return false;
                 }
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Alerts
+     */
+
+
+    public static List<LatePaymentAlert> latePaymentAlert() {
+        try (Statement statement = conn.getConnection().createStatement();
+             ResultSet results = statement.executeQuery(checkLatePayment)
+        ) {
+            List<LatePaymentAlert> reports = new LinkedList<>();
+            while (results.next()) {
+
+                int accountNumber = results.getInt(1);
+                String name = results.getString(2);
+                int job_ID = results.getInt(3);
+
+
+                LatePaymentAlert report = new LatePaymentAlert(accountNumber, name, job_ID);
+                reports.add(report);
+
+            }
+            return reports;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public static void generateLatePaymentAlert() {
+        PaymentAlert alert = new PaymentAlert();
+        List<LatePaymentAlert> LPA = DbDriver.latePaymentAlert();
+
+        for (LatePaymentAlert l : LPA) {
+            int cust = l.getAccount();
+            CustomerAccount searchedCUStomer = DbDriver.searchCustomer(cust);
+            alert.setCname(l.getName());
+            alert.setAccount(l.getAccount());
+            alert.setJob_id(l.getJobId());
+            alert.start();
+
+        }
+
+
+    }
+
+
+    public static void taskDeadline() {
+        long checkDeadline;
+        TaskDeadlineAlert alert = new TaskDeadlineAlert();
+        List<TasksJobs> list = queryTasksJobs();
+        for (TasksJobs tj : list) {
+
+            checkDeadline = tj.getStartTimeStamp().getTime() / 1000 / 60;
+            List<Task> tasks = DbDriver.queryTasks();
+            for (Task t : tasks) {
+                if (t.getTaskId() == tj.getTaskId()) {
+                    if (!tj.getStatus().equalsIgnoreCase("complete")) {
+                        if (t.getDuration() - checkDeadline < 20) {
+                            alert.setJobTaskId(tj.getTaskJobId());
+                            alert.setTaskId(tj.getTaskId());
+                            alert.start();
+
+                        }
+
+                    }
+                }
+
             }
 
 
         }
-        o.close();
     }
 
-    public static List<Invoice> createInvoice(int id) {
-        try (PreparedStatement createIntoInvoice = conn.getConnection().prepareStatement(createInvoice)
+
+    /**
+     * Reports and Invoices
+     */
+
+
+    //Create customer reports to show jobs by customer
+    public static List<CustomerReport> createCustomerReport(int id) {
+//        Date d = Date.valueOf(from);
+//        Date d1 = Date.valueOf(to);
+        try (Statement statement = conn.getConnection().createStatement();
+             ResultSet results = statement.executeQuery("SELECT " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + ", " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CUSTOMER_NAME + ", " +
+                     "concat(" + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_TITLE + " , " + "' ' ," + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_FIRST_NAME + ", " + "' ' ," + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_LAST_NAME + ") AS CONTACT, " +
+                     "concat(" + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ADDRESS + ", " + "' ' , " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CITY + ", " + "' ' ," + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_POSTCODE + ") AS ADDRESS, " +
+                     TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_PHONE_NUMBER + ", " + TABLE_JOBS + "." + COLUMN_JOB_ID +
+                     " FROM  " + TABLE_CUSTOMER_ACCOUNT + "" +
+                     " INNER JOIN " + TABLE_JOBS + " ON " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = " + TABLE_JOBS + "." + COLUMN_ACCOUNT_NUMBER +
+                     " WHERE " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = " + id
+//                     + " AND CAST((" + TABLE_JOBS + "." + COLUMN_START_TIME + ") AS DATE) BETWEEN '" + d + "' AND '" + d1 + "'"
+                     )
         ) {
-            createIntoInvoice.setInt(1,id);
-            ResultSet results = createIntoInvoice.executeQuery();
-            List<Invoice> invoices = new LinkedList<>();
+
+            List<CustomerReport> reports = new LinkedList<>();
             while (results.next()) {
 
                 int customerId = results.getInt(1);
@@ -1428,24 +2027,240 @@ public class DbDriver {
                 String contact = results.getString(3);
                 String address = results.getString(4);
                 String phoneNumber = results.getString(5);
-                String startTime = results.getString(7);
                 int jobId = results.getInt(6);
-                int taskId = results.getInt(8);
-                String desc = results.getString(9);
-                double tPrice = results.getDouble(10);
-                double total = results.getDouble(11);
 
-                Invoice invoice = new Invoice(customerId, name, contact, address, phoneNumber, startTime, jobId, taskId, desc, tPrice, total);
-                invoices.add(invoice);
+                CustomerReport report = new CustomerReport(customerId, jobId, name,
+                        contact, address, phoneNumber);
+
+                reports.add(report);
             }
-            return invoices;
+            return reports;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    //Individual Performance reports.
+    public static void generateCustomerReport(int id) throws FileNotFoundException {
+
+        PrintStream o = new PrintStream(new File("CustomerReport" + id + ".txt"));
+        System.setOut(o);
+
+        List<CustomerReport> reports = DbDriver.createCustomerReport(id);
+        assert reports != null;
+        CustomerReport report = reports.get(0);
+
+        System.out.println("customer id = " + report.getCustomerId() + " \n" +
+                "Customer Name: " + report.getCustomer_name() + "\n" +
+                "Contact name: " + report.getContact() + " \n" +
+                "Address: " + report.getAddress() + "\n" +
+                "Phone Number: " + report.getGetPhoneNumber() + " \n" +
+                "1: Job Number: " + report.getJobId() + "\n");
+
+        if (reports.size() > 1) {
+            for (int i = 1; i < reports.size(); i++) {
+                CustomerReport report1 = reports.get(i);
+                System.out.println(i + 1 + ": Job Number: " + report1.getJobId());
+            }
+            }else{
+            System.out.println("No job for this customer.");
+
+
+        }
+        PrintStream console = System.out;
+        System.setOut(console);
+        o.close();
+    }
+
+
+    //This will create the BIPL report.
+    public static List<SummaryReport> createSummaryReports(String From, String To) {
+        Date d = Date.valueOf(From);
+        Date d1 = Date.valueOf(To);
+        try (Statement statement = conn.getConnection().createStatement();
+
+             ResultSet results = statement.executeQuery("SELECT CAST((" + TABLE_JOB_TASKS + "." + COLUMN_TASK_START_TIME + ") AS DATE) AS DATE, " + TABLE_DEPARTMENT + "." + COLUMN_LOCATION +
+                     " ,SUM(" + TABLE_JOB_TASKS + "." + COLUMN_TASK_TIME_TAKEN +
+                     ") AS TOTAL_TIME " +
+                     " FROM (( " + TABLE_JOB_TASKS + "" +
+                     " INNER JOIN " + TABLE_TASKS_AVAILABLE + " ON " + TABLE_JOB_TASKS + "." + COLUMN_TASK_ID + " = " + TABLE_JOB_TASKS + "." + COLUMN_TASK_ID + ")" +
+                     " INNER JOIN " + TABLE_DEPARTMENT + " ON " + TABLE_TASKS_AVAILABLE + "." + COLUMN_DEPARTMENT_ID + " = " + TABLE_DEPARTMENT + "." + COLUMN_DEPARTMENT_ID + ")" +
+                     " WHERE CAST((" + TABLE_JOB_TASKS + "." + COLUMN_TASK_START_TIME + ") AS DATE) BETWEEN '" + d + "' AND '" + d1 + "'" +
+                     " GROUP BY DATE, " + TABLE_DEPARTMENT + "." + COLUMN_LOCATION +
+                     " ORDER BY " + TABLE_DEPARTMENT + "." + COLUMN_LOCATION)
+        ) {
+            List<SummaryReport> reports = new LinkedList<>();
+            if (results.next()){
+                while (results.next()) {
+
+                    Date date = results.getDate(1);
+                    String location = results.getString(2);
+                    double totalTime = results.getDouble(3);
+
+
+                    SummaryReport report = new SummaryReport(date, location, totalTime);
+                    reports.add(report);
+
+                }
+            }
+
+            return reports;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //This will generate the BIPL report.
+    public static void generateSummaryReport(String From, String To) throws FileNotFoundException {
+
+        PrintStream o = new PrintStream(new File("SummaryReport" + From + "_" + To + ".txt"));
+        System.setOut(o);
+
+        List<SummaryReport> s = DbDriver.createSummaryReports(From, To);
+
+        String location = null;
+
+        double totalTimeForShift = 0;
+        double totalHoursForAllJobs = 0;
+
+        Map<String, Double> totalTimeList = new HashMap<>();
+        if (s != null) {
+            for (SummaryReport summaryReport : s) {
+                if (summaryReport.getLocation().equalsIgnoreCase(location)) {
+                    System.out.println(
+                            "DATE: " + summaryReport.getDate() + " \n" +
+                                    "LOCATION: " + summaryReport.getLocation() + "\n" +
+                                    "TOTAL TIME: " + summaryReport.getTotalTime() + "\n");
+                    location = summaryReport.getLocation();
+                    totalTimeForShift += summaryReport.getTotalTime();
+
+                } else if (!summaryReport.getLocation().equalsIgnoreCase(location)) {
+                    System.out.println("Total Time Spent: " + totalTimeForShift + "\n");
+
+                    totalTimeList.put(location, totalTimeForShift);
+                    totalTimeForShift = summaryReport.getTotalTime();
+                    location = summaryReport.getLocation();
+                    System.out.println(
+                            "DATE: " + summaryReport.getDate() + " \n" +
+                                    "LOCATION: " + summaryReport.getLocation() + "\n" +
+                                    "TOTAL TIME: " + summaryReport.getTotalTime() + "\n");
+
+                }
+
+
+            }
+        }
+        totalTimeList.put(location, totalTimeForShift);
+        for (Map.Entry<String, Double> entry : totalTimeList.entrySet()) {
+            totalHoursForAllJobs += entry.getValue();
+
+
+        }
+        System.out.println("total shift hours: " + totalHoursForAllJobs);
+        PrintStream console = System.out;
+        System.setOut(console);
+        o.close();
+    }
+
+    //Individual Performance reports. Staff can be searched by ID.
+    // takes in staff id
+    public static void generateIndividualStaffReport(int id) throws SQLException, FileNotFoundException {
+
+        PrintStream o = new PrintStream(new File("StaffReport" + id + ".txt"));
+        System.setOut(o);
+
+        List<IndividualPerformanceReport> reports = DbDriver.createIndividualStaffReports(id);
+        int staffID;
+        double totalTime = 0;
+        double totalEffort = 0;
+        int i = 0;
+        Map<Integer, Double> totalTimeList = new HashMap<>();
+        if (reports != null) {
+            while (i < reports.size()) {
+                staffID = reports.get(i).getStaff_id();
+                IndividualPerformanceReport report = reports.get(i);
+                if (i > 0) {
+                    while (staffID == reports.get(i - 1).getStaff_id() && i < reports.size()) {
+                        System.out.println("Staff ID:  = " + report.getStaff_id() + " \n" +
+                                "Staff Name: " + report.getName() + "\n" +
+                                "Role: " + report.getRole() + "\n" +
+                                "Task Id: " + report.getTaskId() + " \n" +
+                                "Department: " + report.getLocation() + "\n" +
+                                "Start: " + report.getStartTime() + " \n" +
+                                "Complete: " + report.getComplete() + "\n" +
+                                "Time Taken: " + report.getTimeTaken() + " \n");
+                        totalTime += reports.get(i).getTimeTaken();
+                        i++;
+                    }
+                    if (i <= reports.size()) {
+                        System.out.println("Total Time Spent: " + totalTime);
+                        totalTimeList.put(reports.get(i - 1).getStaff_id(), totalTime);
+                        if (i < reports.size())
+                            totalTime = reports.get(i).getTimeTaken();
+                    }
+                } else {
+                    System.out.println("Staff ID:  = " + report.getStaff_id() + " \n" +
+                            "Staff Name: " + report.getName() + "\n" +
+                            "Role: " + report.getRole() + "\n" +
+                            "Task Id: " + report.getTaskId() + " \n" +
+                            "Department: " + report.getLocation() + "\n" +
+                            "Start: " + report.getStartTime() + " \n" +
+                            "Complete: " + report.getComplete() + "\n" +
+                            "Time Taken: " + report.getTimeTaken() + " \n");
+                    totalTime += reports.get(i).getTimeTaken();
+                    i++;
+
+                }
+            }
+        }
+        for (Map.Entry<Integer, Double> entry : totalTimeList.entrySet()) {
+            totalEffort += entry.getValue();
+            System.out.println("total effort: " + totalEffort);
+
+        }
+        PrintStream console = System.out;
+        System.setOut(console);
+        o.close();
+    }
+
+    public static List<IndividualPerformanceReport> createIndividualStaffReports(int id) throws SQLException {
+        try (PreparedStatement check = conn.getConnection().prepareStatement(createIndividualStaffReport)) {
+            check.setInt(1, id);
+            ResultSet results = check.executeQuery();
+            if (results.next()) {
+                List<IndividualPerformanceReport> reports = new LinkedList<>();
+                while (results.next()) {
+
+                    int staffId = results.getInt(1);
+                    String name = results.getString(2);
+                    String role = results.getString(3);
+                    int taskID = results.getInt(4);
+                    String location = results.getString(5);
+                    String startTime = results.getString(6);
+                    String completeTime = results.getString(7);
+                    double timeTaken = results.getInt(8);
+
+                    IndividualPerformanceReport report = new IndividualPerformanceReport(staffId, name, role, taskID, location, startTime, completeTime, timeTaken);
+                    reports.add(report);
+
+
+                }
+                return reports;
+
+            } else {
+                System.out.println("Staff member is a bad team player, has not done any work.");
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+
+    //Generate the performance of the whole team.
     public static void generateStaffReport() {
         List<IndividualPerformanceReport> reports = DbDriver.createStaffReports();
         int staffID;
@@ -1525,631 +2340,77 @@ public class DbDriver {
     }
 
 
-    //Individual Performance reports.
-    // takes in staff id
-    public static void generateIndividualStaffReport(int id) throws SQLException, FileNotFoundException {
+    // will generate job invoices for the customers.
+    // takes in jobID
+    public static void generateInvoice(int id) throws FileNotFoundException {
 
-        PrintStream o = new PrintStream(new File("StaffReport"+id+".txt"));
+        PrintStream o = new PrintStream(new File("Invoice" + id + ".txt"));
         System.setOut(o);
 
-        List<IndividualPerformanceReport> reports = DbDriver.createIndividualStaffReports(id);
-        int staffID;
-        double totalTime = 0;
-        double totalEffort = 0;
-        int i = 0;
-        Map<Integer, Double> totalTimeList = new HashMap<>();
-        if (reports != null) {
-            while (i < reports.size()) {
-                staffID = reports.get(i).getStaff_id();
-                IndividualPerformanceReport report = reports.get(i);
-                if (i > 0) {
-                    while (staffID == reports.get(i - 1).getStaff_id() && i < reports.size()) {
-                        System.out.println("Staff ID:  = " + report.getStaff_id() + " \n" +
-                                "Staff Name: " + report.getName() + "\n" +
-                                "Role: " + report.getRole() + "\n" +
-                                "Task Id: " + report.getTaskId() + " \n" +
-                                "Department: " + report.getLocation() + "\n" +
-                                "Start: " + report.getStartTime() + " \n" +
-                                "Complete: " + report.getComplete() + "\n" +
-                                "Time Taken: " + report.getTimeTaken() + " \n");
-                        totalTime += reports.get(i).getTimeTaken();
-                        i++;
-                    }
-                    if (i <= reports.size()) {
-                        System.out.println("Total Time Spent: " + totalTime);
-                        totalTimeList.put(reports.get(i - 1).getStaff_id(), totalTime);
-                        if (i < reports.size())
-                            totalTime = reports.get(i).getTimeTaken();
-                    }
-                } else {
-                    System.out.println("Staff ID:  = " + report.getStaff_id() + " \n" +
-                            "Staff Name: " + report.getName() + "\n" +
-                            "Role: " + report.getRole() + "\n" +
-                            "Task Id: " + report.getTaskId() + " \n" +
-                            "Department: " + report.getLocation() + "\n" +
-                            "Start: " + report.getStartTime() + " \n" +
-                            "Complete: " + report.getComplete() + "\n" +
-                            "Time Taken: " + report.getTimeTaken() + " \n");
-                    totalTime += reports.get(i).getTimeTaken();
-                    i++;
-
+        List<Invoice> invoices = DbDriver.createInvoice(id);
+        assert invoices != null;
+        Invoice invoice1;
+        invoice1 = invoices.get(0);
+        System.out.println("customer id = " + invoice1.getCustomerId() + " \n" +
+                "Customer Name: " + invoice1.getName() + "\n" +
+                "Contact name: " + invoice1.getContact() + " \n" +
+                "Address: " + invoice1.getPhoneNumber() + "\n" +
+                "Phone Number: " + invoice1.getPhoneNumber() + " \n" +
+                "Job Number: " + invoice1.getJobId() + "\n" +
+                "1: Task ID: " + invoice1.getTaskId() + " \n" +
+                "Task Description: " + invoice1.getDesc() + "\n" +
+                " Task Price: " + invoice1.gettPrice());
+        if (invoices.size() > 1) {
+            for (int i = 1; i < invoices.size(); i++) {
+                Invoice invoice = invoices.get(i);
+                System.out.println(i + 1 + ": Task ID: " + invoice.getTaskId() + " \n"
+                        + " Task Description: " + invoice.getDesc() + "\n" +
+                        " Task Price: " + invoice.gettPrice());
+                if (i == invoices.size() - 1) {
+                    System.out.println(" Total Price after discount and VAT: " + invoices.get(i).getTotal());
                 }
             }
-        }
-        for (Map.Entry<Integer, Double> entry : totalTimeList.entrySet()) {
-            totalEffort += entry.getValue();
-            System.out.println("total effort: " + totalEffort);
+
 
         }
+
+        PrintStream console = System.out;
+        System.setOut(console);
         o.close();
     }
 
-    public static List<IndividualPerformanceReport> createIndividualStaffReports(int id) throws SQLException {
-        try(PreparedStatement check = conn.getConnection().prepareStatement(createIndividualStaffReport)) {
-            check.setInt(1, id);
-            ResultSet results = check.executeQuery();
-            if (results.next()) {
-                List<IndividualPerformanceReport> reports = new LinkedList<>();
-                while (results.next()) {
-
-                    int staffId = results.getInt(1);
-                    String name = results.getString(2);
-                    String role = results.getString(3);
-                    int taskID = results.getInt(4);
-                    String location = results.getString(5);
-                    String startTime = results.getString(6);
-                    String completeTime = results.getString(7);
-                    double timeTaken = results.getInt(8);
-
-                    IndividualPerformanceReport report = new IndividualPerformanceReport(staffId, name, role, taskID, location, startTime, completeTime, timeTaken);
-                    reports.add(report);
-
-
-                }return reports;
-
-            } else {
-                System.out.println("Staff member is a bad team player, has not done any work.");
-            }
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }return null;
-    }
-
-
-
-    public static List<SummaryReport> createSummaryReports(String From, String To) {
-        Date d = Date.valueOf(From);
-        Date d1 = Date.valueOf(To);
-        try (Statement statement = conn.getConnection().createStatement();
-
-             ResultSet results = statement.executeQuery("SELECT CAST((" + TABLE_JOB_TASKS + "." + COLUMN_TASK_START_TIME + ") AS DATE) AS DATE, " + TABLE_DEPARTMENT + "." + COLUMN_LOCATION +
-                     " ,SUM(" + TABLE_JOB_TASKS + "." + COLUMN_TASK_TIME_TAKEN +
-                     ") AS TOTAL_TIME " +
-                     " FROM (( " + TABLE_JOB_TASKS + "" +
-                     " INNER JOIN " + TABLE_TASKS_AVAILABLE + " ON " + TABLE_JOB_TASKS + "." + COLUMN_TASK_ID + " = " + TABLE_JOB_TASKS + "." + COLUMN_TASK_ID + ")" +
-                     " INNER JOIN " + TABLE_DEPARTMENT + " ON " + TABLE_TASKS_AVAILABLE + "." + COLUMN_DEPARTMENT_ID + " = " + TABLE_DEPARTMENT + "." + COLUMN_DEPARTMENT_ID + ")" +
-                     " WHERE CAST((" + TABLE_JOB_TASKS + "." + COLUMN_TASK_START_TIME + ") AS DATE) BETWEEN '" + d + "' AND '" + d1 + "'" +
-
-                     " GROUP BY DATE, " + TABLE_DEPARTMENT + "." + COLUMN_LOCATION +
-                     " ORDER BY " + TABLE_DEPARTMENT + "." + COLUMN_LOCATION)
+    public static List<Invoice> createInvoice(int id) {
+        try (PreparedStatement createIntoInvoice = conn.getConnection().prepareStatement(createInvoice)
         ) {
-            List<SummaryReport> reports = new LinkedList<>();
+            createIntoInvoice.setInt(1, id);
+            ResultSet results = createIntoInvoice.executeQuery();
+            List<Invoice> invoices = new LinkedList<>();
             while (results.next()) {
 
-                Date date = results.getDate(1);
-                String location = results.getString(2);
-                double totalTime = results.getDouble(3);
+                int customerId = results.getInt(1);
+                String name = results.getString(2);
+                String contact = results.getString(3);
+                String address = results.getString(4);
+                String phoneNumber = results.getString(5);
+                String startTime = results.getString(7);
+                int jobId = results.getInt(6);
+                int taskId = results.getInt(8);
+                String desc = results.getString(9);
+                double tPrice = results.getDouble(10);
+                double total = results.getDouble(11);
 
-
-                SummaryReport report = new SummaryReport(date, location, totalTime);
-                reports.add(report);
-
+                Invoice invoice = new Invoice(customerId, name, contact, address, phoneNumber, startTime, jobId, taskId, desc, tPrice, total);
+                invoices.add(invoice);
             }
-            return reports;
+            return invoices;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    //Individual Performance reports.
-    public static void generateSummaryReport(String From, String To) throws FileNotFoundException {
 
-        PrintStream o = new PrintStream(new File("SummaryReport"+From +"_"+To+".txt"));
-        System.setOut(o);
-
-        List<SummaryReport> s = DbDriver.createSummaryReports(From, To);
-
-        String location = null;
-
-        double totalTimeForShift = 0;
-        double totalHoursForAllJobs = 0;
-
-        Map<String, Double> totalTimeList = new HashMap<>();
-        if (s != null) {
-            for (SummaryReport summaryReport : s) {
-                if (summaryReport.getLocation().equalsIgnoreCase(location)) {
-                    System.out.println(
-                            "DATE: " + summaryReport.getDate() + " \n" +
-                                    "LOCATION: " + summaryReport.getLocation() + "\n" +
-                                    "TOTAL TIME: " + summaryReport.getTotalTime() + "\n");
-                    location = summaryReport.getLocation();
-                    totalTimeForShift += summaryReport.getTotalTime();
-
-                } else if (!summaryReport.getLocation().equalsIgnoreCase(location)) {
-                    System.out.println("Total Time Spent: " + totalTimeForShift + "\n");
-
-                    totalTimeList.put(location, totalTimeForShift);
-                    totalTimeForShift = summaryReport.getTotalTime();
-                    location = summaryReport.getLocation();
-                    System.out.println(
-                            "DATE: " + summaryReport.getDate() + " \n" +
-                                    "LOCATION: " + summaryReport.getLocation() + "\n" +
-                                    "TOTAL TIME: " + summaryReport.getTotalTime() + "\n");
-
-                }
-
-
-            }
-        }
-        totalTimeList.put(location, totalTimeForShift);
-        for (Map.Entry<String, Double> entry : totalTimeList.entrySet()) {
-            totalHoursForAllJobs += entry.getValue();
-
-
-        }
-        System.out.println("total shift hours: " + totalHoursForAllJobs);
-        o.close();
-
-    }
-
-
-
-
-    //    public static ObservableList<Task> queryTasksObservable() {
-//        try (Statement statement = conn.getConnection().createStatement();
-//             ResultSet results = statement.executeQuery("SELECT * from " + TABLE_TASKS_AVAILABLE)
-//        ) {
-//            List<Task> tasks = new LinkedList<>();
-//            while (results.next()) {
-//                int taskId = results.getInt(COLUMN_TASK_ID);
-//                String description = results.getString(COLUMN_TASK_DESCRIPTION);
-//                int departmentId = results.getInt(COLUMN_DEPARTMENT_ID);
-//                float taskPrice = results.getFloat(COLUMN_TASK_PRICE);
-//                int duration = results.getInt(COLUMN_TASK_DURATION);
-//
-//                Task task = new Task(taskId, description, departmentId, taskPrice, duration);
-//                tasks.add(task);
-//            }
-//            return tasks;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-
-
-    public static Boolean deleteTask(int x) {
-
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("delete from ");
-            sb.append(TABLE_TASKS_AVAILABLE);
-            sb.append(" WHERE ");
-            sb.append(COLUMN_TASK_ID);
-            sb.append(" = '");
-            sb.append(x);
-            sb.append("' ");
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-            statement.executeUpdate(sb1);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    //This will return a job which is searched by id.
-    public static Boolean searchJob(int searchedJob){
-        List<Job> jobs = queryJobs();
-        if(jobs == null){
-            System.out.println("No Jobs");
-            return false;
-        }
-        for(Job j: jobs){
-            if (j.getJobId() == searchedJob){
-                return true;
-            }
-        }return false;
-    }
-
-    public static Boolean verifyLogin(String x, String y) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("SELECT count(1) FROM ");
-            sb.append(TABLE_STAFF_ACCOUNT);
-            sb.append(" WHERE ");
-            sb.append(COLUMN_USER_NAME);
-            sb.append(" = '");
-            sb.append(x);
-            sb.append("' AND ");
-            sb.append(COLUMN_STAFF_PASSWORD);
-            sb.append(" = '");
-            sb.append(y);
-            sb.append("'");
-            String sb1 = sb.toString();
-            System.out.println("SELECT count(1) FROM STAFF_ACCOUNT WHERE USER_NAME = '" + "USERNAME" + "' AND PASSWORD ='" + "PASS" + "'");
-            System.out.println(sb1);
-            ResultSet result = statement.executeQuery(sb1);
-            while (result.next()) {
-                if (result.getInt(1) == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-        }
-        return false;
-    }
-
-    public static Boolean updateStaffAccount(String id, String name, String userName, String password, String address, String role, String phone) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("UPDATE ");
-            sb.append(TABLE_STAFF_ACCOUNT);
-            sb.append(" SET ");
-            sb.append(COLUMN_STAFF_NAME);
-            sb.append(" = '");
-            sb.append(name);
-            sb.append("', ");
-            sb.append(COLUMN_USER_NAME);
-            sb.append(" = '");
-            sb.append(userName);
-            sb.append("', ");
-            sb.append(COLUMN_STAFF_PASSWORD);
-            sb.append(" = '");
-            sb.append(password);
-            sb.append("', ");
-            sb.append(COLUMN_STAFF_ADDRESS);
-            sb.append(" = '");
-            sb.append(address);
-            sb.append("', ");
-            sb.append(COLUMN_STAFF_ROLE);
-            sb.append(" = '");
-            sb.append(role);
-            sb.append("', ");
-            sb.append(COLUMN_STAFF_PHONE_NUMBER);
-            sb.append(" = '");
-            sb.append(phone);
-            sb.append("' WHERE ");
-            sb.append(COLUMN_STAFF_ID);
-            sb.append(" = ");
-            sb.append(id);
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-            statement.execute(sb1);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public static Boolean updateCustomerAccount(String id, String CustomerName, String Title,String FirstName,
-                                                String LastName,String Address, String City, String PostCode, String
-                                                        Email, String PhoneNumber) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("UPDATE ");
-            sb.append(TABLE_CUSTOMER_ACCOUNT);
-            sb.append(" SET ");
-            sb.append(COLUMN_CUSTOMER_NAME);
-            sb.append(" = '");
-            sb.append(CustomerName);
-            sb.append("', ");
-            sb.append(COLUMN_CONTACT_TITLE);
-            sb.append(" = '");
-            sb.append(Title);
-            sb.append("', ");
-            sb.append(COLUMN_CONTACT_FIRST_NAME);
-            sb.append(" = '");
-            sb.append(FirstName);
-            sb.append("', ");
-            sb.append(COLUMN_CONTACT_LAST_NAME);
-            sb.append(" = '");
-            sb.append(LastName);
-            sb.append("', ");
-            sb.append(COLUMN_ADDRESS);
-            sb.append(" = '");
-            sb.append(Address);
-            sb.append("', ");
-            sb.append(COLUMN_CITY);
-            sb.append(" = '");
-            sb.append(City);
-            sb.append("', ");
-            sb.append(COLUMN_POSTCODE);
-            sb.append(" = '");
-            sb.append(PostCode);
-            sb.append("', ");
-            sb.append(COLUMN_EMAIL_ADDRESS);
-            sb.append(" = '");
-            sb.append(Email);
-            sb.append("', ");
-            sb.append(COLUMN_PHONE_NUMBER);
-            sb.append(" = '");
-            sb.append(PhoneNumber);
-            sb.append("' WHERE ");
-            sb.append(COLUMN_ACCOUNT_NUMBER);
-            sb.append(" = ");
-            sb.append(id);
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-            statement.execute(sb1);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    public static Boolean deleteStaffAccount(String x) {
-
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("delete from ");
-            sb.append(TABLE_STAFF_ACCOUNT);
-            sb.append(" WHERE ");
-            sb.append(COLUMN_STAFF_ID);
-            sb.append(" = '");
-            sb.append(x);
-            sb.append("' ");
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-            statement.executeUpdate(sb1);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    public static Boolean searchStaffAccount(String x) {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("select count(1) from  ");
-            sb.append(TABLE_STAFF_ACCOUNT);
-            sb.append(" WHERE ");
-            sb.append(COLUMN_STAFF_ID);
-            sb.append(" = '");
-            sb.append(x);
-            sb.append("' ");
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-            ResultSet result = statement.executeQuery(sb1);
-            while (result.next()) {
-                if (result.getInt(1) == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public static Boolean searchCustomerAccount(String id) {
-        List<CustomerAccount> customers = queryCustomers();
-        if (customers == null) {
-            System.out.println("No customers");
-            return false;
-        }
-        for (CustomerAccount c : customers) {
-            if (c.getCustomerId() == Integer.parseInt(id)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static Boolean deleteCustomerAccount(String x) {
-
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("delete from ");
-            sb.append(TABLE_CUSTOMER_ACCOUNT);
-            sb.append(" WHERE ");
-            sb.append(COLUMN_ACCOUNT_NUMBER);
-            sb.append(" = '");
-            sb.append(x);
-            sb.append("' ");
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-            statement.executeUpdate(sb1);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public static Boolean removeFlexibleDiscount(double rate, int Did, float range) {
-
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("delete from ");
-            sb.append(TABLE_FLEXIBLE);
-            sb.append(" WHERE ");
-            sb.append(COLUMN_FLEXI_RATE);
-            sb.append(" = ");
-            sb.append(rate);
-            sb.append(" AND ");
-            sb.append(COLUMN_DISCOUNT_ID);
-            sb.append(" = ");
-            sb.append(Did);
-            sb.append(" AND ");
-            sb.append(COLUMN_RANGE);
-            sb.append(" = ");
-            sb.append(range);
-           // sb.append("' ");
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-            statement.executeUpdate(sb1);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public static Boolean removeVariableDiscount(double rate, int Did, int TaskId) {
-
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("delete from ");
-            sb.append(TABLE_VARIABLE);
-            sb.append(" WHERE ");
-            sb.append(COLUMN_VARIABLE_RATE);
-            sb.append(" = ");
-            sb.append(rate);
-            sb.append(" And ");
-            sb.append(COLUMN_DISCOUNT_ID);
-            sb.append(" = ");
-            sb.append(Did);
-            sb.append(" AND ");
-            sb.append(COLUMN_TASK_ID);
-            sb.append(" = ");
-            sb.append(TaskId);
-//            sb.append(" AND ");
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-            statement.executeUpdate(sb1);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    //testing purposes to print out staff account and see how it changes with each action
-    public static void printStaff() {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("select * from ");
-            sb.append(TABLE_STAFF_ACCOUNT);
-
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-//            statement.executeUpdate(sb1);
-            ResultSet result1 = statement.executeQuery(sb1);
-            while (result1.next()) {
-                String staff11 = result1.getString(1);
-                String staff21 = result1.getString(2);
-                String staff31 = result1.getString(3);
-                String staff41 = result1.getString(4);
-                String staff51 = result1.getString(5);
-                String staff61 = result1.getString(6);
-                System.out.println(staff11 +"\n"+ staff21 +"\n"+ staff31 +"\n"+ staff41 +"\n"+ staff51 +"\n"+ staff61+"\n"+"\n");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //testing purposes to print out customer account and see how it changes with each action
-    public static void printCust() {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("select * from ");
-            sb.append(TABLE_CUSTOMER_ACCOUNT);
-
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-//            statement.executeUpdate(sb1);
-            ResultSet result1 = statement.executeQuery(sb1);
-            while (result1.next()) {
-                String staff11 = result1.getString(1);
-                String staff21 = result1.getString(2);
-                String staff31 = result1.getString(3);
-                String staff41 = result1.getString(4);
-                String staff51 = result1.getString(5);
-                String staff61 = result1.getString(6);
-                String staff71 = result1.getString(7);
-                String staff81 = result1.getString(8);
-                String staff91 = result1.getString(9);
-                String staff101 = result1.getString(10);
-                String staff111 = result1.getString(11);
-                String staff112 = result1.getString(12);
-
-                System.out.println(staff11 +" : "+ staff21 +" : "+ staff31 +" : "+ staff41 +" : "+ staff51 +" : "+ staff61+" : "+ staff71+" : " + staff81 +" : " + staff91 +" : " +staff101 +" : " + staff111+" : " + staff112);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //testing purposes to print out customer account and see how it changes with each action
-    public static void printJobs() {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("select * from ");
-            sb.append(TABLE_JOBS);
-
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-//            statement.executeUpdate(sb1);
-            ResultSet result1 = statement.executeQuery(sb1);
-            while (result1.next()) {
-                String staff11 = result1.getString(1);
-                String staff21 = result1.getString(2);
-                String staff31 = result1.getString(3);
-                String staff41 = result1.getString(4);
-                String staff51 = result1.getString(5);
-                String staff61 = result1.getString(6);
-                String staff71 = result1.getString(7);
-                String staff81 = result1.getString(8);
-                String staff91 = result1.getString(9);
-                String staff101 = result1.getString(10);
-                String staff111 = result1.getString(11);
-                String staff112 = result1.getString(12);
-
-                System.out.println(staff11 +" : "+ staff21 +" : "+ staff31 +" : "+ staff41 +" : "+ staff51 +" : "+ staff61+" : "+ staff71+" : " + staff81 +" : " + staff91 +" : " +staff101 +" : " + staff111 +" : " + staff112);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //testing purposes to print out customer account and see how it changes with each action
-    public static void printTasks() {
-        try (Statement statement = conn.getConnection().createStatement();) {
-            StringBuilder sb = new StringBuilder("select * from ");
-            sb.append(TABLE_TASKS_AVAILABLE);
-
-            String sb1 = sb.toString();
-            System.out.println(sb1);
-//            statement.executeUpdate(sb1);
-            ResultSet result1 = statement.executeQuery(sb1);
-            while (result1.next()) {
-                String staff11 = result1.getString(1);
-                String staff21 = result1.getString(2);
-                String staff31 = result1.getString(3);
-                String staff41 = result1.getString(4);
-                String staff51 = result1.getString(5);
-
-
-                System.out.println(staff11 +" : "+ staff21 +" : "+ staff31 +" : "+ staff41 +" : "+ staff51);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 }
-
-
-
-
-
-
-
-
-
-
 

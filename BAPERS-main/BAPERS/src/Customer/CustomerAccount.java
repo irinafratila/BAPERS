@@ -1,4 +1,3 @@
-
 package Customer;
 
 import Database.DbDriver;
@@ -6,7 +5,9 @@ import Discount.Discount;
 import JobTasks.Job;
 import JobTasks.Task;
 import Discount.*;
+import Payment.ViewInvoice;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -57,18 +58,18 @@ public class CustomerAccount {
     }
 
     //Record payment data into the database, once the right amount is paid.
-    public static void makeCardPayment(int jobId, double amount, String cashOrCard, String cardType, String expiry, String lastDigits) throws SQLException {
+    public static void makeCardPayment(int jobId, double amount, String cashOrCard, String cardType, String expiry, String lastDigits) throws SQLException, FileNotFoundException {
         Job searchedJob = DbDriver.searchJobs(jobId);
         if (searchedJob.getPrice() == amount) {
             System.out.println("Payment was succesful!");
             DbDriver.insertPaymentHistory(searchedJob.getJobId(), searchedJob.getCustomerId(), cashOrCard, cardType, expiry, lastDigits, amount);
         } else if (searchedJob.getPrice() < amount) {
             System.out.println("You have overpaid, transaction unsuccessful");
-        } else System.out.println("You have underpaid, please pay the full price.");
+        } else System.out.println("You have underpaid, please pay the full price of" + searchedJob.getPrice());
     }
 
     //Record payment data into the database, once the right amount is paid.
-    public static void makeCashPayment(int jobId, double amount) throws SQLException {
+    public static void makeCashPayment(int jobId, double amount) throws SQLException, FileNotFoundException {
         Job searchedJob = DbDriver.searchJobs(jobId);
         if (searchedJob.getPrice() == amount) {
             System.out.println("Payment was succesful!");
@@ -84,7 +85,7 @@ public class CustomerAccount {
 
     //After searching a customer, they are able to create jobs. This will also be stored into the database.
     //TODO made change here
-    public void createJob(int staffId, int priority, String specialInstructions, List<Task> newTasks, int quantity) throws SQLException {
+    public void createJob(int staffId, int priority, String specialInstructions, List<Task> newTasks, int quantity) throws SQLException, FileNotFoundException {
 
         Job job = new Job(priority, specialInstructions, newTasks,quantity);
         double newPrice = 0;
@@ -173,7 +174,9 @@ public class CustomerAccount {
             for (Task t : job.getTasks())// Add the requested tasks onto the database.
                 DbDriver.insertTasksAvailableJobs(t.getTaskId(), searchedJob.getJobId());
         }
+        DbDriver.generateInvoice(searchedJob.getJobId());
         jobs.add(job);
+
 
     }
 

@@ -146,29 +146,29 @@
       </Label>
       <VBox layoutX="332.0" layoutY="241.0" prefHeight="505.0" prefWidth="623.0">
          <children>
-            <TableView fx:id="tableView" prefHeight="502.0" prefWidth="623.0">
+            <TableView fx:id="tableView" prefHeight="502.0" prefWidth="644.0">
               <columns>
                 <TableColumn fx:id="colJobID" prefWidth="48.965484619140625" text="Job ID" />
-                <TableColumn fx:id="colStaffID" prefWidth="61.264892578125" text="Staff ID" />
-                  <TableColumn fx:id="colPriority" prefWidth="70.53134155273438" text="Priority" />
-                  <TableColumn fx:id="colStatus" prefWidth="119.9686279296875" text="Status" />
-                  <TableColumn fx:id="colStart" prefWidth="107.39678955078125" text="Start" />
-                  <TableColumn fx:id="colEnd" prefWidth="104.60321044921875" text="Completion" />
-                  <TableColumn fx:id="colPrice" minWidth="0.0" prefWidth="82.2808837890625" text="Price" />
-                  <TableColumn fx:id="colInstruction" prefWidth="27.9873046875" text="Instruction" />
+                <TableColumn fx:id="colStaffID" prefWidth="104.5" text="Customer ID" />
+                  <TableColumn fx:id="colPriority" minWidth="8.0" prefWidth="79.0" text="Priority" />
+                  <TableColumn fx:id="colStatus" prefWidth="93.0" text="Status" />
+                  <TableColumn fx:id="colStart" prefWidth="83.5" text="Start" />
+                  <TableColumn fx:id="colEnd" prefWidth="76.0" text="Deadline" />
+                  <TableColumn fx:id="colPrice" minWidth="0.0" prefWidth="62.5" text="Price" />
+                  <TableColumn fx:id="colInstruction" prefWidth="77.0" text="Instruction" />
               </columns>
             </TableView>
          </children></VBox>
       <HBox alignment="CENTER" layoutX="307.0" layoutY="98.0" prefHeight="85.0" prefWidth="660.0" spacing="50.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="63.0" prefWidth="100.0">
+            <VBox alignment="CENTER" prefHeight="85.0" prefWidth="134.0">
                <children>
-                  <Label prefHeight="28.0" prefWidth="134.0" text="2000" textFill="#00ff15">
+                  <Label fx:id="priceLabel" alignment="CENTER" prefHeight="28.0" prefWidth="134.0" textFill="#00ff15">
                      <font>
                         <Font name="System Bold" size="30.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="30.0" prefWidth="100.0" text="Total orders">
+                  <Label prefHeight="30.0" prefWidth="116.0" text="Total Revenue">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -177,12 +177,12 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="63.0" prefWidth="100.0">
                <children>
-                  <Label prefHeight="28.0" prefWidth="134.0" text="1559" textFill="#8400ff">
+                  <Label fx:id="noOfJobsLabel" alignment="CENTER" prefHeight="28.0" prefWidth="134.0" textFill="#8400ff">
                      <font>
                         <Font name="System Bold" size="30.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="30.0" prefWidth="100.0" text="Total orders">
+                  <Label prefHeight="30.0" prefWidth="100.0" text="Total Jobs">
                      <font>
                         <Font size="18.0" />
                      </font>

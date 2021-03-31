@@ -4,6 +4,7 @@ import BapersControl.Main;
 import BapersControl.currentSessionStaff;
 import Database.DBConnection;
 import Database.DbDriver;
+import Reports.Report;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -65,5 +66,6 @@ public class searchUser {
             e.printStackTrace();
         }
     }
+
 
 }

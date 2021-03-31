@@ -60,7 +60,7 @@ public class CardPayment implements Initializable {
     }
 
 
-    public void MakePayment() throws SQLException {
+    public void MakePayment() throws SQLException, IOException {
         System.out.println("call make card payment method ");
 
         this.JobId = Integer.parseInt(jobID.getText());
@@ -71,6 +71,7 @@ public class CardPayment implements Initializable {
         this.LastDigits= last4Digits.getText();
 
         CustomerAccount.makeCardPayment(JobId,Amount,CashOrCard,CardType,Expiry,LastDigits);
+//        m.changeScene("/Payment/viewInvoice.fxml");
         //make sure to update current status which is not curently done
 
         jobID.clear();

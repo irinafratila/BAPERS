@@ -24,13 +24,13 @@ public class tempJobSession {
         this.conn = new DBConnection();
         this.connDB = conn.getConnection();
         this.id = id;
-        getCustomerDetails(id);
+        getJobDetails(id);
 
 
 
     }
 
-    public void getCustomerDetails(int id){
+    public void getJobDetails(int id){
 
 
 //        System.out.println(id + "first check temp");
