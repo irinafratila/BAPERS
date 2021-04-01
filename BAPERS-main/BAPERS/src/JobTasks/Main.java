@@ -6,7 +6,9 @@ import Customer.CustomerAccount;
 import Database.DbDriver;
 import Reports.AutomateReports;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,9 +41,23 @@ public class Main {
 //                System.out.println(t.getJobId()+" - "+t.getStatus());
 //
 //        }
-        DbDriver.generateCustomerReport(4,"2021-03-25","2021-04-01");
+//        DbDriver.generateCustomerReport(4,"2021-03-25","2021-04-01");
+// Creating a File object that represents the disk file.
+//        PrintStream o = new PrintStream(new File("A.txt"));
+//
+//        // Store current System.out before assigning a new value
+//        PrintStream console = System.out;
+//
+//        // Assign o to output stream
+//        System.setOut(o);
+//        System.out.println("This will be written to the text file");
+//
+//        // Use stored value for output stream
+//        System.setOut(console);
+//        System.out.println("This will be written on the console!");
 
 
+        System.out.println(DbDriver.checkLatePayment);
 
 //        Scanner sc = new Scanner(System.in);
 //        System.out.println("Please enter Customer id");

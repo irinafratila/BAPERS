@@ -1,7 +1,10 @@
 package Database;
 
 
+import Alerts.AutomateAlerts;
+import Alerts.JobDeadlineAlert;
 import BapersControl.Main;
+import Reports.AutomateReports;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;

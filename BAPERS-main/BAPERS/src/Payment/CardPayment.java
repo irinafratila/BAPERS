@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -27,6 +28,9 @@ public class CardPayment implements Initializable {
 
     @FXML
     private  TextField jobID,amount,cardType,last4Digits;
+
+    @FXML
+    private Label paymentMessageLabel;
 
     @FXML
     private DatePicker expiry;
@@ -70,7 +74,14 @@ public class CardPayment implements Initializable {
         this.Expiry = ((TextField)expiry.getEditor()).getText();
         this.LastDigits= last4Digits.getText();
 
-        CustomerAccount.makeCardPayment(JobId,Amount,CashOrCard,CardType,Expiry,LastDigits);
+
+        Boolean result = CustomerAccount.makeCardPayment(JobId,Amount,CashOrCard,CardType,Expiry,LastDigits);
+        if (result == true){
+            paymentMessageLabel.setText("Payment successful");
+        }else {
+            paymentMessageLabel.setText("Payment failed");
+        }
+
 //        m.changeScene("/Payment/viewInvoice.fxml");
         //make sure to update current status which is not curently done
 

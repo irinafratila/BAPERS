@@ -216,7 +216,7 @@ public class DbDriver {
             " FROM (( " + TABLE_CUSTOMER_ACCOUNT + "" +
             " INNER JOIN " + TABLE_JOBS + " ON " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = " + TABLE_JOBS + "." + COLUMN_ACCOUNT_NUMBER + ")" +
             " LEFT OUTER JOIN " + TABLE_PAYMENT_HISTORY + " ON " + TABLE_JOBS + "." + COLUMN_JOB_ID + " = " + TABLE_PAYMENT_HISTORY + "." + COLUMN_JOB_ID + ")" +
-            " WHERE " + TABLE_PAYMENT_HISTORY + "." + COLUMN_JOB_ID + " IS NULL AND " + TABLE_JOBS + "." + COLUMN_CURRENT_STATUS + " = 'Job Complete'";
+            " WHERE " + TABLE_PAYMENT_HISTORY + "." + COLUMN_JOB_ID + " IS NULL AND " + TABLE_JOBS + "." + COLUMN_CURRENT_STATUS + " = 'completed'";
 
 
 //    public static final String createCustomerReport = "SELECT " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + ", " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CUSTOMER_NAME + ", " +
@@ -1948,17 +1948,18 @@ public class DbDriver {
     //    }
     public static void generateAlertPayment() {
         Timestamp current;
-        PaymentAlert alert = new PaymentAlert();
+
         List<LatePaymentAlert> LPA = DbDriver.latePaymentAlert();
         List<CustomerAccount> customers = DbDriver.queryCustomers();
         List<Job> jobs = DbDriver.searchAllJobs();
         for (LatePaymentAlert l : LPA) {
             int cust = l.getAccount();
-            alert.setCname(l.getName());
-            alert.setAccount(l.getAccount());
-            alert.setJob_id(l.getJobId());
             CustomerAccount searchedCUStomer = DbDriver.searchCustomer(cust);
             if (searchedCUStomer.getCustomerType().equalsIgnoreCase("normal")) {
+                PaymentAlert alert = new PaymentAlert();
+                alert.setCname(l.getName());
+                alert.setAccount(l.getAccount());
+                alert.setJob_id(l.getJobId());
                 alert.start();
             } else {
                 //if date is passed the 10th, then alert manager
@@ -1978,7 +1979,12 @@ public class DbDriver {
 
                 // for valuable customers. only if the 10th has passed an alert will generate.
                 if (day > 10 && dayOfPayment < 11 || month - monthOfPayment == 1 || year - yearOfPayment == 1) {
+                    PaymentAlert alert = new PaymentAlert();
+                    alert.setCname(l.getName());
+                    alert.setAccount(l.getAccount());
+                    alert.setJob_id(l.getJobId());
                     alert.start();
+                    alert.interrupt();
                 }
 
             }
@@ -2059,6 +2065,8 @@ public class DbDriver {
     }
     public static void generateCustomerReport(int id, String from, String to) throws FileNotFoundException {
         PrintStream o = new PrintStream(new File("CustomerReport"+ id+"_"+ from + "_" + to + ".txt"));
+        PrintStream console = System.out;
+
         System.setOut(o);
         List<CustomerReport> reports = DbDriver.createCustomerReport(id, from, to);
         if( reports != null) {
@@ -2080,7 +2088,7 @@ public class DbDriver {
         }else{
             System.out.println("Customer has no jobs");
         }
-        o.close();
+        System.setOut(console);
     }
 
 
@@ -2123,6 +2131,7 @@ public class DbDriver {
     public static void generateSummaryReport(String From, String To) throws FileNotFoundException {
 
         PrintStream o = new PrintStream(new File("SummaryReport" + From + "_" + To + ".txt"));
+        PrintStream console = System.out;
         System.setOut(o);
 
         List<SummaryReport> s = DbDriver.createSummaryReports(From, To);
@@ -2166,8 +2175,7 @@ public class DbDriver {
 
         }
         System.out.println("total shift hours: " + totalHoursForAllJobs);
-        o.close();
-
+        System.setOut(console);
     }
 
     //Individual Performance reports. Staff can be searched by ID.
@@ -2175,6 +2183,7 @@ public class DbDriver {
     public static void generateIndividualStaffReport(int id) throws SQLException, FileNotFoundException {
 
         PrintStream o = new PrintStream(new File("StaffReport" + id + ".txt"));
+        PrintStream console = System.out;
         System.setOut(o);
 
         List<IndividualPerformanceReport> reports = DbDriver.createIndividualStaffReports(id);
@@ -2226,7 +2235,7 @@ public class DbDriver {
             System.out.println("total effort: " + totalEffort);
 
         }
-        o.close();
+        System.setOut(console);
     }
 
     public static List<IndividualPerformanceReport> createIndividualStaffReports(int id) throws SQLException {
@@ -2266,7 +2275,12 @@ public class DbDriver {
     }
 
     //Generate the performance of the whole team.
-    public static void generateStaffReport() {
+    public static void generateStaffReport() throws FileNotFoundException {
+
+        PrintStream o = new PrintStream(new File("AllStaffReport.txt"));
+        PrintStream console = System.out;
+        System.setOut(o);
+
         List<IndividualPerformanceReport> reports = DbDriver.createStaffReports();
         int staffID;
         double totalTime = 0;
@@ -2315,6 +2329,8 @@ public class DbDriver {
             System.out.println("total effort: " + totalEffort);
 
         }
+        System.setOut(console);
+
     }
 
     public static List<IndividualPerformanceReport> createStaffReports() {
@@ -2350,6 +2366,7 @@ public class DbDriver {
     public static void generateInvoice(int id) throws FileNotFoundException {
 
         PrintStream o = new PrintStream(new File("Invoice" + id + ".txt"));
+        PrintStream console = System.out;
         System.setOut(o);
 
         List<Invoice> invoices = DbDriver.createInvoice(id);
@@ -2378,7 +2395,8 @@ public class DbDriver {
 
 
         }
-        o.close();
+        System.setOut(console);
+
     }
 
     public static List<Invoice> createInvoice(int id) {

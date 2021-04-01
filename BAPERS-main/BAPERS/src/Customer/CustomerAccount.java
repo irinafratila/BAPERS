@@ -58,18 +58,27 @@ public class CustomerAccount {
     }
 
     //Record payment data into the database, once the right amount is paid.
-    public static void makeCardPayment(int jobId, double amount, String cashOrCard, String cardType, String expiry, String lastDigits) throws SQLException, FileNotFoundException {
+    public static Boolean makeCardPayment(int jobId, double amount, String cashOrCard, String cardType, String expiry, String lastDigits) throws SQLException, FileNotFoundException {
         Job searchedJob = DbDriver.searchJobs(jobId);
         if (searchedJob.getPrice() == amount) {
             System.out.println("Amount is correct!");
-            DbDriver.insertPaymentHistory(searchedJob.getJobId(), searchedJob.getCustomerId(), cashOrCard, cardType, expiry, lastDigits, amount);
+            Boolean result = DbDriver.insertPaymentHistory(searchedJob.getJobId(), searchedJob.getCustomerId(), cashOrCard, cardType, expiry, lastDigits, amount);
+            if (result == true) {
+                return true;
+            } else {
+                return false;
+            }
         } else if (searchedJob.getPrice() < amount) {
             System.out.println("You have overpaid, transaction unsuccessful");
-        } else System.out.println("You have underpaid, please pay the full price of" + searchedJob.getPrice());
+            return false;
+        } else {
+            System.out.println("You have underpaid, please pay the full price of" + searchedJob.getPrice());
+            return false;
+        }
     }
 
     //Record payment data into the database, once the right amount is paid.
-    public static void makeCashPayment(int jobId, double amount) throws SQLException, FileNotFoundException {
+    public static Boolean makeCashPayment(int jobId, double amount) throws SQLException, FileNotFoundException {
         Job searchedJob = DbDriver.searchJobs(jobId);
         if (searchedJob.getPrice() == amount) {
             System.out.println("Payment was succesful!");
@@ -77,10 +86,19 @@ public class CustomerAccount {
             String cardType = null;
             String expiry = null;
             String lastDigits = null;
-            DbDriver.insertPaymentHistory(searchedJob.getJobId(), searchedJob.getCustomerId(), cashOrCard, cardType, expiry, lastDigits, amount);
+            Boolean result =DbDriver.insertPaymentHistory(searchedJob.getJobId(), searchedJob.getCustomerId(), cashOrCard, cardType, expiry, lastDigits, amount);
+            if (result == true){
+                return true;
+            }else {
+                return false;
+            }
         } else if (searchedJob.getPrice() < amount) {
             System.out.println("You have overpaid, transaction unsuccessful");
-        } else System.out.println("You have underpaid, please pay the full price.");
+            return false;
+        } else{
+            System.out.println("You have underpaid, please pay the full price.");
+            return false;
+        }
     }
 
     //After searching a customer, they are able to create jobs. This will also be stored into the database.

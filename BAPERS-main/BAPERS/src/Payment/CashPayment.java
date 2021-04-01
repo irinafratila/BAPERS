@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -27,6 +28,9 @@ public class CashPayment implements Initializable {
 
     @FXML
     private  TextField jobID,amount;
+
+    @FXML
+    private Label paymentMessageLabel;
 
 
 
@@ -63,8 +67,12 @@ public class CashPayment implements Initializable {
 //        m.changeScene("/Payment/viewInvoice.fxml");
 
 //       CustomerAccount.makeCardPayment(JobId,Amount,CashOrCard,CardType,Expiry,LastDigits);
-        CustomerAccount.makeCashPayment(JobId,Amount);
-
+        Boolean result = CustomerAccount.makeCashPayment(JobId,Amount);
+        if (result == true){
+            paymentMessageLabel.setText("Payment successful");
+        }else {
+            paymentMessageLabel.setText("Payment failed");
+        }
         //make sure to update current status which is not curently done
 
         jobID.clear();

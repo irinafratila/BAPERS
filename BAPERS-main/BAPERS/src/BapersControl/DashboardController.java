@@ -62,7 +62,7 @@ public class DashboardController implements Initializable {
 
     private Main m;
 
-    private int totalPrice,noOfJobs;
+    private int totalPrice,noOfJobs,noOfTasks;
 
     public DashboardController(){
 
@@ -263,6 +263,8 @@ public class DashboardController implements Initializable {
         priceLabel.setText(String.valueOf("£"+totalPrice));
         noOfJobsLabel.setText(String.valueOf(noOfJobs));
     }
+
+
 
 }
 

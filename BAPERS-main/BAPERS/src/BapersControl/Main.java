@@ -14,6 +14,7 @@ import Admin.User;
 
 
 import java.io.IOException;
+import java.io.PrintStream;
 
 public class Main extends Application {
     private static Stage stg;
@@ -25,18 +26,22 @@ public class Main extends Application {
         AutomateReports reports = new AutomateReports();
         alerts.start();
         jobAlert.start();
-       // reports.start();
+        reports.start();
+
+
+        System.out.println("starting main");
         stg = primaryStage;
         primaryStage.setResizable(false);
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
 //        Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+//        primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.initStyle(StageStyle.DECORATED);
         primaryStage.setScene(new Scene(root, 1000, 769));
         primaryStage.show();
 //        DbDriver.printCust();
 //        DbDriver.printStaff();
 //        DbDriver.printJobs();
-        DbDriver.searchOpenJobs();
+        //DbDriver.searchOpenJobs();
 //        DbDriver.printTasks();
 //        DbDriver.generateSummaryReport("2021-03-27","2021-03-29");
     }

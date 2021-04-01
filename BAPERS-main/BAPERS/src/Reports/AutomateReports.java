@@ -24,7 +24,11 @@ public class AutomateReports extends Thread{
             lastWeek = Timestamp.from(current.toInstant().minus(168, ChronoUnit.HOURS));
             Date dateFrom = new Date(lastWeek.getTime());
             from = dateFrom.toString();
-            DbDriver.generateStaffReport();
+            try {
+                DbDriver.generateStaffReport();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
             //Backup the database on a weekly basis.
             backup.dbBackup("root","TeaM27TeaM","bapers");
             try {
