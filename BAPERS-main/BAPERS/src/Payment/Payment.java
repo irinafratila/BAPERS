@@ -5,6 +5,7 @@ import Database.DbDriver;
 import JobTasks.Job;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -15,6 +16,9 @@ public class Payment {
 
     @FXML
     private TextField id;
+
+    @FXML
+    private Label searchCustomerMessageLabel;
 
     public Payment(){
         this.m = new Main();
@@ -47,14 +51,12 @@ public class Payment {
             int JobID = Integer.parseInt(id.getText());
             Job searchedJob = DbDriver.searchJobs(JobID);
 
-            Boolean result = true;
-            //DbDriver.checkPayment(JobID);
-            if(result = true){
+            if (searchedJob == null){
+                searchCustomerMessageLabel.setText("Job id not in db");
+            }else {
                 new BapersControl.tempJobSession(searchedJob.getJobId());
                 m.changeScene("/Payment/cashPayment.fxml");
             }
-
-
         }catch (Exception e){
             e.printStackTrace();
             e.getCause();
@@ -66,8 +68,13 @@ public class Payment {
         try {
             int JobID = Integer.parseInt(id.getText());
             Job searchedJob = DbDriver.searchJobs(JobID);
-            new BapersControl.tempJobSession(JobID);
-            m.changeScene("/Payment/cardPayment.fxml");
+            if (searchedJob == null){
+                searchCustomerMessageLabel.setText("Job id not in db");
+            }else{
+                new BapersControl.tempJobSession(JobID);
+                m.changeScene("/Payment/cardPayment.fxml");
+            }
+
 
         }catch (Exception e){
             e.printStackTrace();

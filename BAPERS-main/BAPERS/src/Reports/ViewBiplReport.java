@@ -21,8 +21,8 @@ public class ViewBiplReport {
 
     public void view() throws IOException {
 
-        String From = "2021-03-27";
-        String To = "2021-03-31";
+        String From = BapersControl.ToFromTransfer.getFrom();
+        String To = BapersControl.ToFromTransfer.getTo();
 
         try {
             //constructor of file class having file as argument

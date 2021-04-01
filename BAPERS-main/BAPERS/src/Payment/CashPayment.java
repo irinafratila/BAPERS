@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
@@ -20,7 +21,7 @@ public class CashPayment implements Initializable {
     private BapersControl.Main m;
 
     private int JobId;
-    private float Amount;
+    private Double Amount;
     private String CashOrCard;
 
 
@@ -34,7 +35,7 @@ public class CashPayment implements Initializable {
         int id = BapersControl.tempJobSession.getId();
         Job searchedJob = DbDriver.searchJobs(id);
         this.JobId = searchedJob.getJobId();
-        this.Amount = (float) searchedJob.getPrice();
+        this.Amount =  searchedJob.getPrice();
         this.CashOrCard = "cash";
 
 
@@ -53,15 +54,16 @@ public class CashPayment implements Initializable {
     }
 
 
-    public void MakePayment() throws IOException {
+    public void MakePayment() throws IOException, SQLException {
         System.out.println("call mnake cash payment method ");
 
         this.JobId = Integer.parseInt(jobID.getText());
-        this.Amount = Float.parseFloat(amount.getText());
+        this.Amount = Double.parseDouble(amount.getText());
         this.CashOrCard = "cash";
 //        m.changeScene("/Payment/viewInvoice.fxml");
 
 //       CustomerAccount.makeCardPayment(JobId,Amount,CashOrCard,CardType,Expiry,LastDigits);
+        CustomerAccount.makeCashPayment(JobId,Amount);
 
         //make sure to update current status which is not curently done
 

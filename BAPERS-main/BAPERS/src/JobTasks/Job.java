@@ -118,19 +118,19 @@ public class Job {
     // Calculate the deadline based on the priority of the job. 5 as highest priority.
     public Timestamp setDeadline() {
         if(priority ==5){
-            deadline = Timestamp.from(startTimeStamp.toInstant().plus(1, ChronoUnit.HOURS));
+            deadline = Timestamp.from(startTimeStamp.toInstant().plus(2, ChronoUnit.HOURS));
             priorityRate =200;
         }
         else if(priority ==4){
-            deadline = Timestamp.from(startTimeStamp.toInstant().plus(2, ChronoUnit.HOURS));
-            priorityRate = 150;
-        }
-        else if(priority ==3){
             deadline = Timestamp.from(startTimeStamp.toInstant().plus(3, ChronoUnit.HOURS));
             priorityRate = 100;
         }
+        else if(priority ==3){
+            deadline = Timestamp.from(startTimeStamp.toInstant().plus(6, ChronoUnit.HOURS));
+            priorityRate = 75;
+        }
         else if(priority ==2){
-            deadline = Timestamp.from(startTimeStamp.toInstant().plus(9, ChronoUnit.HOURS));
+            deadline = Timestamp.from(startTimeStamp.toInstant().plus(12, ChronoUnit.HOURS));
             priorityRate = 50;
         }
         else if(priority ==1){

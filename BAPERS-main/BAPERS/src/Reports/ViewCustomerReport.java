@@ -25,7 +25,11 @@ public ViewCustomerReport(){
     public void view() throws IOException {
         try {
             //constructor of file class having file as argument
-            File file = new File("/Users/tobiadewunmi/Desktop/BAPERS-main/CustomerReport"+BapersControl.tempCustomerSession.getId()+".txt");
+            String ID = BapersControl.tempCustomerSession.getId();
+            String From = BapersControl.ToFromTransfer.getFrom();
+            String To = BapersControl.ToFromTransfer.getTo();
+
+            File file = new File("/Users/tobiadewunmi/Desktop/BAPERS-main/CustomerReport"+ID+"_"+From+ "_" +To+".txt");
             if(!Desktop.isDesktopSupported()){
                 System.out.println("not supported");
                 return;

@@ -36,7 +36,7 @@
                               <Insets bottom="10.0" />
                           </opaqueInsets>
                       </Button>
-                      <Button mnemonicParsing="false" onAction="#restoreBackup" prefHeight="41.0" prefWidth="322.0" text="Restore Backup">
+                      <Button mnemonicParsing="false" onAction="#changeSceneSearchBackup" prefHeight="41.0" prefWidth="322.0" text="Restore Backup">
                           <opaqueInsets>
                               <Insets bottom="10.0" />
                           </opaqueInsets>

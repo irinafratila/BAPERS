@@ -41,7 +41,7 @@ public class searchCustomer {
 
     public void cancelRegister(ActionEvent event) throws IOException {
         //  BapersControl.Main m= new BapersControl.Main();
-        m.changeScene("/Admin/user.fxml");
+        m.changeScene("/Customer/customer.fxml");
 
     }
 

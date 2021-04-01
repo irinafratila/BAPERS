@@ -61,7 +61,7 @@ public class CustomerAccount {
     public static void makeCardPayment(int jobId, double amount, String cashOrCard, String cardType, String expiry, String lastDigits) throws SQLException, FileNotFoundException {
         Job searchedJob = DbDriver.searchJobs(jobId);
         if (searchedJob.getPrice() == amount) {
-            System.out.println("Payment was succesful!");
+            System.out.println("Amount is correct!");
             DbDriver.insertPaymentHistory(searchedJob.getJobId(), searchedJob.getCustomerId(), cashOrCard, cardType, expiry, lastDigits, amount);
         } else if (searchedJob.getPrice() < amount) {
             System.out.println("You have overpaid, transaction unsuccessful");

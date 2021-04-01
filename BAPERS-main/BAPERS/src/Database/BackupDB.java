@@ -4,6 +4,7 @@ package Database;
 import BapersControl.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
@@ -15,20 +16,21 @@ public class BackupDB {
     @FXML
     private Label dbBackupMessageLabel;
 
+    @FXML
+    private TextField date;
+
+
     public BackupDB(){
         this.m = new Main();
 
     }
 
-
     public void backup(){
         try {
-
-            Boolean result = true;
-            DBBackupRestore.dbBackup("root", "TeaM27TeaM", "bapers");
+            Boolean result = DBBackupRestore.dbBackup("root", "TeaM27TeaM", "bapers");
             dbBackupMessageLabel.setText("");
             if (result == true){
-                dbBackupMessageLabel.setText("Back up Succesful");
+                dbBackupMessageLabel.setText("Back up Successful");
             }else {
                 dbBackupMessageLabel.setText("Back up Failed");
             }
@@ -38,14 +40,34 @@ public class BackupDB {
             e.printStackTrace();
         }
 
-//        System.out.println("Backed up");
     }
+
+    public void changeSceneSearchBackup() throws IOException {
+        m.changeScene("/Database/searchBackup.fxml");
+    }
+
+    public void searchBackup(){
+        try {
+            String From = date.getText();
+//            System.out.println(From);
+            new BapersControl.ToFromTransfer(From);
+//            System.out.println( "from where "+From);
+            restoreBackup();
+            date.setText("");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
 
     public void restoreBackup(){
 
         try {
-            Boolean result = true;
-                    DBBackupRestore.restoreDB("bapers", "root", "TeaM27TeaM", "2021-03-31");
+            String date = BapersControl.ToFromTransfer.getFrom();
+            Boolean result = DBBackupRestore.restoreDB("bapers", "root", "TeaM27TeaM",date );
+//            "2021-03-31"
             dbBackupMessageLabel.setText("");
             if (result == true){
                 dbBackupMessageLabel.setText("Back up Restore Successful");
@@ -65,4 +87,7 @@ public class BackupDB {
     public void cancel() throws IOException {
        m.changeScene("dashboard.fxml");
     }
+
+
+
 }

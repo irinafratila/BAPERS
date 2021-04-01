@@ -139,7 +139,7 @@
             </Button>
          </children>
       </VBox>
-      <Label fx:id="welcomeLabel" layoutX="306.0" layoutY="17.0" prefHeight="44.0" prefWidth="506.0">
+      <Label fx:id="welcomeLabels" layoutX="306.0" layoutY="17.0" prefHeight="44.0" prefWidth="506.0">
          <font>
             <Font size="36.0" />
          </font>
@@ -191,32 +191,19 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="63.0" prefWidth="100.0">
                <children>
-                  <Label prefHeight="28.0" prefWidth="134.0" text="3455" textFill="#e80000">
+                  <Label prefHeight="28.0" prefWidth="134.0" textFill="#e80000">
                      <font>
                         <Font name="System Bold" size="30.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="30.0" prefWidth="100.0" text="Total orders">
+                  <Label prefHeight="30.0" prefWidth="100.0" text="Total Tasks">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="63.0" prefWidth="100.0">
-               <children>
-                  <Label prefHeight="28.0" prefWidth="134.0" text="5566">
-                     <font>
-                        <Font name="System Bold" size="30.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="30.0" prefWidth="100.0" text="Total orders">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
+            <VBox alignment="CENTER" prefHeight="63.0" prefWidth="100.0" />
          </children>
       </HBox>
       <HBox layoutX="294.0" layoutY="-3.0" prefHeight="100.0" prefWidth="708.0">
@@ -231,12 +218,19 @@
                   <Label fx:id="roleLabel" prefHeight="41.0" prefWidth="218.0" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="144.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="88.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#openAlerts" textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#openAlerts" prefHeight="27.0" prefWidth="137.0" textAlignment="CENTER">
                      <graphic>
-                        <Label fx:id="alert" prefHeight="17.0" prefWidth="132.0" />
+                        <Label fx:id="alert" alignment="CENTER" prefHeight="17.0" prefWidth="132.0" textFill="#ff0101">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
                      </graphic>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
                   </Button>
                </children>
             </HBox>

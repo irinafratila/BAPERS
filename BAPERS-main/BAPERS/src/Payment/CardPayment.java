@@ -21,7 +21,7 @@ public class CardPayment implements Initializable {
     private BapersControl.Main m;
 
     private int JobId;
-    private float Amount;
+    private Double Amount;
     private String CashOrCard, CardType, Expiry, LastDigits;
 
 
@@ -37,7 +37,7 @@ public class CardPayment implements Initializable {
         int id = BapersControl.tempJobSession.getId();
         Job searchedJob = DbDriver.searchJobs(id);
         this.JobId = searchedJob.getJobId();
-        this.Amount = (float) searchedJob.getPrice();
+        this.Amount =  searchedJob.getPrice();
         this.CashOrCard = "card";
         this.CardType = "";
         this.Expiry = "";
@@ -50,7 +50,7 @@ public class CardPayment implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         jobID.setText(String.valueOf(this.JobId));
         amount.setText(String.valueOf(this.Amount));
-        cardType.setText("card");
+        cardType.setText("");
 
     }
 
@@ -64,7 +64,7 @@ public class CardPayment implements Initializable {
         System.out.println("call make card payment method ");
 
         this.JobId = Integer.parseInt(jobID.getText());
-        this.Amount = Float.parseFloat(amount.getText());
+        this.Amount = Double.parseDouble(amount.getText());
         this.CashOrCard = "card";
         this.CardType = cardType.getText();
         this.Expiry = ((TextField)expiry.getEditor()).getText();

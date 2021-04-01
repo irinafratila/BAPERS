@@ -111,9 +111,9 @@ public class DbDriver {
     public static final String TABLE_PAYMENT_HISTORY = "PAYMENT_HISTORY";
     public static final String COLUMN_PAYMENT_ID = "PAYMENT_ID";
     public static final String COLUMN_CASH_OR_CARD = "CASH_OR_CARD";
-    public static final String COLUMN_CARD_TYPE = "CARD_TYPE";
+    public static final String COLUMN_CARD_NUMBER = "CARD_NUMBER";
     public static final String COLUMN_EXPIRY_DATE = "EXPIRY_DATE";
-    public static final String COLUMN_LAST_4_DIGITS = "LAST_4_DIGITS";
+    public static final String COLUMN_LAST_3_DIGITS = "LAST_3_DIGITS";
     public static final String COLUMN_AMOUNT = "AMOUNT";
 
 
@@ -169,7 +169,7 @@ public class DbDriver {
             COLUMN_JOB_ID + ")" + "values (?,?)";
 
     public static final String insertPayment = "insert into " + TABLE_PAYMENT_HISTORY + "(" + COLUMN_JOB_ID + ',' + COLUMN_ACCOUNT_NUMBER + ',' + COLUMN_CASH_OR_CARD + ',' +
-            COLUMN_CARD_TYPE + ',' + COLUMN_EXPIRY_DATE + ',' + COLUMN_LAST_4_DIGITS + ',' + COLUMN_AMOUNT +
+            COLUMN_CARD_NUMBER + ',' + COLUMN_EXPIRY_DATE + ',' + COLUMN_LAST_3_DIGITS + ',' + COLUMN_AMOUNT +
             ")" + "values (?,?,?,?,?,?,?)";
 
     public static final String insertStaff = "insert into " + TABLE_STAFF_ACCOUNT + "(" + COLUMN_STAFF_NAME + ',' +
@@ -219,14 +219,14 @@ public class DbDriver {
             " WHERE " + TABLE_PAYMENT_HISTORY + "." + COLUMN_JOB_ID + " IS NULL AND " + TABLE_JOBS + "." + COLUMN_CURRENT_STATUS + " = 'Job Complete'";
 
 
-    public static final String createCustomerReport = "SELECT " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + ", " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CUSTOMER_NAME + ", " +
-            "concat(" + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_TITLE + " , " + "' ' ," + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_FIRST_NAME + ", " + "' ' ," + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_LAST_NAME + ") AS CONTACT, " +
-            "concat(" + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ADDRESS + ", " + "' ' , " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CITY + ", " + "' ' ," + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_POSTCODE + ") AS ADDRESS, " +
-            TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_PHONE_NUMBER + ", " + TABLE_JOBS + "." + COLUMN_JOB_ID +
-            " FROM  " + TABLE_CUSTOMER_ACCOUNT + "" +
-            " INNER JOIN " + TABLE_JOBS + " ON " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = " + TABLE_JOBS + "." + COLUMN_ACCOUNT_NUMBER +
-            " WHERE " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = ?"
-            + " AND CAST((" + TABLE_JOBS + "." + COLUMN_START_TIME + ") AS DATE) BETWEEN '" + "d" + "' AND '" + "d" + "'";
+//    public static final String createCustomerReport = "SELECT " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + ", " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CUSTOMER_NAME + ", " +
+//            "concat(" + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_TITLE + " , " + "' ' ," + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_FIRST_NAME + ", " + "' ' ," + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CONTACT_LAST_NAME + ") AS CONTACT, " +
+//            "concat(" + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ADDRESS + ", " + "' ' , " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_CITY + ", " + "' ' ," + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_POSTCODE + ") AS ADDRESS, " +
+//            TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_PHONE_NUMBER + ", " + TABLE_JOBS + "." + COLUMN_JOB_ID +
+//            " FROM  " + TABLE_CUSTOMER_ACCOUNT + "" +
+//            " INNER JOIN " + TABLE_JOBS + " ON " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = " + TABLE_JOBS + "." + COLUMN_ACCOUNT_NUMBER +
+//            " WHERE " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = ?"
+//            + " AND CAST((" + TABLE_JOBS + "." + COLUMN_START_TIME + ") AS DATE) BETWEEN '" + "d" + "' AND '" + "d" + "'";
 
     public static void main(String[] args) throws SQLException {
 
@@ -352,14 +352,15 @@ public class DbDriver {
                     "FOREIGN KEY(" + COLUMN_JOB_ID + ") REFERENCES " + TABLE_JOBS + "(" + COLUMN_JOB_ID + "),\n" +
                     "FOREIGN KEY(" + COLUMN_STAFF_ID + ") REFERENCES " + TABLE_STAFF_ACCOUNT + "(" + COLUMN_STAFF_ID + ")\n" +
                     ")");
+            //TODO CHANGED
             statement.execute("CREATE TABLE IF NOT EXISTS " + TABLE_PAYMENT_HISTORY + "(\n" +
                     COLUMN_PAYMENT_ID + " int NOT NULL AUTO_INCREMENT,   \n" +
                     COLUMN_JOB_ID + " int,\n" +
                     COLUMN_ACCOUNT_NUMBER + " int,\n" +
                     COLUMN_CASH_OR_CARD + " varchar(10),\n" +
-                    COLUMN_CARD_TYPE + " varchar(10),\n" +
+                    COLUMN_CARD_NUMBER + " varchar(255),\n" +
                     COLUMN_EXPIRY_DATE + " varchar(15),\n" +
-                    COLUMN_LAST_4_DIGITS + " varchar(4),\n" +
+                    COLUMN_LAST_3_DIGITS + " varchar(4),\n" +
                     COLUMN_AMOUNT + " float,\n" +
                     "PRIMARY KEY (" + COLUMN_PAYMENT_ID + "),\n" +
                     "FOREIGN KEY (" + COLUMN_JOB_ID + ") REFERENCES " + TABLE_JOBS + "(" + COLUMN_JOB_ID + "),\n" +
@@ -411,6 +412,9 @@ public class DbDriver {
             insertTasks("Use of small copy camera", 1, 8.50, 75);
             insertTasks("Mount transparencies", 3, 55.50, 45);
 
+
+
+            int a = insertDiscount("no discount");
 
             System.out.println("Connected to Database!");
         } catch (SQLException e) {
@@ -1701,6 +1705,8 @@ public class DbDriver {
             ResultSet results = queryStaffAccount.executeQuery();
             if (results.next()) {
                 System.out.println("staff already exists");
+                return false;
+
             } else {
                 // Insert staff_account
                 insertIntoStaff.setString(1, name);
@@ -1716,9 +1722,9 @@ public class DbDriver {
                     throw new SQLException("Couldn't insert staff member");
 
                 }
+                return true;
             }
         }
-        return null;
     }
 
     public List<StaffAccount> queryStaff() {
@@ -1835,13 +1841,14 @@ public class DbDriver {
     }
 
 
-    public static void insertPaymentHistory(int jobId, int customerId, String cashOrCard, String cardType, String expiry, String lastDigits, double amount) throws SQLException {
+    public static Boolean insertPaymentHistory(int jobId, int customerId, String cashOrCard, String cardType, String expiry, String lastDigits, double amount) throws SQLException {
         try (PreparedStatement insertIntoPayments = conn.getConnection().prepareStatement(insertPayment);
              PreparedStatement queryPayments = conn.getConnection().prepareStatement(QUERY_PAYMENTS)) {
             queryPayments.setInt(1, jobId);
             ResultSet results = queryPayments.executeQuery();
             if (results.next()) {
-                System.out.println("already exists");
+                System.out.println("already made");
+                return false;
             } else {
                 // Insert payment history
                 insertIntoPayments.setInt(1, jobId);
@@ -1857,7 +1864,7 @@ public class DbDriver {
                 if (affectedRows != 1) {
                     throw new SQLException("Couldn't insert payment");
                 }
-
+                return true;
 
             }
         }
@@ -2025,63 +2032,55 @@ public class DbDriver {
                      " FROM  " + TABLE_CUSTOMER_ACCOUNT + "" +
                      " INNER JOIN " + TABLE_JOBS + " ON " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = " + TABLE_JOBS + "." + COLUMN_ACCOUNT_NUMBER +
                      " WHERE " + TABLE_CUSTOMER_ACCOUNT + "." + COLUMN_ACCOUNT_NUMBER + " = " + id
-                     + " AND CAST((" + TABLE_JOBS + "." + COLUMN_START_TIME + ") AS DATE) BETWEEN '" + d + "' AND '" + d1 + "'")
+                     + " AND CAST((" + TABLE_JOBS + "." + COLUMN_START_TIME + ") AS DATE) BETWEEN '" + d + "' AND '" + d1 + "'"
+             )
         ) {
-
             if (results.next()){
-            List<CustomerReport> reports = new LinkedList<>();
-            while (results.next()) {
-
-                int customerId = results.getInt(1);
-                String name = results.getString(2);
-                String contact = results.getString(3);
-                String address = results.getString(4);
-                String phoneNumber = results.getString(5);
-                int jobId = results.getInt(6);
-
-                CustomerReport report = new CustomerReport(customerId, jobId, name,
-                        contact, address, phoneNumber);
-
-                reports.add(report);
+                List<CustomerReport> reports = new LinkedList<>();
+                while (results.next()) {
+                    int customerId = results.getInt(1);
+                    String name = results.getString(2);
+                    String contact = results.getString(3);
+                    String address = results.getString(4);
+                    String phoneNumber = results.getString(5);
+                    int jobId = results.getInt(6);
+                    CustomerReport report = new CustomerReport(customerId, jobId, name,
+                            contact, address, phoneNumber);
+                    reports.add(report);
+                }
+                return reports;
             }
-            return reports;
-            }else{
-                System.out.println("Customer has no jobs with Bapers");
-                return null;
-            }
+            else {
+                System.out.println("Customer has no jobs");}
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        }
+        }return null;
     }
-
     public static void generateCustomerReport(int id, String from, String to) throws FileNotFoundException {
-
-        PrintStream o = new PrintStream(new File("SummaryReport" + from + "_" + to + ".txt"));
+        PrintStream o = new PrintStream(new File("CustomerReport"+ id+"_"+ from + "_" + to + ".txt"));
         System.setOut(o);
-
         List<CustomerReport> reports = DbDriver.createCustomerReport(id, from, to);
-        assert reports != null;
-        CustomerReport report = reports.get(0);
+        if( reports != null) {
+            CustomerReport report = reports.get(0);
+            System.out.println("customer id = " + report.getCustomerId() + " \n" +
+                    "Customer Name: " + report.getCustomer_name() + "\n" +
+                    "Contact name: " + report.getContact() + " \n" +
+                    "Address: " + report.getAddress() + "\n" +
+                    "Phone Number: " + report.getGetPhoneNumber() + " \n" +
+                    "1: Job Number: " + report.getJobId() + "\n");
+            if (reports.size() > 1) {
+                for (int i = 1; i < reports.size(); i++) {
+                    CustomerReport report1 = reports.get(i);
+                    System.out.println(i + 1 + ": Job Number: " + report1.getJobId());
 
-        System.out.println("customer id = " + report.getCustomerId() + " \n" +
-                "Customer Name: " + report.getCustomer_name() + "\n" +
-                "Contact name: " + report.getContact() + " \n" +
-                "Address: " + report.getAddress() + "\n" +
-                "Phone Number: " + report.getGetPhoneNumber() + " \n" +
-                "1: Job Number: " + report.getJobId() + "\n");
-
-        if (reports.size() > 1) {
-            for (int i = 1; i < reports.size(); i++) {
-                CustomerReport report1 = reports.get(i);
-                System.out.println(i + 1 + ": Job Number: " + report1.getJobId());
+                }
 
             }
-
-
+        }else{
+            System.out.println("Customer has no jobs");
         }
         o.close();
-
     }
 
 
@@ -2409,6 +2408,44 @@ public class DbDriver {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    //TODO add to new file, change type to timestamp
+    public static void updateStartTime(String timestamp, int id) {
+        Timestamp time = Timestamp.valueOf(timestamp);
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "UPDATE " + TABLE_JOBS +
+                    " SET " +
+                    COLUMN_START_TIME +
+                    " = " +
+                    time +
+                    " WHERE " +
+                    COLUMN_JOB_ID +
+                    " = " +
+                    id;
+            System.out.println(sb1);
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void updateCompleteTime(String timestamp, int id) {
+        Timestamp time = Timestamp.valueOf(timestamp);
+        try (Statement statement = conn.getConnection().createStatement()) {
+            String sb1 = "UPDATE " + TABLE_JOBS +
+                    " SET " +
+                    COLUMN_COMPLETE_TIME +
+                    " = " +
+                    time +
+                    " WHERE " +
+                    COLUMN_JOB_ID +
+                    " = " +
+                    id;
+            System.out.println(sb1);
+            statement.execute(sb1);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

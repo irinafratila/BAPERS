@@ -32,11 +32,6 @@
                         <Insets />
                     </VBox.margin>
                 </Button>
-                <Button alignment="CENTER" mnemonicParsing="false" onAction="#changeSceneUpdateTask" prefHeight="78.0" prefWidth="209.0" style="-fx-background-color: black; -fx-background-radius: 25;" text="Update Task" textFill="WHITE">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Button>
             <Button alignment="CENTER" mnemonicParsing="false" onAction="#changeSceneDeleteTask" prefHeight="73.0" prefWidth="211.0" style="-fx-background-color: black; -fx-background-radius: 25;" text="Delete Task" textFill="WHITE">
                <font>
                   <Font size="14.0" />

@@ -22,7 +22,7 @@ public class JobDeadlineAlert extends  Thread {
             List<Job> allJobs = DbDriver.searchAllJobs();
             for (Job j : allJobs) {
                 Timestamp deadline = j.getDeadlineTimeStamp();
-                if (!j.isJobComplete()) {
+                if (!j.getStatus().equalsIgnoreCase("Completed")) {
                     long leftToDeadline = ((deadline.getTime() - current.getTime()) / 1000) / 60 ;
                     if (leftToDeadline < 70 && leftToDeadline >=0) {
                         //TODO create an alert

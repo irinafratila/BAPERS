@@ -54,7 +54,7 @@ public class UpdateCustomer implements Initializable {
         firstName.setText(BapersControl.tempCustomerSession.getFirstName());
         lastName.setText(BapersControl.tempCustomerSession.getLastName());
         address.setText(BapersControl.tempCustomerSession.getAddress());
-        city.setText("london");
+        city.setText(BapersControl.tempCustomerSession.getCity());
         postCode.setText(BapersControl.tempCustomerSession.getPostCode());
         email.setText(BapersControl.tempCustomerSession.getEmail());
         number.setText(BapersControl.tempCustomerSession.getNumber());

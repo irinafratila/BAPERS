@@ -109,12 +109,13 @@ public class createUser{
         String fullname = fullName.getText();
         String userName = username.getText();
 //            String Email = email.getText();
-        String password = password1.getText();
+        String Password = password1.getText();
+        String Password2 = password2.getText();
         String role = this.selection;
 
         try {
             Boolean result;
-            result = DbDriver.insertStaffAccount(fullname,userName,password,"",role,"");
+            result = DbDriver.insertStaffAccount(fullname,userName,Password,"",role,"");
             if (result == true){
                 createUserMessageLabel.setText("User created succesfully");
                 fullName.setText("");

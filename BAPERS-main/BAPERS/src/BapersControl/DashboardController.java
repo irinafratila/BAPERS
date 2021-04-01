@@ -10,10 +10,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -86,6 +90,13 @@ public class DashboardController implements Initializable {
         tableView.setItems(observableList  );
         test();
         calulateDetails();
+
+        Boolean result = AlertSession.checkForAlert();
+        if (result== true){
+            alert.setText("Alert!!");
+        }else{
+            alert.setText("");
+        }
 
     }
 
@@ -223,12 +234,20 @@ public class DashboardController implements Initializable {
     //change scene from dashboard to alert oage
     public void openAlerts() throws  IOException{
 
-//        if (AlertSession.checkForAlert()== false){
-//            alert.setText("");
-//        }else{
-//            alert.setText("Alert!!");
-//        }
-            m.changeScene("/Alerts/alert.fxml");
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Alerts/alert.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Alert");
+            stage.setScene(new Scene(root1));
+            stage.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+//            m.changeScene("/Alerts/alert.fxml");
+
+
 
 
     }

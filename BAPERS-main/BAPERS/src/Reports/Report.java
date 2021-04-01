@@ -22,7 +22,7 @@ public class Report {
     private Connection connDB;
 
     @FXML
-    private TextField id;
+    private TextField id,from,to;
 
     @FXML
     private Label searchJobMessageLabel,searchStaffMessageLabel;
@@ -45,13 +45,18 @@ public class Report {
     public void changeSceneViewBiplReport() throws IOException {
         m.changeScene("/Reports/viewBiplReport.fxml");
     }
-
+    public void changeSceneMakeBiplReport() throws IOException {
+        m.changeScene("/Reports/FromToInput.fxml");
+    }
 
 
     public void searchCustomer() throws IOException {
         int ID = Integer.parseInt(id.getText());
         this.idData = ID;
+        String From = from.getText(); //"2021-03-25"
+        String To = to.getText(); //"2021-04-01"
 
+        new BapersControl.ToFromTransfer(To,From);
         //String x = ;
         try {
 
@@ -66,7 +71,7 @@ public class Report {
 //                generateCustomerReport();
 
                 try {
-                    DbDriver.generateCustomerReport(ID,"2021-03-25","2021-04-01");
+                    DbDriver.generateCustomerReport(ID,From,To);
                     m.changeScene("/Reports/viewCustomerReport.fxml");
                 }catch (ArrayIndexOutOfBoundsException e){
                     System.out.println("The index you have entered is invalid");
@@ -79,6 +84,10 @@ public class Report {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void inputDates() throws IOException {
+
     }
 
     public void searchUserReport(ActionEvent event) throws IOException {
@@ -127,9 +136,16 @@ public class Report {
         System.out.println("Generated report 2");
     }
 
-    public void generateBiplReport() throws FileNotFoundException {
 
-        DbDriver.generateSummaryReport("2021-03-27","2021-03-31");
+
+    public void generateBiplReport() throws FileNotFoundException {
+        String From = from.getText(); //"2021-03-27"
+        String To = to.getText(); //"2021-03-31"
+
+        new BapersControl.ToFromTransfer(To,From);
+
+
+        DbDriver.generateSummaryReport(From,To);
         System.out.println("Generated report 3");
         try {
             m.changeScene("/Reports/viewBiplReport.fxml");

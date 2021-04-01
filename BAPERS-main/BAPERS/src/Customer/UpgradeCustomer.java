@@ -216,12 +216,14 @@ public class UpgradeCustomer implements Initializable {
         if (ranges.isEmpty()){
             updateCustomerMessageLabel.setText("Variable Discount needs to be added");
 
+
         }else {
             try {
                 updateCustomerMessageLabel.setText("Flexi Discount applied");
                 customerType.setText("");
                 discountRate.setText("");
                 discountRange.setText("");
+                rangeMessage.setText("");
             }catch (Exception e){
                 e.printStackTrace();
                 updateCustomerMessageLabel.setText("Flexi Discount failed to be applied");

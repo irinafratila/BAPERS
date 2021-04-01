@@ -39,6 +39,7 @@ public class Main {
 //                System.out.println(t.getJobId()+" - "+t.getStatus());
 //
 //        }
+        DbDriver.generateCustomerReport(4,"2021-03-25","2021-04-01");
 
 
 

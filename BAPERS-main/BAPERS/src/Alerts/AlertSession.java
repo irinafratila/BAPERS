@@ -31,11 +31,9 @@ public class AlertSession {
     public static Boolean checkForAlert(){
         if (messages.isEmpty()){
             return false;
-
         }else{
             return true;
         }
-
     }
 
 //    public static void setMessage(String message) {
