@@ -162,13 +162,14 @@ public class DashboardController implements Initializable {
     //change scene from dashboard to user page where you can create or delete user
     public void changeSceneRelax() throws  IOException{
 //        Main m = new Main();
-        if(currentLoginSession.getRole().equalsIgnoreCase("Office manager") ){
-            m.changeScene("/Break/break.fxml");
-
-        }else {
-            //get back to work
-            m.changeScene("/BapersControl/noAccess.fxml");
-        }
+//        if(currentLoginSession.getRole().equalsIgnoreCase("Office manager") ){
+//
+//
+//        }else {
+//            //get back to work
+//            m.changeScene("/BapersControl/noAccess.fxml");
+//        }
+        m.changeScene("/Break/break.fxml");
     }
 
     //change scene from dashboard to user page where you can create or delete user
@@ -234,16 +235,22 @@ public class DashboardController implements Initializable {
     //change scene from dashboard to alert oage
     public void openAlerts() throws  IOException{
 
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Alerts/alert.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Alert");
-            stage.setScene(new Scene(root1));
-            stage.show();
-        }catch (Exception e){
-            e.printStackTrace();
+        if (currentLoginSession.getRole().equalsIgnoreCase("Office manager")){
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Alerts/alert.fxml"));
+                Parent root1 = (Parent) fxmlLoader.load();
+                Stage stage = new Stage();
+                stage.setTitle("Alert");
+                stage.setScene(new Scene(root1));
+                stage.show();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else {
+            m.changeScene("/BapersControl/noAccess.fxml");
+
         }
+
 
 //            m.changeScene("/Alerts/alert.fxml");
 
